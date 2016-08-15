@@ -21,23 +21,23 @@
       var map;
       
       function initMap() {
-        var eventLocation = new google.maps.LatLng(-41.1130274,174.8924949);
+        var eventLocation = new google.maps.LatLng(-41.1130274,174.8924949); // Location of event. When scenario is created LatLng will be put in here.
         //creates map
         map = new google.maps.Map(document.getElementById('map'), {
           center: eventLocation,
-          zoom: 18,
+          zoom: 17,
         });
-        
+        //creates marker of event and places it on the map in the location of the event
         var marker;
             marker = new google.maps.Marker({
            position: eventLocation,
            map: map
         });
-        
+        //places cordons when user clicks
         google.maps.event.addListener(map, 'click', function(event) {
             placeMarker(event.latLng);
         });
-        
+        //creates the expanding zone around the event     
         var expandingZone;
             expandingZone = ({
             strokeColor: '#FF0000',
@@ -46,27 +46,37 @@
             fillColor: '#FF0000',
             fillOpacity: 0.35,
             map: map,
-            centre: eventLocation, 
-            radius: 2000
+            center: eventLocation, 
+            radius: 50
         });
         var circle;
             circle= new google.maps.Circle(expandingZone);
+        //makes the expanding zone increase in size    
+        var expansionDirection = 1;
+        var timeDelay = 50;  
+        setInterval(function() {
+          var radius = circle.getRadius();
+          if (radius < timeDelay) {
+              expansionDirection *= 1;
+          }
+          circle.setRadius(radius + expansionDirection * 0.1);
+        }, 50);
       }
-      
+        //function for placing police car place marker   
         function placeMarker(location) {
         var marker = new google.maps.Marker({
          position: location,
          map: map,
          icon: 'policeCar.ico'
         });
-              
-       for(var i = 0; i < 4; i++){
-            
-            var unit = new google.maps.InfoWindow({
-            content: 'WLT ' + i
-        });
-        unit.open(map,marker);
-        
+        //whenever police car is placed this loop is meant to display the name of the unit       
+        for(var i = 0; i < 4; i++){
+
+             var unit = new google.maps.InfoWindow({
+             content: 'WLT ' + i
+         });
+         unit.open(map,marker);
+
         }        
     }
     google.maps.event.addDomListener(window, 'load', initialize);
