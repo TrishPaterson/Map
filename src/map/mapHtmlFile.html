@@ -1,87 +1,123 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Whitby</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-      var map;
-      
-      function initMap() {
-        var eventLocation = new google.maps.LatLng(-41.1130274,174.8924949); // Location of event. When scenario is created LatLng will be put in here.
-        //creates map
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: eventLocation,
-          zoom: 17,
-        });
-        //creates marker of event and places it on the map in the location of the event
-        var marker;
-            marker = new google.maps.Marker({
-           position: eventLocation,
-           map: map
-        });
-        //places cordons when user clicks
-        google.maps.event.addListener(map, 'click', function(event) {
-            placeMarker(event.latLng);
-        });
-        //creates the expanding zone around the event     
-        var expandingZone;
-            expandingZone = ({
-            strokeColor: '#FF0000',
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: '#FF0000',
-            fillOpacity: 0.35,
-            map: map,
-            center: eventLocation, 
-            radius: 50
-        });
-        var circle;
-            circle= new google.maps.Circle(expandingZone);
-        //makes the expanding zone increase in size    
-        var expansionDirection = 1;
-        var timeDelay = 50;  
-        setInterval(function() {
-          var radius = circle.getRadius();
-          if (radius < timeDelay) {
-              expansionDirection *= 1;
-          }
-          circle.setRadius(radius + expansionDirection * 0.1);
-        }, 50);
-      }
-        //function for placing police car place marker   
-        function placeMarker(location) {
-        var marker = new google.maps.Marker({
-         position: location,
-         map: map,
-         icon: 'policeCar.ico'
-        });
-        //whenever police car is placed this loop is meant to display the name of the unit       
-        for(var i = 0; i < 4; i++){
+    <head>
+        <title>Whitby</title>
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+        <meta charset="utf-8">
+        <style>
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var map;
 
-             var unit = new google.maps.InfoWindow({
-             content: 'WLT ' + i
-         });
-         unit.open(map,marker);
+            function initMap() {
+                var eventLocation = new google.maps.LatLng(-41.1130274, 174.8924949); // Location of event. When scenario is created LatLng will be put in here.
+                //creates map
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: eventLocation,
+                    zoom: 17,
+                });
+                //-----------------------------------------------------------------------------------------------
+                //City Location
+                var well = {lat: -41.2865, lng: 174.7762};
+                var citymap = {
+                    wellington: {
+                        center: {lat: -41.2865, lng: 174.7762},
+                        rad: 20000
+                    },
+                    petone: {
+                        center: {lat: -41.2270, lng: 174.8851},
+                        rad: 18000
+                    },
+                    lowerhutt: {
+                        center: {lat: -41.2092, lng: 174.9081},
+                        rad: 15000
+                    },
+                    newlands: {
+                        center: {lat: -41.2237, lng: 174.8233},
+                        rad: 16000
+                    }
+                };
 
-        }        
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmE4K2a37cqq8wdmkTudyrRkDVbNEtx-4&callback=initMap"
-    async defer></script>
-  </body>
+                //-----------------------------------------------------------------------------------------------
+                //ExpandingZone
+                var cityCircle = [];
+
+                for (var city in citymap) {
+                    var circle = new google.maps.Circle({
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+                        map: map,
+                        center: citymap[city].center,
+                        radius: Math.sqrt(citymap[city].rad),
+                    });
+                    cityCircle.push(circle);
+                }
+                var expansionDirection = 1;
+                var timeDelay = 50;
+                setInterval(function () {
+                    var radius = circle.getRadius();
+                    if (radius < timeDelay) {
+                        expansionDirection *= 1;
+                    }
+                    for (var i = 0; i < cityCircle.length; i++) {
+                        cityCircle[i].setRadius(radius + expansionDirection * 0.1);
+                    }
+                }, 50);
+
+                //----------------------------------------------------------------------------------------------
+                // Placing Cordons
+
+                //Static counter
+                var num = (function () {
+                    var count = 0;
+                    return function () {
+                        return count++;
+                    };
+                })();
+
+                //function for placing police car place marker
+                var markers = [];
+                var well = {lat: -41.2865, lng: 174.7762};
+
+
+                map.addListener('click', function (event) {
+                    addMarker(event.latLng);
+                });
+
+                function addMarker(location) {
+                    var marker = new google.maps.Marker({
+                        position: location,
+                        map: map
+                    });
+                    var unit = new google.maps.InfoWindow({
+                        content: 'WLT ' + num()});
+                    unit.open(map, marker);
+                    markers.push(marker); //add marker to array
+                }
+
+                function setMapOnAll(map) {
+                    for (var i = 0; i < markers.length; i++) {
+                        markers[i].setMap(map);
+                    }
+                }
+            }
+            google.maps.event.addDomListener(window, 'load', initialize);
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmE4K2a37cqq8wdmkTudyrRkDVbNEtx-4&callback=initMap"
+        async defer></script>
+    </body>
 </html>
