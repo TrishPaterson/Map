@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Cordon>
+    
+    <unit01 id = "U01">
+        <callSign>signUndef</callSign>
+        <defLocation>locUndef</defLocation>
+        <currEvent>eventUndef</currEvent>
+        <time>timeUndef</time>
+        <type>carUndef</type>
+        <status>available</status>   
+    </unit01>
+    
+    <unit02 id = "U02">
+        <callSign>signUndef</callSign>
+        <defLocation>locUndef</defLocation>
+        <currEvent>eventUndef</currEvent>
+        <time>timeUndef</time>
+        <type>carUndef</type>
+        <status>available</status>   
+    </unit02>
+    
+    <unit03 id = "U03">
+        <callSign>signUndef</callSign>
+        <defLocation>locUndef</defLocation>
+        <currEvent>eventUndef</currEvent>
+        <time>timeUndef</time>
+        <type>carUndef</type>
+        <status>available</status>   
+    </unit03>   
+    
+</Cordon>
