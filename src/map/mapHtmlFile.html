@@ -21,7 +21,8 @@
             var map;
     function initMap() {
         var eventLocation = new google.maps.LatLng(-41.1130274, 174.8924949); // Location of event. When scenario is created LatLng will be put in here.
-        var currentArea;
+        var currentEvent;
+        currentEvent = 'Whitby';
         map = new google.maps.Map(document.getElementById('map'), {
             center: eventLocation,
             zoom: 17,
@@ -50,14 +51,14 @@
                 name: 'Whitby'
             }
         };    
-        currentArea = citymap.whitby.name;
+        //currentArea = citymap.whitby.name;
 //-----------------------------------------------------------------------------------------------        
         function CenterControl(controlDiv, map, latLong, name) {
             var controlUI = document.createElement('div');
             var controlText = document.createElement('div');          
             setUIStyle(controlUI, controlDiv);
             setTextStyle(controlText, controlUI, name);
-            actionPerform(controlUI, map, latLong);
+            actionPerform(controlUI, map, latLong, name);
         }    
         function setUIStyle(ui, div){
             ui.style.backgroundColor = '#fff';
@@ -82,9 +83,10 @@
             ui.appendChild(text);
         }
         
-        function actionPerform(controlUI, map, latLong, citymap ){
+        function actionPerform(controlUI, map, latLong, name ){
             controlUI.addEventListener('click', function(){
                 map.setCenter(latLong);
+                currentEvent = name;
             });
         }
         
@@ -145,41 +147,57 @@
             var count = 0;   
             return function() { return count++; };  
         })(); 
-        var markers = [];
+
+        var wellMarkers = [];
+        var petoneMarkers = [];
+        var lwrhuttMarkers = [];
+        var whitbyMarkers = [];
 
         map.addListener('click', function(event) {
             addMarker(event.latLng);
-            setContainment();
-            setMapOnAll(map);
+            //setMapOnAll(map);
         });
       
         function addMarker(location) {
             var marker = new google.maps.Marker({
                 position: location,
-                //map: map,
+                map: map,
                 icon: 'policeCar.ico'
             });
             var unit = new google.maps.InfoWindow({
                 content: 'WLT ' + num()});
             unit.open(map,marker);
-            markers.push(marker); //add marker to array
-        
-        }
-        function setMapOnAll(map) {
             
-            for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
+            if( currentEvent === 'Wellington') {
+                wellMarkers.push(marker); //add marker to array
             }
-            
+            else if( currentEvent === 'Petone') {
+                petoneMarkers.push(marker);
+            }
+            else if( currentEvent === 'Lower Hutt') {
+                lwrhuttMarkers.push(marker);
+            }
+            else if( currentEvent === 'Whitby' ) {
+                whitbyMarkers.push(marker);
+            }
+            setContainment();
         }
+        /*
+        function setMapOnAll(map) {
+            for (var i = 0; i < wellMarkers.length; i++) {
+                wellMarkers[i].setMap(map);
+            }
+            for (var i = 0; i < petoneMarkers.length; i++) {
+                petoneMarkers[i].setMap(map);
+            }
+            for (var i = 0; i < lwrhuttMarkers.length; i++) {
+                lwrhuttMarkers[i].setMap(map);
+            }
+            for (var i = 0; i < whitbyMarkers.length; i++) {
+                whitbyMarkers[i].setMap(map);
+            }
+        }*/
         //Containment Field
-        //----------------------------------------------------------------
-        
-        var containmentPointsPath = []; //only stores the latlng points 
-                                        //that will be used to form the zone
-        var containmentPoints = []; //stores all the cordon markers in the form
-                                    //of thier position i.e. latlong
-        var containmentZone;    //the polygon zone
         //----------------------------------------------------------------------
         //create an array that stores arrays that hold x and y coordinates where
         //x is the lat and y is the lng coordinates of the cordon marker.
@@ -188,7 +206,7 @@
             var lat;
             var lng;
             containmentPoints.length = 0;
-            for( var i = 0; i < markers.length; i++ ) {
+            for( var i = 0; i < mark.length; i++ ) {
                 lat = mark[i].getPosition().lat();
                 lng = mark[i].getPosition().lng();
                 containmentPoints.push( [lat, lng] );
@@ -253,17 +271,22 @@
             }
         }
         //----------------------------------------------------------------------
-        //setContainment is uses the containmentPointsPath to create the zone
-        function setContainment() {
-            if(containmentZone) {
-                containmentZone.setMap(null);
-                containmentZone = null;
-            }
+        //setContainment uses the containmentPointsPath to create the zone
+        var containmentPointsPath = []; //only stores the latlng points 
+                                        //that will be used to form the zone
+        var containmentPoints = []; //stores all the cordon markers in the form
+                                    //of thier position i.e. latlong                          
+        var wellZone;    //the polygon zone
+        var petoneZone;
+        var lwrhuttZone;
+        var whitbyZone;
+        
+        function createContainment( markers, zone ) {
             containmentPointsPath = [];
             if( markers.length > 2 ) {
                 createContainmentPoints( markers );
                 convexHull();
-                containmentZone = new google.maps.Polygon({
+                zone = new google.maps.Polygon({
                     paths: containmentPointsPath,
                     strokeColor: '#7f7fff',
                     strokeOpacity: 0.8,
@@ -271,11 +294,45 @@
                     fillColor: '#7f7fff',
                     fillOpacity: 0.35
                 });
-                containmentZone.setMap(map);
+                return zone;
             }
         }
+        
+        function setContainment() {
+            if( currentEvent === 'Wellington' ) {
+                if( wellZone ) {
+                    wellZone.setMap(null);
+                    wellZone = null;
+                }
+                wellZone = createContainment( wellMarkers, wellZone );
+                wellZone.setMap(map);
+            }
+            else if( currentEvent === 'Petone') {
+                if( petoneZone ) {
+                    petoneZone.setMap(null);
+                    petoneZone = null;
+                }
+                petoneZone = createContainment( petoneMarkers, petoneZone );
+                petoneZone.setMap(map);
+            }
+            else if( currentEvent === 'Lower Hutt') {
+                if( lwrhuttZone ) {
+                    lwrhuttZone.setMap(null);
+                    lwrhuttZone = null;
+                }
+                lwrhuttZone = createContainment( lwrhuttMarkers, lwrhuttZone );
+                lwrhuttZone.setMap(map);
+            }
+            else if( currentEvent === 'Whitby') {
+                if( whitbyZone ) {
+                    whitbyZone.setMap(null);
+                    whitbyZone = null;
+                }
+                whitbyZone = createContainment( whitbyMarkers, whitbyZone );
+                whitbyZone.setMap(map);
+            }
         //----------------------------------------------------------------------
-    
+        }
     }// end initMap() do not add code below this closing bracket
 //--------------------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);
