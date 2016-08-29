@@ -147,42 +147,72 @@
             var count = 0;   
             return function() { return count++; };  
         })(); 
-
+        
+        var allMarkers = new Map();
         var wellMarkers = [];
         var petoneMarkers = [];
         var lwrhuttMarkers = [];
         var whitbyMarkers = [];
 
+        var idnum = 1;
+        
         map.addListener('click', function(event) {
-            addMarker(event.latLng);
+            createMarker(event.latLng, idnum );
+            setLocation( idnum++ );
             //setMapOnAll(map);
         });
-      
-        function addMarker(location) {
+        //----------------------------------------------------------------------
+        function createMarker(location, idkey) {
             var marker = new google.maps.Marker({
                 position: location,
                 map: map,
-                icon: 'policeCar.ico'
+                icon: 'policeCar.ico',
+                id: idkey
             });
+            allMarkers.set( idkey, marker );
             var unit = new google.maps.InfoWindow({
                 content: 'WLT ' + num()});
             unit.open(map,marker);
             
+            google.maps.event.addListener( marker, 'rightclick', function() {
+                //unit.close(map, marker);
+                changeLocation( marker );
+                //unit.close(map, marker);
+                unit.open(map,marker);
+                //setContainment();
+                //setMapOnAll( map );
+            });
+        }
+        //----------------------------------------------------------------------
+        function setLocation( id ) {    
             if( currentEvent === 'Wellington') {
-                wellMarkers.push(marker); //add marker to array
+                wellMarkers.push( allMarkers.get( id ) ); //add marker to array
             }
             else if( currentEvent === 'Petone') {
-                petoneMarkers.push(marker);
+                petoneMarkers.push(allMarkers.get( id ));
             }
             else if( currentEvent === 'Lower Hutt') {
-                lwrhuttMarkers.push(marker);
+                lwrhuttMarkers.push(allMarkers.get( id ));
             }
             else if( currentEvent === 'Whitby' ) {
-                whitbyMarkers.push(marker);
+                whitbyMarkers.push(allMarkers.get( id ));
             }
+            //setMapOnAll(map);
             setContainment();
         }
-        /*
+        //----------------------------------------------------------------------
+        function changeLocation( mark ) {
+            //var id = marker.id;
+            //var index;
+            mark.setMap(null);
+            map.addListener('rightclick', function(event) {
+                mark.position = event.latLng;
+                setContainment();
+                setMapOnAll(map);
+            });
+        }
+        //----------------------------------------------------------------------
+        
         function setMapOnAll(map) {
             for (var i = 0; i < wellMarkers.length; i++) {
                 wellMarkers[i].setMap(map);
@@ -196,20 +226,21 @@
             for (var i = 0; i < whitbyMarkers.length; i++) {
                 whitbyMarkers[i].setMap(map);
             }
-        }*/
+        }
+        //----------------------------------------------------------------------
         //Containment Field
         //----------------------------------------------------------------------
         //create an array that stores arrays that hold x and y coordinates where
         //x is the lat and y is the lng coordinates of the cordon marker.
         //----------------------------------------------------------------------
-        function createContainmentPoints( mark ) {
+        function createXYPoints( mark ) {
             var lat;
             var lng;
-            containmentPoints.length = 0;
+            xyPoints.length = 0;
             for( var i = 0; i < mark.length; i++ ) {
                 lat = mark[i].getPosition().lat();
                 lng = mark[i].getPosition().lng();
-                containmentPoints.push( [lat, lng] );
+                xyPoints.push( [lat, lng] );
             }
         }
         //----------------------------------------------------------------------
@@ -228,37 +259,37 @@
         //convexHull fills the containmentPointsPath array, which is used to 
         //create the containment zone. The upper hull and lower hull are 
         //created separately then merged together.
-        function convexHull() {
+        function createConvexHull() {
             //sort the array of all possible points, so we can start from the 
             //beginning of the array for the lower hull, and start from the end
             //of the array for the upper hull.
-            containmentPoints.sort( function(a,b) {
+            xyPoints.sort( function(a,b) {
                 return a[0] == b[0] ? 
                        a[1] - b[1]  : a[0] - b[0];
             });
             //Find all the points that are relevant to make the lower hull
             var lower = [];
-            for( var i = 0; i < containmentPoints.length; i++ ) {
+            for( var i = 0; i < xyPoints.length; i++ ) {
                 while( lower.length >= 2 && 
                         cross( lower[ lower.length - 2], 
                                lower[ lower.length - 1],
-                               containmentPoints[i]) <= 0 ) 
+                               xyPoints[i]) <= 0 ) 
                 {
                     lower.pop();           
                 }
-                lower.push( containmentPoints[i] );
+                lower.push( xyPoints[i] );
             }
             //Find all the points that are relevant to make the upper hull
             var upper = [];
-            for( var i = containmentPoints.length - 1; i >= 0; i-- ) {
+            for( var i = xyPoints.length - 1; i >= 0; i-- ) {
                 while( upper.length >= 2 && 
                         cross( upper[ upper.length - 2], 
                                upper[ upper.length - 1],
-                               containmentPoints[i]) <= 0 ) 
+                               xyPoints[i]) <= 0 ) 
                 {
                     upper.pop();           
                 }
-                upper.push( containmentPoints[i] );
+                upper.push( xyPoints[i] );
             }
             upper.pop();
             lower.pop();
@@ -266,32 +297,50 @@
             //Put the x and y coordinates back in the form of LatLng object
             //so a polygon can be created.
             for( var i = 0; i < hull.length; i++ ) {
-                containmentPointsPath.push( 
+                pointsPath.push( 
                         new google.maps.LatLng( hull[i][0], hull[i][1] ));
             }
         }
         //----------------------------------------------------------------------
+        function distBetween( a, b ) {
+            //var lat1 = o[0][0];
+            //var p1 = new google.maps.LatLng(45.463688, 9.18814);
+            //var p2 = new google.maps.LatLng(46.0438317, 9.75936230000002);
+            //var point1 = new google.maps.LatLng( a[0], a[1] );
+            //var point2 = new google.maps.LatLng( b[0], b[1] );
+            var dist = google.maps.geometry.spherical.computeDistanceBetween( a, b );
+            //alert(dist);
+            //var dist = computeDistanceBetween( citymap.well.center, citymap.petone.center);
+            return dist;
+        }
+        //----------------------------------------------------------------------
         //setContainment uses the containmentPointsPath to create the zone
-        var containmentPointsPath = []; //only stores the latlng points 
+        var pointsPath = []; //only stores the latlng points 
                                         //that will be used to form the zone
-        var containmentPoints = []; //stores all the cordon markers in the form
-                                    //of thier position i.e. latlong                          
+        var xyPoints = []; //stores all the cordon markers in the form
+                                    //of x and y coordinates                       
         var wellZone;    //the polygon zone
         var petoneZone;
         var lwrhuttZone;
         var whitbyZone;
         
         function createContainment( markers, zone ) {
-            containmentPointsPath = [];
+            pointsPath = [];
+            var zoneColor = '#7f7fff';
             if( markers.length > 2 ) {
-                createContainmentPoints( markers );
-                convexHull();
+                createXYPoints( markers );
+                createConvexHull();
+                for( var i = 0; i < pointsPath.length - 1; i++ ) {
+                    if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 1000 )
+                        zoneColor = '#ffbf7f';
+                }
+                zone = null;
                 zone = new google.maps.Polygon({
-                    paths: containmentPointsPath,
-                    strokeColor: '#7f7fff',
+                    paths: pointsPath,
+                    strokeColor: zoneColor,
                     strokeOpacity: 0.8,
                     strokeWeight: 2,
-                    fillColor: '#7f7fff',
+                    fillColor: zoneColor,
                     fillOpacity: 0.35
                 });
                 return zone;
@@ -337,7 +386,7 @@
 //--------------------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);
         </script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmE4K2a37cqq8wdmkTudyrRkDVbNEtx-4&callback=initMap"
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmE4K2a37cqq8wdmkTudyrRkDVbNEtx-4&callback=initMap&libraries=geometry"
         async defer></script>
     </body>
 </html>
