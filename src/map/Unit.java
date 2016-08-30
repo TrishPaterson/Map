@@ -4,7 +4,7 @@ Code might change in the future when GUI backened and Unit.JavaScript is done.
 */
 
 public class Unit {
-    protected enum Type { // Not Final Object Names 
+    private enum Type { // Not Final Object Names 
         car1("P10"), car2("P20");
         
         private String car;
@@ -16,7 +16,7 @@ public class Unit {
         }
     };
 
-    protected enum Status { // Not Final Object Names 
+    private enum Status { // Not Final Object Names 
         avail("Available"), onRot("Onroute"), 
         onSen("Onscene"), unAvail("Unavailable");
         
@@ -33,7 +33,6 @@ public class Unit {
     private final String uniqId;
     private String callSign;
     private String currLocation;
-    //private String defLocation;
     private String currEvent;
     private String time;
     private final Type type;
@@ -50,16 +49,16 @@ public class Unit {
     }
     
 //setters
-    public String changeLocation(String unitID){ //might become static
-        return("changeLocation('unitID')"); //not final return type
+    public String changeLocation(String unitID){ 
+        return "changeLocation("+"'"+ unitID +"'"+ ")"; 
     }
     
-    public String setFirstLocation(String unitID) {//might become static  
-        return("setCurrLocation('unitID')"); //not final return type
+    public String setLocation(String unitID) {
+        return "setLocation("+"'"+ unitID +"'"+ ")"; 
     }
     
-    public String setCurrEvent(String unitID) { //might become static
-        return("setEvent('unitID')"); //not final return type
+    public String createMarker(String unitID) { 
+        return "createMarker("+"'"+ unitID +"'"+ ")"; 
     }
 
     public void setTime(String time) {
