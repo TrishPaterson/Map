@@ -69,7 +69,7 @@ public class Units {
     }   
 //setters
     public String changeLocation(String unitID){ 
-        return "changeLocation("+"'"+ unitID +"'"+ ")"; 
+        return "changeLocation('"+ unitID +"')"; 
     }
     
     public String setLocation(String unitID) {
