@@ -19,6 +19,10 @@
         <div id="map"></div>
         <script>
             var map;
+            var changingMarker; //this is boolean true or false
+            var markerToChange; //the marker object we want to change
+            var allMarkers;
+            var incr = 1;
     function initMap() {
         var eventLocation = new google.maps.LatLng(-41.1130274, 174.8924949); // Location of event. When scenario is created LatLng will be put in here.
         var currentEvent;
@@ -26,7 +30,8 @@
         map = new google.maps.Map(document.getElementById('map'), {
             center: eventLocation,
             zoom: 17,
-        });             
+        });   
+    
 //-----------------------------------------------------------------------------------------------
 //City Location 
         var citymap = {
@@ -52,14 +57,7 @@
             }
         };    
         //currentArea = citymap.whitby.name;
-//-----------------------------------------------------------------------------------------------        
-        function CenterControl(controlDiv, map, latLong, name) {
-            var controlUI = document.createElement('div');
-            var controlText = document.createElement('div');          
-            setUIStyle(controlUI, controlDiv);
-            setTextStyle(controlText, controlUI, name);
-            actionPerform(controlUI, map, latLong, name);
-        }    
+//-----------------------------------------------------------------------------------------------         
         function setUIStyle(ui, div){
             ui.style.backgroundColor = '#fff';
             ui.style.border = '2px solid #fff';
@@ -71,7 +69,6 @@
             ui.title = 'Click to recenter the map';
             div.appendChild(ui);
         }   
-
         function setTextStyle(text, ui, cityName){
             text.style.color = 'rgb(25,25,25)';
             text.style.fontFamily = 'Roboto,Arial,sans-serif';
@@ -82,21 +79,71 @@
             text.innerHTML = cityName;
             ui.appendChild(text);
         }
-        
+//------------------------------------------------------------------------------
+//Center the map Control
+//------------------------------------------------------------------------------
+        function CenterControl(controlDiv, map, latLong, name) {
+            var controlUI = document.createElement('div');
+            var controlText = document.createElement('div');          
+            setUIStyle(controlUI, controlDiv);
+            setTextStyle(controlText, controlUI, name);
+            actionPerform(controlUI, map, latLong, name);
+        }          
         function actionPerform(controlUI, map, latLong, name ){
             controlUI.addEventListener('click', function(){
                 map.setCenter(latLong);
                 currentEvent = name;
+                wellMarkers = [];
+                petoneMarkers = [];
+                lwrhuttMarkers = [];
+                whitbyMarkers = [];
             });
         }
-        
-        var centerControlDiv = document.createElement('div');
+        var centerControlDiv = document.createElement('div');   
         var centerControl = new CenterControl(centerControlDiv, map, citymap.well.center, citymap.well.name);
         var centerControl = new CenterControl(centerControlDiv, map, citymap.petone.center, citymap.petone.name);
         var centerControl = new CenterControl(centerControlDiv, map, citymap.whitby.center, citymap.whitby.name);
         var centerControl = new CenterControl(centerControlDiv, map, citymap.lwrhutt.center, citymap.lwrhutt.name);
+        //var centerControl = new CenterControl(centerControlDiv, map, citymap.lwrhutt.center, citymap.lwrhutt.name);
         centerControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);       
+ 
+//------------------------------------------------------------------------------
+//Unit Control
+//------------------------------------------------------------------------------
+        function UnitControl(unitDiv, idNum, unitName) {
+            var controlUI = document.createElement('div');
+            var controlText = document.createElement('div');          
+            setUIStyle(controlUI, unitDiv);
+            setTextStyle(controlText, controlUI, unitName);
+            actionPerform2(controlUI, idNum);
+        }  
+        //these variables are for the changeLocation function
+        //var changingMarker; //this is boolean true or false
+        //var markerToChange; //the marker object we want to change
+        
+        function actionPerform2(controlUI, idNum, name ){
+            controlUI.addEventListener('click', function(){
+                if( allMarkers.get(idNum) == null ){
+                    createMarker(idNum);
+                    setLocation( idNum );
+                }
+                else{
+                    changeLocation( idNum );
+                }                   
+            });
+        }
+        
+        var unitControlDiv = document.createElement('div');
+        
+        var unitControl = new UnitControl(unitControlDiv, 1, 'Unit1');
+        var unitControl = new UnitControl(unitControlDiv, 2, 'Unit2');
+        var unitControl = new UnitControl(unitControlDiv, 3, 'Unit3');
+        var unitControl = new UnitControl(unitControlDiv, 4, 'Unit4');
+        //unitControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(unitControlDiv); 
+//------------------------------------------------------------------------------
+      
 //-----------------------------------------------------------------------------------------------
 //ExpandingZone
         var cityCircle = [];
@@ -114,49 +161,43 @@
             });
             cityCircle.push(circle);
         }
-                
-        /*function calculate() {
-            var centerwhitby = new google.maps.LatLng( -41.1130274, 174.8924949 );
-            var pointlower = new google.maps.LatLng( -41.2092, 174.9081);
-            var dist = distBetween( centerwhitby , pointlower );
-            return dist;
-        }*/
+                 
         function checkWhitby( rad ) {
             
             if ( whitbyZone ) {
                 var vertices = whitbyZone.getPath();
                 var center = new google.maps.LatLng( -41.1130274, 174.8924949 );
                 for( var i = 0; i < vertices.length; i++ ) {
-					//get the latlng of the point
-					//console.log("radius = " + rad + ", forloop iteration: " + i);
-					//console.log(vertices.getAt( i ));
+                    //get the latlng of the point
+                    //console.log("radius = " + rad + ", forloop iteration: " + i);
+                    //console.log(vertices.getAt( i ));
                     var d = vertices.getAt( i );
-					var middle;
-					var quarter;
-					if( (i + 1 ) >= vertices.length ){
-						//middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.5);
-						quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
-					}
-					else if( ( i + 1 ) < vertices.length ){
-						//middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.5); 
-						quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
-					} 
+                    var middle;
+                    var quarter;
+                    if( (i + 1 ) >= vertices.length ){
+                        //middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.5);
+                        quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
+                    }
+                    else if( ( i + 1 ) < vertices.length ){
+                        //middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.5); 
+                        quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
+                    } 
                     //calculates the distance between the point and radius
-					//var middleDist = google.maps.geometry.spherical.computeDistanceBetween( center , middle );
-					var quarter = google.maps.geometry.spherical.computeDistanceBetween( center , quarter);
+                    //var middleDist = google.maps.geometry.spherical.computeDistanceBetween( center , middle );
+                    var quarter = google.maps.geometry.spherical.computeDistanceBetween( center , quarter);
                     var dist = google.maps.geometry.spherical.computeDistanceBetween( center , d );
-					//console.log(rad + " " + dist)
-					if( google.maps.geometry.poly.containsLocation(center, whitbyZone) ) {
-						if( rad >= dist || rad >= quarter){
-							console.log("radius = " + rad + ", forloop iteration: " + i);
-							//console.log("pass" + i);	
-							return true;
-						}
-					}
+                    //console.log(rad + " " + dist)
+                    if( google.maps.geometry.poly.containsLocation(center, whitbyZone) ) {
+                        if( rad >= dist || rad >= quarter){
+                            console.log("radius = " + rad + ", forloop iteration: " + i);
+                            //console.log("pass" + i);	
+                            return true;
+                        }
+                    }
                 }
-				return false;
+                return false;
             }
-			return false;
+            return false;
         }
         //----------------------------------------------------------------------
         var expansionDirection = 1;
@@ -198,45 +239,59 @@
 //-----------------------------------------------------------------------------------------------
 //Placing Cordons
         var num = (function() { //counter
-            var count = 0;   
+            var count = 1;   
             return function() { return count++; };  
         })(); 
         
-        var allMarkers = new Map();
+        allMarkers = new Map();
         var wellMarkers = [];
         var petoneMarkers = [];
         var lwrhuttMarkers = [];
         var whitbyMarkers = [];
-
-        var idnum = 1;
-        
-        map.addListener('click', function(event) {
-            createMarker(event.latLng, idnum );
-            setLocation( idnum++ );
-            //setMapOnAll(map);
-        });
         //----------------------------------------------------------------------
-        function createMarker(location, idkey) {
+        // this is just for the createMarker function
+        function assignToEvent() {
+            var pos;
+            if( currentEvent === 'Wellington') {
+                pos = {lat: -41.2865, lng: 174.7762};
+            }
+            else if( currentEvent === 'Petone') {
+                pos = {lat: -41.2270, lng: 174.8851};
+            }
+            else if( currentEvent === 'Lower Hutt') {
+                pos = {lat: -41.2092, lng: 174.9081};
+            }
+            else if( currentEvent === 'Whitby' ) {
+                pos = {lat: -41.1130274, lng: 174.8924949};
+            }
+            return pos;
+        }
+        function createMarker(idkey) {
             var marker = new google.maps.Marker({
-                position: location,
-                map: map,
+                position: null,//assignToEvent(),//{lat: -41.2865, lng: 174.7762},
+                //map: map,
                 icon: 'policeCar.ico',
-                id: idkey
+                id: ""+idkey
             });
             allMarkers.set( idkey, marker );
             var unit = new google.maps.InfoWindow({
                 content: 'WLT ' + num()});
             unit.open(map,marker);
-            
-            google.maps.event.addListener( marker, 'rightclick', function() {
-                //unit.close(map, marker);
-                changeLocation( marker );
-                //unit.close(map, marker);
-                unit.open(map,marker);
-                //setContainment();
-                //setMapOnAll( map );
-            });
         }
+        /*
+        createMarker("U01");
+        createMarker("U02");
+        createMarker("U03");
+        setLocation("U01");
+        setLocation("U02");
+        setLocation("UO3");*/
+        
+        createMarker(1);
+        createMarker(2);
+        createMarker(3);
+        setLocation(1);
+        setLocation(2);
+        setLocation(3);
         //----------------------------------------------------------------------
         function setLocation( id ) {    
             if( currentEvent === 'Wellington') {
@@ -252,19 +307,21 @@
                 whitbyMarkers.push(allMarkers.get( id ));
             }
             //setMapOnAll(map);
-            setContainment();
+            //setContainment();
         }
         //----------------------------------------------------------------------
-        function changeLocation( mark ) {
-            //var id = marker.id;
-            //var index;
-            mark.setMap(null);
-            map.addListener('rightclick', function(event) {
-                mark.position = event.latLng;
+        
+        //----------------------------------------------------------------------
+        //listens for clicks on the map.
+        google.maps.event.addListener( map, 'click', function(event) {
+            if( changingMarker ) {
+                markerToChange.setMap(null);
+                markerToChange.setPosition( event.latLng );
                 setContainment();
                 setMapOnAll(map);
-            });
-        }
+            } 
+            changingMarker = false;
+        });
         //----------------------------------------------------------------------
         
         function setMapOnAll(map) {
@@ -437,6 +494,10 @@
         //----------------------------------------------------------------------
         }
     }// end initMap() do not add code below this closing bracket
+    function changeLocation( uid ) {
+        changingMarker = true;
+        markerToChange = allMarkers.get(uid);
+    }
 //--------------------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);
         </script>
