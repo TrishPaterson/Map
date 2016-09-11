@@ -37,9 +37,11 @@ public class Main extends Application {
     private static String time;
     private static String type;
     private static String status;
-
-    private static Units[] x = null;
     
+    private int incr = 1;
+    private static Units[] x = null;
+    WebView browser = new WebView();
+    WebEngine webEngine = browser.getEngine();
     public static void main(String[] args) {
         launch(args);
     }
@@ -47,8 +49,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage)throws ParserConfigurationException, SAXException, IOException{       
         //Load Map
-        WebView browser = new WebView();
-        WebEngine webEngine = browser.getEngine();
+        //WebView browser = new WebView();
+        //WebEngine webEngine = browser.getEngine();
         webEngine.load(getClass().getResource("mapHtmlFile.html").toString());
 
         Mapwindow = new Stage();
@@ -63,6 +65,8 @@ public class Main extends Application {
         createTable();
         createContextMenu();
         
+        //StackPane root = new StackPane();
+        //root.getChildren().addAll(table);
         VBox vBox = new VBox();
         vBox.getChildren().addAll(table);   
         Scene scene = new Scene(vBox);
@@ -90,13 +94,27 @@ public class Main extends Application {
   
         //changeLocationFunction
         item1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
             public void handle(ActionEvent e) {
-                
+                int i = 0;
                 // reminder dont forget to change x[0] 
                 //this line of code is not doing anything it just prints out the javascript command
                 // in the future this will be change into 
                 //executeScript(x[i].changeLocation(unitSelected.get(0).getId()));
-                System.out.println(x[0].changeLocation(unitSelected.get(0).getId()));
+                //String msg = (String)webEngine.executeScript("changeLocation()");
+                
+                //webEngine.executeScript("changeLocation(" + incr++ + ")");
+                String st = unitSelected.get(0).getId();
+                if( st.equals("U01") )
+                    i = 1;
+                else if( st.equals("U02") )
+                    i = 2;
+                else if( st.equals("U03") )
+                    i = 3;
+                webEngine.executeScript("changeLocation(" + i + ")");
+                //webEngine.executeScript("changeLocation(" + st +")");
+                //System.out.println(unitSelected.get(0).getId());
+                //System.out.println(msg);
             }
         });
         
