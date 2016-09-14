@@ -1,10 +1,7 @@
 package map;
-/* 
-Code might change in the future when GUI backened and Unit.JavaScript is done.
-*/
 
 public class Unit {
-    private enum Type { // Not Final Object Names 
+    protected enum Type {
         car1("P10"), car2("P20");
         
         private String car;
@@ -16,7 +13,7 @@ public class Unit {
         }
     };
 
-    private enum Status { // Not Final Object Names 
+    protected enum Status { 
         avail("Available"), onRot("Onroute"), 
         onSen("Onscene"), unAvail("Unavailable");
         
@@ -30,18 +27,18 @@ public class Unit {
         }
     }
 
-    private final String uniqId;
+    private final String id;
     private String callSign;
     private String currLocation;
     private String currEvent;
     private String time;
     private final Type type;
     private Status status;
-
-    Unit(String uniqId, String callSign, String defLocation, String currEvent, String time, String type, String stat) {
-        this.uniqId = uniqId;
+    
+    Unit(String uniqId, String callSign, String currLocation, String currEvent, String time, String type, String stat) {
+        this.id = uniqId;
         this.callSign = callSign;
-        this.currLocation = defLocation;
+        this.currLocation = currLocation;
         this.currEvent = currEvent;
         this.time = time; //not final TBD 'Type'
         this.type = setType(type);
@@ -49,23 +46,11 @@ public class Unit {
     }
     
 //setters
-    public String changeLocation(String unitID){ 
-        return "changeLocation("+"'"+ unitID +"'"+ ")"; 
-    }
-    
-    public String setLocation(String unitID) {
-        return "setLocation("+"'"+ unitID +"'"+ ")"; 
-    }
-    
-    public String createMarker(String unitID) { 
-        return "createMarker("+"'"+ unitID +"'"+ ")"; 
-    }
-
     public void setTime(String time) {
         this.time = time; //not final TBD Type
     }
          
-    public Status setStatus(String status){ //may change
+    public Status setStatus(String status){ 
         switch(status){
             case "avail": return this.status.avail; 
             case "unAvail": return this.status.unAvail; 
@@ -76,7 +61,7 @@ public class Unit {
         return null;
     }   
     
-    public Type setType(String type){ //may change  
+    public Type setType(String type){   
         switch(type){
             case "car1": return this.type.car1;
             case "car2": return this.type.car2;
@@ -87,7 +72,7 @@ public class Unit {
     
 //getters    
     public String getId(){
-        return uniqId;
+        return id;
     }
     
     public String getCallSign() {
