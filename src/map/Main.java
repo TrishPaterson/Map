@@ -114,7 +114,7 @@ public class Main extends Application {
                     webEngine.executeScript("createMarker(" + i + ")");
                 }*/       
                 int i = checkId(unitSelected.get(0).getId());
-                webEngine.executeScript("createMarker(" + 1 + ")");
+                webEngine.executeScript("createMarker(" + i + ")");
             }
         });       
     }
