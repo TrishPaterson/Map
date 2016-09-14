@@ -174,27 +174,31 @@
                 var vertices = whitbyZone.getPath();
                 var center = new google.maps.LatLng( -41.1130274, 174.8924949 );
                 for( var i = 0; i < vertices.length; i++ ) {
-                    //get the latlng of the point
-                    //console.log("radius = " + rad + ", forloop iteration: " + i);
-                    //console.log(vertices.getAt( i ));
                     var d = vertices.getAt( i );
                     var middle;
-                    var quarter;
+                    var quarter1, quarter2, quarter3, quarter4;
                     if( (i + 1 ) >= vertices.length ){
-                        //middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.5);
-                        quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
+                        quarter1 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
+                        quarter2 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.50);
+                        quarter3 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.75);
+                        quarter4 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 1.0);
                     }
                     else if( ( i + 1 ) < vertices.length ){
-                        //middle = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.5); 
-                        quarter = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(0), 0.25);
+                        quarter1 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.25);
+                        quarter2 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.50);
+                        quarter3 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 0.75);
+                        quarter4 = google.maps.geometry.spherical.interpolate(vertices.getAt(i),vertices.getAt(i+1), 1.0);
                     } 
                     //calculates the distance between the point and radius
                     //var middleDist = google.maps.geometry.spherical.computeDistanceBetween( center , middle );
-                    var quarter = google.maps.geometry.spherical.computeDistanceBetween( center , quarter);
+                    var q1 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter1);
+                    var q2 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter2);
+                    var q3 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter3);
+                    var q4 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter4);
                     var dist = google.maps.geometry.spherical.computeDistanceBetween( center , d );
                     //console.log(rad + " " + dist)
                     if( google.maps.geometry.poly.containsLocation(center, whitbyZone) ) {
-                        if( rad >= dist || rad >= quarter){
+                        if( rad >= dist || rad >= q1 || rad >= q2 || rad >= q3 || rad >= q4){
                             console.log("radius = " + rad + ", forloop iteration: " + i);
                             //console.log("pass" + i);	
                             return true;
