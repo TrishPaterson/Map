@@ -156,7 +156,7 @@ public class Main extends Application {
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse("Test.xml");
+        Document doc = builder.parse("UnitInfo.xml");
         NodeList nList = doc.getElementsByTagName("unit");
         
         x = new Unit[nList.getLength()];
