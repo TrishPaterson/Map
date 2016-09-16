@@ -22,9 +22,10 @@
             var changingMarker; //this is boolean true or false
             var markerToChange; //the marker object we want to change
             var allMarkers;    //holds markers in an array
-            var isCreating;     //Used to detect if create marker is being called
-            var uniqId;        // holds the unitID to create marker
+            var isCreating = false;     //Used to detect if create marker is being called
+            var uniqId ;        // holds the unitID to create marker
             var incr = 1;
+            var idArr = [];
 
 //------------------------------------------------------------------------------
 //InitializeMap  
@@ -254,10 +255,6 @@
 //------------------------------------------------------------------------------
 //MarkersGlobVar (For creating markers and storing markers)
 //------------------------------------------------------------------------------
-        var num = (function() { //counter
-            var count = 1;   
-            return function() { return count++; };  
-        })(); 
         allMarkers = new Map();
         var wellMarkers = [];
         var petoneMarkers = [];
@@ -496,22 +493,30 @@
 //------------------------------------------------------------------------------
 // CreateMarkerInit (Creates Marker only isPlacing is true, see createMarker() )
 //------------------------------------------------------------------------------
+         var num = (function() { //counter
+            var count = 1;   
+            return function() { return count++; };  
+        })(); 
+        
         setInterval (function() {
-            if(isCreating == true && allMarkers.get(uniqId) == null){               
-                var marker = new google.maps.Marker({
-                    position: null,
-                    icon: 'policeCar.ico',
-                    id: uniqId
-                });
-                allMarkers.set( uniqId, marker );
-                var unit = new google.maps.InfoWindow({
-                content: 'WLT ' + num()});
-                unit.open(map,marker);
-                setLocation(uniqId); 
+            if(isCreating == true){       
+                for(var i = 0; i < idArr.length; i++){
+                    
+                    var marker = new google.maps.Marker({
+                        position: null,
+                        icon: 'policeCar.ico',
+                        id: idArr[i]
+                    });
+                    allMarkers.set( idArr[i], marker );
+                    var unit = new google.maps.InfoWindow({
+                    content: 'WLT ' + idArr[i]});
+                    unit.open(map,marker);
+                    setLocation(idArr[i]); 
+                }
             }  
             isCreating = false;
-            uniqId = null;
-        }, 50); 
+            idArr = [];
+        }); 
 //------------------------------------------------------------------------------
     }//end of init map
 //------------------------------------------------------------------------------
@@ -524,9 +529,14 @@
 //------------------------------------------------------------------------------
 //createMarker initiates the google map create marker see CreateMarkerInit
 //------------------------------------------------------------------------------
-    function createMarker(uid){
+    function createMarker(){
         isCreating = true;
-        uniqId = uid;
+    }
+//------------------------------------------------------------------------------
+//setMarker puts the id inside the array
+//------------------------------------------------------------------------------    
+    function setMarkerId(uid){
+        idArr.push(uid);
     }
 //------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);

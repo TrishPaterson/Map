@@ -41,6 +41,8 @@ public class Main extends Application {
     private static String type;
     private static String status;
     
+    private int id;
+    
     private int incr = 1;
     private static Unit[] x = null;
     WebView browser = new WebView();
@@ -98,25 +100,23 @@ public class Main extends Application {
         item1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                int i = 0;
-                i = checkId(unitSelected.get(0).getId());  
-                webEngine.executeScript("changeLocation(" + i + ")");                       
+                id = checkId(unitSelected.get(0).getId());  
+                webEngine.executeScript("changeLocation(" + id + ")"); 
+                table.getSelectionModel().clearSelection();
             }
         });
         
         //dispatchLocation function
         item2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                
-                /*int i[] = new int[unitSelected.size()];
                 for(int x = 0; x < unitSelected.size(); x++){
-                   i[x] = checkId(unitSelected.get(x).getId()); 
-                    webEngine.executeScript("createMarker(" + i + ")");
-                }*/       
-                int i = checkId(unitSelected.get(0).getId());
-                webEngine.executeScript("createMarker(" + i + ")");
+                   id = checkId(unitSelected.get(x).getId());
+                   webEngine.executeScript("setMarkerId(" + id + ")");
+                }    
+                webEngine.executeScript("createMarker()");  
+                table.getSelectionModel().clearSelection();
             }
-        });       
+        });        
     }
     public int checkId(String id){
         switch(id){
