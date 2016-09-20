@@ -116,41 +116,7 @@
         var centerControl = new CenterControl(centerControlDiv, map, citymap.lwrhutt.center, citymap.lwrhutt.name);
         //var centerControl = new CenterControl(centerControlDiv, map, citymap.lwrhutt.center, citymap.lwrhutt.name);
         centerControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);       
- 
-//------------------------------------------------------------------------------
-//UnitControl
-//------------------------------------------------------------------------------
-        function UnitControl(unitDiv, idNum, unitName) {
-            var controlUI = document.createElement('div');
-            var controlText = document.createElement('div');          
-            setUIStyle(controlUI, unitDiv);
-            setTextStyle(controlText, controlUI, unitName);
-            actionPerform2(controlUI, idNum);
-        }  
-        //these variables are for the changing location function
-        //var changingMarker; //this is boolean true or false
-        //var markerToChange; //the marker object we want to change
-        
-        function actionPerform2(controlUI, idNum, name ){
-            controlUI.addEventListener('click', function(){
-                if( allMarkers.get(idNum) == null ){
-                    createMarker(idNum);
-                    setLocation( idNum );
-                }
-                else{
-                    changeLocation( idNum );
-                }                   
-            });
-        }
-        
-        var unitControlDiv = document.createElement('div');   
-        var unitControl = new UnitControl(unitControlDiv, 1, 'Unit1');
-        var unitControl = new UnitControl(unitControlDiv, 2, 'Unit2');
-        var unitControl = new UnitControl(unitControlDiv, 3, 'Unit3');
-        var unitControl = new UnitControl(unitControlDiv, 4, 'Unit4');
-        //unitControlDiv.index = 1;
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(unitControlDiv); 
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);        
 //------------------------------------------------------------------------------
 //ExpandingZone     
 //------------------------------------------------------------------------------
@@ -197,12 +163,12 @@
                     var q3 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter3);
                     var q4 = google.maps.geometry.spherical.computeDistanceBetween( center , quarter4);
                     var dist = google.maps.geometry.spherical.computeDistanceBetween( center , d );
-                    //console.log(rad + " " + dist)
+                    //if( rad >= dist || rad >= q1 || rad >= q2 || rad >= q3 || rad >= q4){
                     if( google.maps.geometry.poly.containsLocation(center, whitbyZone) ) {
                         if( rad >= dist || rad >= q1 || rad >= q2 || rad >= q3 || rad >= q4){
-                            console.log("radius = " + rad + ", forloop iteration: " + i);
-                            //console.log("pass" + i);	
-                            return true;
+                            //checks if containment zone is valid
+                            if(whitbyZone.fillColor == '#7f7fff')
+                                return true;
                         }
                     }
                 }
@@ -251,7 +217,7 @@
                     cityCircle[i].setRadius(radius + expansionDirection * 0.5);
                 }
             }
-        }, 50);
+        }, 150);
 //------------------------------------------------------------------------------
 //MarkersGlobVar (For creating markers and storing markers)
 //------------------------------------------------------------------------------
@@ -485,8 +451,8 @@
             if( changingMarker ) {
                 markerToChange.setMap(null);
                 markerToChange.setPosition( event.latLng );
-                setContainment();
                 setMapOnAll(map);
+                setContainment();
             } 
             changingMarker = false;
         });
@@ -501,17 +467,19 @@
         setInterval (function() {
             if(isCreating == true){       
                 for(var i = 0; i < idArr.length; i++){
-                    
-                    var marker = new google.maps.Marker({
-                        position: null,
-                        icon: 'policeCar.ico',
-                        id: idArr[i]
-                    });
-                    allMarkers.set( idArr[i], marker );
-                    var unit = new google.maps.InfoWindow({
-                    content: 'WLT ' + idArr[i]});
-                    unit.open(map,marker);
-                    setLocation(idArr[i]); 
+                    if(allMarkers.get(idArr[i]) == null)
+                    {
+                        var marker = new google.maps.Marker({
+                            position: null,
+                            icon: 'policeCar.ico',
+                            id: idArr[i]
+                        });
+                        allMarkers.set( idArr[i], marker );
+                        var unit = new google.maps.InfoWindow({
+                        content: 'WLT ' + idArr[i]});
+                        unit.open(map,marker);
+                        setLocation(idArr[i]);
+                    }
                 }
             }  
             isCreating = false;
@@ -524,7 +492,7 @@
 //------------------------------------------------------------------------------
     function changeLocation( uid ) {
         changingMarker = true;
-        markerToChange = allMarkers.get(uid);
+        markerToChange = allMarkers.get(uid);        
     }
 //------------------------------------------------------------------------------
 //createMarker initiates the google map create marker see CreateMarkerInit

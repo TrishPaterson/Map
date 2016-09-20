@@ -42,11 +42,12 @@ public class Main extends Application {
     private static String status;
     
     private int id;
-    
+    private ObservableList<Unit> unitSelected, allUnits; 
     private int incr = 1;
     private static Unit[] x = null;
-    WebView browser = new WebView();
-    WebEngine webEngine = browser.getEngine();
+    private WebView browser = new WebView();
+    private WebEngine webEngine = browser.getEngine();
+    
     public static void main(String[] args) {
         launch(args);
     }
@@ -67,9 +68,7 @@ public class Main extends Application {
 
         createTable();
         createContextMenu();
-        
-        //StackPane root = new StackPane();
-        //root.getChildren().addAll(table);
+
         VBox vBox = new VBox();
         vBox.getChildren().addAll(table);   
         Scene scene = new Scene(vBox);
@@ -78,9 +77,11 @@ public class Main extends Application {
     }
     
     public void createContextMenu(){
-        ObservableList<Unit> unitSelected, allUnits;   
+        //Multiple selection
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        allUnits = table.getItems();
+        
+        //allUnits = table.getItems();
+        //unitSelected = FXCollections.observableArrayList(); 
         unitSelected = table.getSelectionModel().getSelectedItems(); 
      
         //ContextMenu
@@ -97,27 +98,28 @@ public class Main extends Application {
         table.setContextMenu(contextMenu);
         
         //changeLocationFunction
-        item1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                id = checkId(unitSelected.get(0).getId());  
-                webEngine.executeScript("changeLocation(" + id + ")"); 
-                table.getSelectionModel().clearSelection();
-            }
-        });
+        item1.setOnAction(e -> changeLocation());
         
         //dispatchLocation function
-        item2.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                for(int x = 0; x < unitSelected.size(); x++){
-                   id = checkId(unitSelected.get(x).getId());
-                   webEngine.executeScript("setMarkerId(" + id + ")");
-                }    
-                webEngine.executeScript("createMarker()");  
-                table.getSelectionModel().clearSelection();
-            }
-        });        
+        item2.setOnAction(e -> dispatchCordon());            
     }
+
+    public void changeLocation(){
+        unitSelected.sorted();
+        id = checkId(unitSelected.get(0).getId());  
+        webEngine.executeScript("changeLocation(" + id + ")"); 
+        table.getSelectionModel().clearSelection();
+    }
+    public void dispatchCordon(){
+        unitSelected.sorted();
+        for(int x = 0; x < unitSelected.size(); x++){
+            id = checkId(unitSelected.get(x).getId());
+            webEngine.executeScript("setMarkerId(" + id + ")");  
+        }    
+        webEngine.executeScript("createMarker()");  
+        table.getSelectionModel().clearSelection();
+    }    
+    
     public int checkId(String id){
         switch(id){
            case "U01": return 1;
@@ -177,5 +179,6 @@ public class Main extends Application {
         }
         return unit;
     }
+
 }
   
