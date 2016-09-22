@@ -36,7 +36,7 @@ import MapHTML.LoadMap;
 
 public class LoadUnitTable extends Application {
     private int id;
-    private static Unit[] x = null;
+    private static Unit x = null;
     private static String uniqID;
     private static String callSign;
     private static String defLocation;
@@ -63,10 +63,11 @@ public class LoadUnitTable extends Application {
         
         Listwindow = primaryStage;
         Listwindow.initStyle(StageStyle.UNDECORATED);
-        Listwindow.getIcons().add(new Image("/UnitTableView/NCP.PNG"));
+        Listwindow.getIcons().add(new Image("/Images/NCP.PNG"));
         Listwindow.setTitle("Unit Table");
-
-        Image image = new Image("/UnitTableView/NCP.PNG");
+        
+        //CP Image
+        Image image = new Image("/Images/NCP.PNG");
         ImageView TIcon = new ImageView();
         TIcon.setImage(image);
         TIcon.setFitWidth(45);
@@ -75,8 +76,9 @@ public class LoadUnitTable extends Application {
         TIcon.setCache(true);
         TIcon.setTranslateX(5);
         TIcon.setTranslateY(-10);
-
-        ImageView Exit = new ImageView("/UnitTableView/ExitButton.PNG");
+        
+        //Exit Image
+        ImageView Exit = new ImageView("/Images/ExitButton.PNG");
         Exit.setFitHeight(25);
         Exit.setFitWidth(25);
         Exit.setTranslateX(570);
@@ -93,6 +95,7 @@ public class LoadUnitTable extends Application {
         Listwindow.setScene(scene);
         Listwindow.show();
         
+        //Exit Button
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent t){
@@ -192,15 +195,13 @@ public class LoadUnitTable extends Application {
         table.getColumns().addAll(uniqIdCol,currLocationCol,timeCol,typeCol);        
     }
     
-    public ObservableList<Unit> getUnits()throws ParserConfigurationException, SAXException, IOException{
-        
+    public ObservableList<Unit> getUnits()throws ParserConfigurationException, SAXException, IOException{       
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse("UnitInfo.xml");
         NodeList nList = doc.getElementsByTagName("unit");
-        
-        x = new Unit[nList.getLength()];
+
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -212,11 +213,10 @@ public class LoadUnitTable extends Application {
                 time = eElement.getElementsByTagName("time").item(0).getTextContent();
                 type = eElement.getElementsByTagName("type").item(0).getTextContent();
                 status = eElement.getElementsByTagName("status").item(0).getTextContent();
-                x[i] = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
-                unit.add(x[i]);
+                x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
+                unit.add(x);
             }
         }
         return unit;
     }
-
 }

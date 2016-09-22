@@ -20,7 +20,7 @@ public class LoadMap extends Application {
         Mapwindow = new Stage();
         Mapwindow.setTitle("Web Map");
         Mapwindow.setScene(new Scene(browser,1000,700, Color.web("#666970")));
-        Mapwindow.getIcons().add(new Image("/MapHTML/NCP.PNG"));
+        Mapwindow.getIcons().add(new Image("/Images/NCP.PNG"));
         Mapwindow.show();
     }
     
