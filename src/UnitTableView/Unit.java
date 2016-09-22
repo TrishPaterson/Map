@@ -1,4 +1,4 @@
-package map;
+package UnitTableView;
 
 public class Unit {
     protected enum Type {
