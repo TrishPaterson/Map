@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -129,6 +130,7 @@ public class LoadPendingTable extends Application {
     }
     
     public void createTable(){
+        table = new TableView<>();                
         TableColumn prioityCol = new TableColumn("Prioity");
         prioityCol.setCellValueFactory(new PropertyValueFactory("Prioity"));
         TableColumn timeCol = new TableColumn("Time");
@@ -145,9 +147,7 @@ public class LoadPendingTable extends Application {
         table.setPrefHeight(225);
         table.setTranslateX(0);
         table.setTranslateY(24);
-        
-        table = new TableView<>();
-        
+     
         //******Dont Delete the comments below***** 
         //table.setItems(getEvtList());
         //table.getColumns().addAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);  
@@ -165,6 +165,8 @@ public class LoadPendingTable extends Application {
             evtList = new EventList(priority, time, evtNumber, type, location);
             listOfEvents.add(evtList);
         }    */
-        return listOfEvents;
+        //evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
+       // listOfEvents.add(evtList);
+       return listOfEvents;
     }
 }
