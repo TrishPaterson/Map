@@ -1,6 +1,8 @@
 package PendingTableView;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -23,13 +25,19 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LoadPendingTable extends Application {
-    
+    private static String priority;
+    private static String time;
+    private static String evtNumber;
+    private static String type;
+    private static String location;
+     private static EventList evtList = null;
+     
     private TableView table;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage pendingList;
-    
+
     @Override
     public void start(Stage primaryStage) {
         createTable();
@@ -121,8 +129,6 @@ public class LoadPendingTable extends Application {
     }
     
     public void createTable(){
-        table = new TableView();
-
         TableColumn prioityCol = new TableColumn("Prioity");
         prioityCol.setCellValueFactory(new PropertyValueFactory("Prioity"));
         TableColumn timeCol = new TableColumn("Time");
@@ -139,5 +145,26 @@ public class LoadPendingTable extends Application {
         table.setPrefHeight(225);
         table.setTranslateX(0);
         table.setTranslateY(24);
-    }   
+        
+        table = new TableView<>();
+        
+        //******Dont Delete the comments below***** 
+        //table.setItems(getEvtList());
+        //table.getColumns().addAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);  
+    }
+    
+    public ObservableList<EventList> getEvtList(){       
+        ObservableList<EventList> listOfEvents = FXCollections.observableArrayList();    
+        /*for (int i = 0; i < 10; i++){
+            priority =;
+            time =;
+            evtNumber =;
+            type =;
+            location =;
+ 
+            evtList = new EventList(priority, time, evtNumber, type, location);
+            listOfEvents.add(evtList);
+        }    */
+        return listOfEvents;
+    }
 }

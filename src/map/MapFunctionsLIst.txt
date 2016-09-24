@@ -1,4 +1,4 @@
-Quick Search hold ctrlf + f type the function name (see list below) then press enter.
+Quick Search hold ctrl + f type the function name (see list below) then press enter.
 
 Functions 
 InitializeMap  - used to initialize map
