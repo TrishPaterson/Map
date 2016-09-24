@@ -227,28 +227,9 @@
         var lwrhuttMarkers = [];
         var whitbyMarkers = [];
 //------------------------------------------------------------------------------
-// AssignToEvent (this is just for the createMarker function)
+//pushToMarkersArray   Adds the marker to an array which is specific to an event.
 //------------------------------------------------------------------------------
-        function assignToEvent() {
-            var pos;
-            if( currentEvent === 'Wellington') {
-                pos = {lat: -41.2865, lng: 174.7762};
-            }
-            else if( currentEvent === 'Petone') {
-                pos = {lat: -41.2270, lng: 174.8851};
-            }
-            else if( currentEvent === 'Lower Hutt') {
-                pos = {lat: -41.2092, lng: 174.9081};
-            }
-            else if( currentEvent === 'Whitby' ) {
-                pos = {lat: -41.1130274, lng: 174.8924949};
-            }
-            return pos;
-        }
-//------------------------------------------------------------------------------
-//SetLocation   Adds the marker to an array which is specific to an event.
-//------------------------------------------------------------------------------
-        function setLocation( id ) {    
+        function pushToMarkersArray( id ) {    
             if( currentEvent === 'Wellington') {
                 wellMarkers.push( allMarkers.get( id ) ); 
             }
@@ -453,6 +434,8 @@
                 markerToChange.setPosition( event.latLng );
                 setMapOnAll(map);
                 setContainment();
+                map.setZoom(0);
+                map.setZoom(17);
             } 
             changingMarker = false;
         });
@@ -478,7 +461,7 @@
                         var unit = new google.maps.InfoWindow({
                         content: 'WLT ' + idArr[i]});
                         unit.open(map,marker);
-                        setLocation(idArr[i]);
+                        pushToMarkersArray(idArr[i]);
                     }
                 }
             }  
