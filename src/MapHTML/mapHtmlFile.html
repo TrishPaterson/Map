@@ -430,12 +430,13 @@
         //listens for clicks on the map.
         google.maps.event.addListener( map, 'click', function(event) {
             if( changingMarker ) {
+                var currZoom = map.getZoom();
                 markerToChange.setMap(null);
                 markerToChange.setPosition( event.latLng );
                 setMapOnAll(map);
-                setContainment();
-                map.setZoom(0);
-                map.setZoom(17);
+                setContainment();          
+                map.setZoom(0);              
+                map.setZoom(currZoom);
             } 
             changingMarker = false;
         });
@@ -475,7 +476,8 @@
 //------------------------------------------------------------------------------
     function changeLocation( uid ) {
         changingMarker = true;
-        markerToChange = allMarkers.get(uid);        
+        markerToChange = allMarkers.get(uid);
+        
     }
 //------------------------------------------------------------------------------
 //createMarker initiates the google map create marker see CreateMarkerInit

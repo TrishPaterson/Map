@@ -5,7 +5,6 @@ InitializeMap  - used to initialize map
 Coordinates - holds lat and long of events
 CSSButton - button style
 EventButton - used to navigate through events
-UnitControl - used to simulate creating markers
 ExpandingZone - Creates a circle on the map
 ExpZoneGlobVar - Global variables of Expanding zone
 ExpZoneRaidus - Increments the radius of expanding zone

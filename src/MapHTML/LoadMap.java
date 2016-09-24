@@ -33,6 +33,6 @@ public class LoadMap extends Application {
     }
     
     public void changeLocation(int id){
-        webMapEngine.executeScript("changeLocation(" + id + ")");
+        System.out.println(webMapEngine.executeScript("changeLocation(" + id + ")"));
     }
 }
