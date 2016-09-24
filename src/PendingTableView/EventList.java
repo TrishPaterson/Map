@@ -15,7 +15,7 @@ public class EventList {
          this.location = "undef";
     }
     
-    EventList(String priority, String time, String evtNumber, String type, String Location ){
+    EventList(String priority, String time, String evtNumber, String type, String location ){
          this.priority = priority;
          this.time = time;
          this.evtNumber = evtNumber;

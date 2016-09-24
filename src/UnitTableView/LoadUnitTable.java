@@ -45,7 +45,7 @@ public class LoadUnitTable extends Application {
     private static String type;
     private static String status;
     
-    private ObservableList<Unit> unitSelected, allUnits; 
+    private ObservableList<Unit> unitSelected; 
     private TableView<Unit> table;    
     private Stage Listwindow;
    
@@ -122,7 +122,7 @@ public class LoadUnitTable extends Application {
     public void createContextMenu(){
         //Multiple selection
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
+        //Get Selected Item
         unitSelected = table.getSelectionModel().getSelectedItems(); 
      
         //ContextMenu

@@ -132,25 +132,48 @@ public class LoadPendingTable extends Application {
     public void createTable(){
         table = new TableView<>();                
         TableColumn prioityCol = new TableColumn("Prioity");
-        prioityCol.setCellValueFactory(new PropertyValueFactory("Prioity"));
+        prioityCol.setCellValueFactory(new PropertyValueFactory("priority"));
         TableColumn timeCol = new TableColumn("Time");
-        timeCol.setCellValueFactory(new PropertyValueFactory("Time"));
+        timeCol.setCellValueFactory(new PropertyValueFactory("time"));
         TableColumn eventNumberCol = new TableColumn("Event Number");
-        eventNumberCol.setCellValueFactory(new PropertyValueFactory("Event Number"));
+        eventNumberCol.setCellValueFactory(new PropertyValueFactory("evtNumber"));
         TableColumn TypeCol = new TableColumn("Type");
-        TypeCol.setCellValueFactory(new PropertyValueFactory("Type"));
-        TableColumn locationCol = new TableColumn("Loction");
-         locationCol.setCellValueFactory(new PropertyValueFactory("Location"));
-
-        table.getColumns().setAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);
+        TypeCol.setCellValueFactory(new PropertyValueFactory("type"));
+        TableColumn locationCol = new TableColumn("Location");
+        locationCol.setCellValueFactory(new PropertyValueFactory("location"));
+        
+        table.setItems(getEvtList());
+        table.getColumns().setAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);    
         table.setPrefWidth(450);
         table.setPrefHeight(225);
         table.setTranslateX(0);
-        table.setTranslateY(24);
-     
-        //******Dont Delete the comments below***** 
-        //table.setItems(getEvtList());
-        //table.getColumns().addAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);  
+        table.setTranslateY(24);    
+        
+        
+        //double click function       
+        //Either of the double click function works I just dont know which one is better.
+
+        table.setOnMouseClicked(event -> {
+            ObservableList<EventList> evtSelected;
+            evtSelected = table.getSelectionModel().getSelectedItems(); 
+            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) ) {
+                //Temporary
+                System.out.println(evtSelected.get(0).getEvtNumber());
+            }
+        });
+        
+        //Alternative
+        /*table.setRowFactory( tv -> {
+            TableRow<EventList> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
+                    EventList rowData = row.getItem();
+                    //Temporary
+                    System.out.println(rowData.getEvtNumber());
+                }
+            });
+            return row ;
+        });*/
     }
     
     public ObservableList<EventList> getEvtList(){       
@@ -165,8 +188,8 @@ public class LoadPendingTable extends Application {
             evtList = new EventList(priority, time, evtNumber, type, location);
             listOfEvents.add(evtList);
         }    */
-        //evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
-       // listOfEvents.add(evtList);
-       return listOfEvents;
+        evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
+        listOfEvents.add(evtList);
+        return listOfEvents;
     }
 }
