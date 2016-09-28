@@ -33,6 +33,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import MapHTML.LoadMap;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import map.DataBaseConn;
 
 public class LoadUnitTable extends Application {
     private int id;
@@ -201,7 +206,9 @@ public class LoadUnitTable extends Application {
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse("UnitInfo.xml");
         NodeList nList = doc.getElementsByTagName("unit");
-
+        
+        //-------------------------------------------------------------------
+        //code below uses xml, comment out if using database
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -217,6 +224,54 @@ public class LoadUnitTable extends Application {
                 unit.add(x);
             }
         }
+        //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //Code below reads database instead of XML file
+        /*
+        Connection conn = null;
+        DataBaseConn dbConn = null;
+        PreparedStatement ps;
+        ResultSet rs, rs2;
+        Statement stmt;
+        try {
+            dbConn = new DataBaseConn();
+            conn = dbConn.getConnection();
+            stmt = conn.createStatement();
+            
+            rs = stmt.executeQuery("select * from unit");
+            
+            ps = conn.prepareStatement(
+                    "select unit_type_name from unit "
+                    + "inner join unit_type "
+                    + "on unit_type_fk = unit_type_id "
+                    + "where unit_name = ?"
+                    );
+            while( rs.next() ) {
+                uniqID = "U0" + rs.getInt("unit_id");
+                callSign = rs.getString("unit_name");
+                defLocation = "locUndefined";
+                currEvent = "currUndefined";
+                time = "timeUndefined";
+                status = "avail";
+                currEvent = "evtUndefined";
+                ps.setString( 1, callSign );
+                rs2 = ps.executeQuery();
+                rs2.first();
+                type = rs2.getString("unit_type_name");
+                System.out.println(type);
+                x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
+                unit.add(x);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }*/
+        //--------------------------------------------------------------------
         return unit;
     }
 }

@@ -1,5 +1,9 @@
 package PendingTableView;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +12,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -24,6 +27,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import map.DataBaseConn;
 
 public class LoadPendingTable extends Application {
     private static String priority;
@@ -158,7 +162,9 @@ public class LoadPendingTable extends Application {
             evtSelected = table.getSelectionModel().getSelectedItems(); 
             if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) ) {
                 //Temporary
-                System.out.println(evtSelected.get(0).getEvtNumber());
+                evtList = evtSelected.get(0);
+                populateFields( evtList );
+                //System.out.println(evtSelected.get(0).getEvtNumber());
             }
         });
         
@@ -178,18 +184,70 @@ public class LoadPendingTable extends Application {
     
     public ObservableList<EventList> getEvtList(){       
         ObservableList<EventList> listOfEvents = FXCollections.observableArrayList();    
-        /*for (int i = 0; i < 10; i++){
-            priority =;
-            time =;
-            evtNumber =;
-            type =;
-            location =;
- 
-            evtList = new EventList(priority, time, evtNumber, type, location);
-            listOfEvents.add(evtList);
-        }    */
-        evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
-        listOfEvents.add(evtList);
-        return listOfEvents;
+        
+        //-------------------------------------------------------------------
+        //code below is a hardcoded event, comment out if using database
+        //evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
+        //listOfEvents.add(evtList);
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        //Code below reads database instead of hard code
+        
+        Connection conn = null;
+        DataBaseConn dbConn = null;
+        PreparedStatement ps;
+        ResultSet rs, rs2;
+        Statement stmt;
+        try {
+            dbConn = new DataBaseConn();
+            conn = dbConn.getConnection();
+            stmt = conn.createStatement();
+            
+            rs = stmt.executeQuery( "select * from event");
+            
+            ps = conn.prepareStatement(
+                    "select event_type_name from event "
+                    + "inner join event_type "
+                    + "on event_type_fk = event_type_id "
+                    + "where event_num = ?"
+                    );
+            while( rs.next() ) {
+                priority = rs.getString("priority");
+                time = rs.getString("event_time");
+                evtNumber = rs.getString("event_num");
+                ps.setString( 1, evtNumber );
+                rs2 = ps.executeQuery();
+                rs2.first();
+                type = rs2.getString("event_type_name");
+                location = rs.getString("event_location");
+                evtList = new EventList(priority, time, evtNumber, type, location);
+                listOfEvents.add(evtList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //-------------------------------------------------------------------
+        
+        //-------------------------------------------------------------------
+        return listOfEvents;  
+    }
+    //this method will eventually go in the LoadEventTable.java
+    public void populateFields( EventList el ) {
+        //this method just prints things in the mean time.
+        //String headline;
+        //String informantName;
+        //String remarks;
+        //String remarksField;
+        priority = evtList.getPriority();
+        time = evtList.getTime();
+        evtNumber = evtList.getEvtNumber();
+        type = evtList.getType();
+        location = evtList.getLocation();
+        
+        System.out.print("Event number: " + evtNumber
+                        + "\nEvent time: " + time
+                        + "\nEvent priority: " + priority
+                        + "\nEvent type: " + type
+                        + "\nEvent location: " + location);
     }
 }

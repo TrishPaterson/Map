@@ -1,0 +1,142 @@
+#-----------------------------------------------------------------
+#Database Script												
+#-----------------------------------------------------------------
+
+CREATE SCHEMA `cordon_training_tool` ;
+
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`event_type` (
+    `event_type_id` INT NOT NULL,
+    `event_type_name` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`event_type_id`)
+);
+  
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`event` (
+    `event_id` INT NOT NULL,
+    `event_type_fk` INT NOT NULL,
+    `priority` INT NOT NULL,
+    `event_time` DATETIME NOT NULL,
+    `event_location` VARCHAR(45) NOT NULL,
+    `event_num` VARCHAR(45) NOT NULL,
+    `informant_name` VARCHAR(45) NOT NULL,
+    `headline` VARCHAR(100) NOT NULL,
+    `remarks` VARCHAR(100) NULL,
+    `remarks_field` VARCHAR(1000) NULL,
+    PRIMARY KEY (`event_id`),
+    INDEX `event_type_fk_idx` (`event_type_fk` ASC),
+    CONSTRAINT `event_type_fk` FOREIGN KEY (`event_type_fk`)
+        REFERENCES `cordon_training_tool`.`event_type` (`event_type_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`unit_type` (
+    `unit_type_id` INT NOT NULL,
+    `unit_type_name` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`unit_type_id`)
+);
+
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`unit` (
+    `unit_id` INT NOT NULL,
+    `unit_type_fk` INT NOT NULL,
+    `unit_name` VARCHAR(45) NOT NULL,
+    `unit_location` VARCHAR(45) NOT NULL,
+    `unit_time` TIME NOT NULL,
+    PRIMARY KEY (`unit_id`),
+    INDEX `unit_type_fk_idx` (`unit_type_fk` ASC),
+    CONSTRAINT `unit_type_fk` FOREIGN KEY (`unit_type_fk`)
+        REFERENCES `cordon_training_tool`.`unit_type` (`unit_type_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`scenario` (
+    `scenario_id` INT NOT NULL,
+    `scenario_name` VARCHAR(45) NOT NULL,
+    PRIMARY KEY (`scenario_id`)
+);
+
+#-----------------------------------------------------------------
+
+CREATE TABLE `cordon_training_tool`.`scenario_event_list` (
+    `list_evt_id` INT NOT NULL,
+    `list_sce_id` INT NOT NULL,
+    PRIMARY KEY (`list_evt_id` , `list_sce_id`),
+    INDEX `list_sce_id_idx` (`list_sce_id` ASC),
+    CONSTRAINT `list_evt_id` FOREIGN KEY (`list_evt_id`)
+        REFERENCES `cordon_training_tool`.`event` (`event_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `list_sce_id` FOREIGN KEY (`list_sce_id`)
+        REFERENCES `cordon_training_tool`.`scenario` (`scenario_id`)
+        ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
+
+#-----------------------------------------------------------------
+#Fill Tables with data
+#-----------------------------------------------------------------
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('1', 'shop lifting');
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('2', 'home burglary');
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('3', 'domestic');
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('4', 'firearms');
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('5', 'missing person');
+INSERT INTO `cordon_training_tool`.`event_type` (`event_type_id`, `event_type_name`) VALUES ('6', 'bomb threat');
+
+INSERT INTO `cordon_training_tool`.`event` (
+	`event_id`, 
+    `event_type_fk`, 
+    `priority`, 
+    `event_time`, 
+    `event_location`, 
+    `event_num`, 
+    `informant_name`, 
+    `headline`, 
+    `remarks`, 
+    `remarks_field`) 
+    VALUES ('101', '1', '1', '2016-09-22 15:45:57', 'Tawa', 'P12345678', 'ed', 'headline', 'headline', 'some stuff');
+    
+INSERT INTO `cordon_training_tool`.`event` (
+	`event_id`, 
+    `event_type_fk`, 
+    `priority`, 
+    `event_time`, 
+    `event_location`, 
+    `event_num`, 
+    `informant_name`, 
+    `headline`, 
+    `remarks`, 
+    `remarks_field`) 
+    VALUES ('102', '2', '2', '2016-09-22 15:45:57', 'Lower Hutt', 'P23456789', 'ed', 'headline', 'hi', 'some stuff');
+    
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('1', 'car1');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('2', 'car2');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('3', 'car3');
+
+INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
+VALUES ('1', '1', 'Ed', 'Lower Hutt', '15:45:57');
+
+INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
+VALUES ('2', '2', 'Jay', 'Taita', '15:45:57');
+
+INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
+VALUES ('3', '1', 'Sarina', 'Tawa', '15:45:57');
+
+INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
+VALUES ('4', '2', 'Tricia', 'Whitby', '15:45:57');
+
+
+INSERT INTO `cordon_training_tool`.`scenario` (`scenario_id`, `scenario_name`) VALUES ('1', 'easy');
+INSERT INTO `cordon_training_tool`.`scenario` (`scenario_id`, `scenario_name`) VALUES ('2', 'medium');
+INSERT INTO `cordon_training_tool`.`scenario` (`scenario_id`, `scenario_name`) VALUES ('3', 'hard');
+
+INSERT INTO `cordon_training_tool`.`scenario_event_list` (`list_evt_id`, `list_sce_id`) VALUES ('101', '1');
+INSERT INTO `cordon_training_tool`.`scenario_event_list` (`list_evt_id`, `list_sce_id`) VALUES ('102', '1');
+
+INSERT INTO `cordon_training_tool`.`scenario_event_list` (`list_evt_id`, `list_sce_id`) VALUES ('101', '2');
