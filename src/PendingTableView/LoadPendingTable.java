@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -25,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import map.DataBaseConn;
@@ -41,16 +43,15 @@ public class LoadPendingTable extends Application {
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
-    private Stage pendingList;
+    private Stage pendingWindow;
 
     @Override
     public void start(Stage primaryStage) {
         createTable();
         
-        pendingList = new Stage();
-        pendingList.initStyle(StageStyle.UNDECORATED);
-        pendingList.getIcons().add(new Image("/Images/NCP.PNG"));
-        //pendingList.setTitle("Unit Table");
+        pendingWindow = new Stage();
+        pendingWindow.initStyle(StageStyle.UNDECORATED);
+        pendingWindow.getIcons().add(new Image("/Images/NCP.PNG"));
         
         //Window Title
         Label label = new Label("Event Pending");
@@ -98,21 +99,26 @@ public class LoadPendingTable extends Application {
         vbox.getChildren().addAll(Exit,Min, TIcon, actionStatus,label,table );
         Scene scene = new Scene(vbox, 600,300); // w x h
          
-        pendingList.setScene(scene);
-        pendingList.show();
+        pendingWindow.setScene(scene);
+        pendingWindow.show();
         
-        pendingList.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
+        //Positioning the window on the screen
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        pendingWindow.setX((primScreenBounds.getWidth() - pendingWindow.getWidth()) /100); 
+        pendingWindow.setY((primScreenBounds.getHeight() - pendingWindow.getHeight()) / 1); 
+        
+        pendingWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event){
-                xOffset = pendingList.getX() - event.getScreenX();
-                yOffset = pendingList.getY() - event.getScreenY();
+                xOffset = pendingWindow.getX() - event.getScreenX();
+                yOffset = pendingWindow.getY() - event.getScreenY();
             }
         });
-        pendingList.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
+        pendingWindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
             @Override 
             public void handle(MouseEvent event) { 
-                pendingList.setX(event.getScreenX() + xOffset);
-                pendingList.setY(event.getScreenY() + yOffset);
+                pendingWindow.setX(event.getScreenX() + xOffset);
+                pendingWindow.setY(event.getScreenY() + yOffset);
             } 
         }); 
         
@@ -120,7 +126,7 @@ public class LoadPendingTable extends Application {
         Min.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent me){
-                pendingList.setIconified(true);
+                pendingWindow.setIconified(true);
             }     
         });
         

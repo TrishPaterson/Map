@@ -33,14 +33,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import MapHTML.LoadMap;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import map.DataBaseConn;
+import javafx.stage.Screen;
 
 public class LoadUnitTable extends Application {
     private int id;
@@ -55,7 +52,7 @@ public class LoadUnitTable extends Application {
     
     private ObservableList<Unit> unitSelected; 
     private TableView<Unit> table;    
-    private Stage Listwindow;
+    private Stage unitWindow;
    
     private Text actionStatus;
     private static double xOffset = 0;
@@ -69,10 +66,10 @@ public class LoadUnitTable extends Application {
         createTable();
         createContextMenu();
         
-        Listwindow = primaryStage;
-        Listwindow.initStyle(StageStyle.UNDECORATED);
-        Listwindow.getIcons().add(new Image("/Images/NCP.PNG"));
-        Listwindow.setTitle("Unit Table");
+        unitWindow = primaryStage;
+        unitWindow.initStyle(StageStyle.UNDECORATED);
+        unitWindow.getIcons().add(new Image("/Images/NCP.PNG"));
+        unitWindow.setTitle("Unit Table");
         
         Label label = new Label("Unit Table");
         
@@ -116,8 +113,13 @@ public class LoadUnitTable extends Application {
         vbox.setPadding(new Insets(12, 0, 15, 0));
         vbox.getChildren().addAll(label,Exit,Min,TIcon,table, actionStatus);
         Scene scene = new Scene(vbox, 600,450); // w x h 
-        Listwindow.setScene(scene);
-        Listwindow.show();
+        unitWindow.setScene(scene);
+        unitWindow.show();
+        
+        //Positioning the window on the screen
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        unitWindow.setX((primScreenBounds.getWidth() - unitWindow.getWidth()) /100); 
+        unitWindow.setY((primScreenBounds.getHeight() - unitWindow.getHeight()) / 1.9);      
         
         //Exit Button
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -130,22 +132,22 @@ public class LoadUnitTable extends Application {
         Min.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent me){
-                Listwindow.setIconified(true);
+                unitWindow.setIconified(true);
             }     
         });
        
-        Listwindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
+        unitWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event){
-                xOffset = Listwindow.getX() - event.getScreenX();
-                yOffset = Listwindow.getY() - event.getScreenY();
+                xOffset = unitWindow.getX() - event.getScreenX();
+                yOffset = unitWindow.getY() - event.getScreenY();
             }
         });
-        Listwindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
+        unitWindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
             @Override 
             public void handle(MouseEvent event) { 
-                Listwindow.setX(event.getScreenX() + xOffset);
-                Listwindow.setY(event.getScreenY() + yOffset);
+                unitWindow.setX(event.getScreenX() + xOffset);
+                unitWindow.setY(event.getScreenY() + yOffset);
             }            
         });     
     }
