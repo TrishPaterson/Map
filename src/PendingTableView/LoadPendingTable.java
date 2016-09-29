@@ -1,9 +1,6 @@
 package PendingTableView;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import MapHTML.LoadMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +26,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import map.DataBaseConn;
 
 public class LoadPendingTable extends Application {
     private static String priority;
@@ -37,14 +33,16 @@ public class LoadPendingTable extends Application {
     private static String evtNumber;
     private static String type;
     private static String location;
-     private static Event evtList = null;
-     
+    private static Event evtList = null;
+    
+    private static boolean disable = false;
     private TableView table;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage pendingWindow;
-
+    
+    private LoadMap mapEngine = new LoadMap();  
     @Override
     public void start(Stage primaryStage) {
         createTable();
@@ -136,7 +134,7 @@ public class LoadPendingTable extends Application {
            public void handle(MouseEvent t){
                System.exit(0);
            }       
-        });  
+        });         
     }
     
     public void createTable(){
@@ -157,35 +155,28 @@ public class LoadPendingTable extends Application {
         table.setPrefWidth(450);
         table.setPrefHeight(225);
         table.setTranslateX(0);
-        table.setTranslateY(24);    
-        
-        
-        //double click function       
-        //Either of the double click function works I just dont know which one is better.
+        table.setTranslateY(24); 
 
+        //double click function             
         table.setOnMouseClicked(event -> {
-            ObservableList<Event> evtSelected;
+            ObservableList<Event> evtSelected,allEvents;
+            allEvents = table.getItems();
             evtSelected = table.getSelectionModel().getSelectedItems(); 
-            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) ) {
-                //Temporary
-                evtList = evtSelected.get(0);
-                System.out.println( populateFields( evtList ) );
-                //System.out.println(evtSelected.get(0).getEvtNumber());
-            }
+            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !disable ) {
+          
+                //Temporary while the geolocation is not implemented.
+                mapEngine.createExpanding(-41.1130274, 174.8924949, 1);               
+                mapEngine.createEvent(evtSelected.get(0).getLocation());              
+                mapEngine.setEvent(evtSelected.get(0).getLocation());
+                evtSelected.forEach(allEvents::remove);
+                table.getSelectionModel().clearSelection();
+                disable = true;
+            }          
         });
-        
-        //Alternative
-        /*table.setRowFactory( tv -> {
-            TableRow<EventList> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    Event rowData = row.getItem();
-                    //Temporary
-                    System.out.println(rowData.getEvtNumber());
-                }
-            });
-            return row ;
-        });*/
+    }  
+    
+    public void enAbleRow(){
+        disable = false;
     }
     
     public ObservableList<Event> getEvtList(){       
@@ -194,6 +185,8 @@ public class LoadPendingTable extends Application {
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
         evtList = new Event("High", "12:00", "B1204", "Assault", "Gotham");
+        listOfEvents.add(evtList);
+        evtList = new Event("Extremely High", "12:00", "B1204", "Prison BreakOut", "Arkham Asylum");
         listOfEvents.add(evtList);
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------

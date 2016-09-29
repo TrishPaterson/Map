@@ -16,9 +16,9 @@ public class Main extends Application {
     private LoadUnitTable unitTable = new LoadUnitTable();
     private LoadPendingTable pendingTable = new LoadPendingTable();
     private LoadEventWindow eventWindow = new LoadEventWindow();
-    
+
     public static void main(String[] args) {
-        System.out.println("Almost Done CordonProjectTeam!");
+        System.out.println("Almost Done CordonProjectTeam, You can do it!");
         launch(args);
     }
     
@@ -27,7 +27,7 @@ public class Main extends Application {
         map.start(primaryStage);
         pendingTable.start(primaryStage);
         eventWindow.start(primaryStage);
-        unitTable.start(primaryStage);
+        unitTable.start(primaryStage);        
     }
 }
   
