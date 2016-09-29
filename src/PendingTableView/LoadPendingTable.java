@@ -187,12 +187,12 @@ public class LoadPendingTable extends Application {
         
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
-        //evtList = new Event("High", "12:00", "B1204", "Assault", "Gotham");
-        //listOfEvents.add(evtList);
+        evtList = new Event("High", "12:00", "B1204", "Assault", "Gotham");
+        listOfEvents.add(evtList);
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
         //Code below reads database instead of hard code
-        
+        /*
         Connection conn = null;
         DataBaseConn dbConn = null;
         PreparedStatement ps;
@@ -225,7 +225,7 @@ public class LoadPendingTable extends Application {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         //-------------------------------------------------------------------
         
         //-------------------------------------------------------------------

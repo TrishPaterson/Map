@@ -237,7 +237,7 @@ public class LoadUnitTable extends Application {
         
         //-------------------------------------------------------------------
         //code below uses xml, comment out if using database
-        /*
+        
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -252,11 +252,11 @@ public class LoadUnitTable extends Application {
                 x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }
-        }*/
+        }
         //--------------------------------------------------------------------
         //--------------------------------------------------------------------
         //Code below reads database instead of XML file
-        
+        /*
         Connection conn = null;
         DataBaseConn dbConn = null;
         PreparedStatement ps;
@@ -299,7 +299,7 @@ public class LoadUnitTable extends Application {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        }*/
         //--------------------------------------------------------------------
         return unit;
     }
