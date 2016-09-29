@@ -160,7 +160,7 @@ public class LoadEventWindow extends Application {
         eventWindow.setScene(scene);
         eventWindow.show();
         
-        //Positioning the window on the screen
+        //Positioning the window on the screenf
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) /100); 
         eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / 100);   

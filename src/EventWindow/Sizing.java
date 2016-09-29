@@ -14,23 +14,23 @@ import javafx.stage.StageStyle;
 
 public class Sizing extends Application { 
     public void start(Stage primaryStage) throws Exception { 
-primaryStage.initStyle(StageStyle.UNDECORATED); 
+    primaryStage.initStyle(StageStyle.UNDECORATED); 
 
-Label label = new Label("Drag me to resize"); 
-AnchorPane.setRightAnchor(label, 0.0); 
-AnchorPane.setBottomAnchor(label, 0.0); 
-label.setOnMouseDragged(e -> { 
-primaryStage.setWidth(e.getScreenX() - primaryStage.getX()); 
-primaryStage.setHeight(e.getScreenY() - primaryStage.getY()); 
-}); 
+    Label label = new Label("Drag me to resize"); 
+    AnchorPane.setRightAnchor(label, 0.0); 
+    AnchorPane.setBottomAnchor(label, 0.0); 
+    label.setOnMouseDragged(e -> { 
+    primaryStage.setWidth(e.getScreenX() - primaryStage.getX()); 
+    primaryStage.setHeight(e.getScreenY() - primaryStage.getY()); 
+    }); 
 
-primaryStage.setScene(new Scene(new AnchorPane(label))); 
-primaryStage.setWidth(400); 
-primaryStage.setHeight(300); 
-primaryStage.show(); 
+    primaryStage.setScene(new Scene(new AnchorPane(label))); 
+    primaryStage.setWidth(400); 
+    primaryStage.setHeight(300); 
+    primaryStage.show(); 
     } 
 
     public static void main(String[] args) { 
-launch(args); 
+        launch(args); 
     } 
 } 
