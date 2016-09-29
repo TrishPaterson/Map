@@ -36,7 +36,7 @@
         currentEvent = 'Whitby';
         map = new google.maps.Map(document.getElementById('map'), {
             center: eventLocation,
-            zoom: 17,
+            zoom: 20,
         });   
     
 //------------------------------------------------------------------------------
@@ -45,22 +45,22 @@
         var citymap = {
             well: {
                 center: {lat: -41.2865, lng: 174.7762},
-                rad: 20,
+                rad: 1,
                 name: 'Wellington'
             },
             petone: {
                 center: {lat: -41.2270, lng: 174.8851},
-                rad: 20,
+                rad: 1,
                 name: 'Petone'
             },
             lwrhutt: {
                 center: {lat: -41.2092, lng: 174.9081},
-                rad: 20,
+                rad: 1,
                 name: 'Lower Hutt'
             },
             whitby: {
                 center: {lat: -41.1130274, lng: 174.8924949},
-                rad: 20,
+                rad: 1,
                 name: 'Whitby'
             }
         };    
@@ -183,7 +183,7 @@
         var timeDelay = 50, maxRad = 190;
         var radius;
         var center;
-        var initEscape = 10000;   
+        var initEscape = 60;   
 // initEscape simulates the burgalar running at the start. It is a set radius 
 // where they move at a certain pace(fast)
 //------------------------------------------------------------------------------
@@ -191,10 +191,10 @@
 //------------------------------------------------------------------------------
         if (timeDelay >= 100 )
         {   
-            radius = 1000;
+            radius = 1;
         } 
         else if( timeDelay < 100 ) {
-            radius = 20;
+            radius = 1;
         }
 //------------------------------------------------------------------------------
 //ExpZoneRadius
@@ -217,7 +217,7 @@
                     cityCircle[i].setRadius(radius + expansionDirection * 0.5);
                 }
             }
-        }, 150);
+        }, 500);
 //------------------------------------------------------------------------------
 //MarkersGlobVar (For creating markers and storing markers)
 //------------------------------------------------------------------------------
@@ -372,7 +372,7 @@
                 createXYPoints( markers );
                 createConvexHull();
                 for( var i = 0; i < pointsPath.length - 1; i++ ) {
-                    if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 1000 )
+                    if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 200 )
                         zoneColor = '#ffbf7f';
                 }
                 zone = null;
@@ -392,6 +392,7 @@
 //------------------------------------------------------------------------------
         function setContainment() {
             if( currentEvent === 'Wellington' ) {
+                //Refresh
                 if( wellZone ) {
                     wellZone.setMap(null);
                     wellZone = null;
@@ -433,12 +434,12 @@
                 var currZoom = map.getZoom();
                 markerToChange.setMap(null);
                 markerToChange.setPosition( event.latLng );
-                setMapOnAll(map);
-                setContainment();          
+                setMapOnAll(map);          
                 map.setZoom(0);              
                 map.setZoom(currZoom);
             } 
             changingMarker = false;
+            setContainment(); 
         });
 //------------------------------------------------------------------------------
 // CreateMarkerInit (Creates Marker only isPlacing is true, see createMarker() )

@@ -115,21 +115,26 @@ INSERT INTO `cordon_training_tool`.`event` (
     `remarks_field`) 
     VALUES ('102', '2', '2', '2016-09-22 15:45:57', 'Lower Hutt', 'P23456789', 'ed', 'headline', 'hi', 'some stuff');
     
-INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('1', 'car1');
-INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('2', 'car2');
-INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('3', 'car3');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('1', 'I');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('2', 'S');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('3', 'Q');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('4', 'T');
+INSERT INTO `cordon_training_tool`.`unit_type` (`unit_type_id`, `unit_type_name`) VALUES ('5', 'D');
 
 INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
-VALUES ('1', '1', 'Ed', 'Lower Hutt', '15:45:57');
+VALUES ('1', '1', 'UNI1', 'Lower Hutt', '15:45:57');
 
 INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
-VALUES ('2', '2', 'Jay', 'Taita', '15:45:57');
+VALUES ('2', '2', 'UNS1', 'Taita', '15:45:57');
 
 INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
-VALUES ('3', '1', 'Sarina', 'Tawa', '15:45:57');
+VALUES ('3', '3', 'UNQ1', 'Tawa', '15:45:57');
 
 INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
-VALUES ('4', '2', 'Tricia', 'Whitby', '15:45:57');
+VALUES ('4', '4', 'UNT1', 'Whitby', '15:45:57');
+
+INSERT INTO `cordon_training_tool`.`unit` (`unit_id`, `unit_type_fk`, `unit_name`, `unit_location`, `unit_time`) 
+VALUES ('5', '5', 'UND1', 'Tawa', '15:45:57');
 
 
 INSERT INTO `cordon_training_tool`.`scenario` (`scenario_id`, `scenario_name`) VALUES ('1', 'easy');

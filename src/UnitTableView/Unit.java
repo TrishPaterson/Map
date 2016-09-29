@@ -2,7 +2,7 @@ package UnitTableView;
 
 public class Unit {
     protected enum Type {
-        car1("P10"), car2("P20");
+        I("I"), S("S"), Q("Q"), T("T"), D("D");
         
         private String car;
         Type(String car){
@@ -63,8 +63,11 @@ public class Unit {
     
     public Type setType(String type){   
         switch(type){
-            case "car1": return this.type.car1;
-            case "car2": return this.type.car2;
+            case "I": return this.type.I;
+            case "S": return this.type.S;
+            case "Q": return this.type.Q;
+            case "T": return this.type.T;
+            case "D": return this.type.D;
             default: break;
         }
         return null;

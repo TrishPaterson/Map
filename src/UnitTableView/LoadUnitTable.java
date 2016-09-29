@@ -169,11 +169,13 @@ public class LoadUnitTable extends Application {
     
     public int checkId(String id){
         switch(id){
-           case "U01": return 1;
-           case "U02": return 2; 
-           case "U03": return 3; 
+           case "UNI1": return 1;
+           case "UNS1": return 2; 
+           case "UNQ1": return 3; 
+           case "UNT1": return 4; 
+           case "UND1": return 5; 
            default: return -1;
-       }      
+        }      
     }
     
     public void createTable()throws ParserConfigurationException, SAXException, IOException{
@@ -209,6 +211,7 @@ public class LoadUnitTable extends Application {
         
         //-------------------------------------------------------------------
         //code below uses xml, comment out if using database
+        /*
         for (int i = 0; i < nList.getLength(); i++) {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -223,11 +226,11 @@ public class LoadUnitTable extends Application {
                 x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }
-        }
+        }*/
         //--------------------------------------------------------------------
         //--------------------------------------------------------------------
         //Code below reads database instead of XML file
-        /*
+        
         Connection conn = null;
         DataBaseConn dbConn = null;
         PreparedStatement ps;
@@ -247,7 +250,7 @@ public class LoadUnitTable extends Application {
                     + "where unit_name = ?"
                     );
             while( rs.next() ) {
-                uniqID = "U0" + rs.getInt("unit_id");
+                uniqID = rs.getString("unit_name");
                 callSign = rs.getString("unit_name");
                 defLocation = "locUndefined";
                 currEvent = "currUndefined";
@@ -270,7 +273,7 @@ public class LoadUnitTable extends Application {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }*/
+        }
         //--------------------------------------------------------------------
         return unit;
     }

@@ -1,13 +1,13 @@
 package PendingTableView;
 
-public class EventList {
+public class Event {
     private String priority;
     private String time;
     private String evtNumber;
     private String type;
     private String location;
     
-    EventList(){
+    Event(){
          this.priority = "undef";
          this.time = "undef";
          this.evtNumber = "undef";
@@ -15,7 +15,7 @@ public class EventList {
          this.location = "undef";
     }
     
-    EventList(String priority, String time, String evtNumber, String type, String location ){
+    Event(String priority, String time, String evtNumber, String type, String location ){
          this.priority = priority;
          this.time = time;
          this.evtNumber = evtNumber;

@@ -35,7 +35,7 @@ public class LoadPendingTable extends Application {
     private static String evtNumber;
     private static String type;
     private static String location;
-     private static EventList evtList = null;
+     private static Event evtList = null;
      
     private TableView table;
     private Text actionStatus;
@@ -158,12 +158,12 @@ public class LoadPendingTable extends Application {
         //Either of the double click function works I just dont know which one is better.
 
         table.setOnMouseClicked(event -> {
-            ObservableList<EventList> evtSelected;
+            ObservableList<Event> evtSelected;
             evtSelected = table.getSelectionModel().getSelectedItems(); 
             if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) ) {
                 //Temporary
                 evtList = evtSelected.get(0);
-                populateFields( evtList );
+                System.out.println( populateFields( evtList ) );
                 //System.out.println(evtSelected.get(0).getEvtNumber());
             }
         });
@@ -173,7 +173,7 @@ public class LoadPendingTable extends Application {
             TableRow<EventList> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && (! row.isEmpty()) ) {
-                    EventList rowData = row.getItem();
+                    Event rowData = row.getItem();
                     //Temporary
                     System.out.println(rowData.getEvtNumber());
                 }
@@ -182,17 +182,17 @@ public class LoadPendingTable extends Application {
         });*/
     }
     
-    public ObservableList<EventList> getEvtList(){       
-        ObservableList<EventList> listOfEvents = FXCollections.observableArrayList();    
+    public ObservableList<Event> getEvtList(){       
+        ObservableList<Event> listOfEvents = FXCollections.observableArrayList();    
         
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
-        evtList = new EventList("High", "12:00", "B1204", "Assault", "Gotham");
-        listOfEvents.add(evtList);
+        //evtList = new Event("High", "12:00", "B1204", "Assault", "Gotham");
+        //listOfEvents.add(evtList);
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
         //Code below reads database instead of hard code
-        /*
+        
         Connection conn = null;
         DataBaseConn dbConn = null;
         PreparedStatement ps;
@@ -220,19 +220,19 @@ public class LoadPendingTable extends Application {
                 rs2.first();
                 type = rs2.getString("event_type_name");
                 location = rs.getString("event_location");
-                evtList = new EventList(priority, time, evtNumber, type, location);
+                evtList = new Event(priority, time, evtNumber, type, location);
                 listOfEvents.add(evtList);
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         //-------------------------------------------------------------------
         
         //-------------------------------------------------------------------
         return listOfEvents;  
     }
     //this method will eventually go in the LoadEventTable.java
-    public void populateFields( EventList el ) {
+    public String populateFields( Event el ) {
         //this method just prints things in the mean time.
         //String headline;
         //String informantName;
@@ -244,10 +244,12 @@ public class LoadPendingTable extends Application {
         type = evtList.getType();
         location = evtList.getLocation();
         
-        System.out.print("Event number: " + evtNumber
+        String output;
+        output = ("Event number: " + evtNumber
                         + "\nEvent time: " + time
                         + "\nEvent priority: " + priority
                         + "\nEvent type: " + type
                         + "\nEvent location: " + location);
+        return output;
     }
 }
