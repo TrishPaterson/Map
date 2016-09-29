@@ -18,7 +18,7 @@ public class Main extends Application {
     private LoadEventWindow eventWindow = new LoadEventWindow();
     
     public static void main(String[] args) {
-        System.out.println("Hello CordonProjectTeam!");
+        System.out.println("Almost Done CordonProjectTeam!");
         launch(args);
     }
     
