@@ -37,6 +37,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import map.DataBaseConn;
 
 public class LoadUnitTable extends Application {
@@ -71,6 +74,14 @@ public class LoadUnitTable extends Application {
         Listwindow.getIcons().add(new Image("/Images/NCP.PNG"));
         Listwindow.setTitle("Unit Table");
         
+        Label label = new Label("Unit Table");
+        
+        //FontStyle
+        label.setTextFill(Color.LIGHTGRAY);
+        label.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
+        label.setTranslateX(55);
+        label.setTranslateY(-6);
+        
         //CP Image
         Image image = new Image("/Images/NCP.PNG");
         ImageView TIcon = new ImageView();
@@ -80,22 +91,30 @@ public class LoadUnitTable extends Application {
         TIcon.setSmooth(true);
         TIcon.setCache(true);
         TIcon.setTranslateX(5);
-        TIcon.setTranslateY(-10);
+        TIcon.setTranslateY(-18);
         
         //Exit Image
-        ImageView Exit = new ImageView("/Images/ExitButton.PNG");
-        Exit.setFitHeight(25);
-        Exit.setFitWidth(25);
-        Exit.setTranslateX(570);
-        Exit.setTranslateY(10);
+        ImageView Exit = new ImageView("/Images/ExitButton2.PNG");
+        Exit.setFitHeight(18);
+        Exit.setFitWidth(18);
+        Exit.setTranslateX(575);
+        Exit.setTranslateY(-10);
+        
+        
+        ImageView Min = new ImageView("/Images/minimizeButton1.PNG");
+        Min.getStyleClass().add("ImageView");
+        Min.setFitHeight(18);
+        Min.setFitWidth(18);
+        Min.setTranslateX(556);
+        Min.setTranslateY(-13);
         
         actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);  
         
         VBox vbox = new VBox(-15);   
         vbox.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-        vbox.setPadding(new Insets(0, 0, 15, 0));
-        vbox.getChildren().addAll(Exit,TIcon,table, actionStatus);
+        vbox.setPadding(new Insets(12, 0, 15, 0));
+        vbox.getChildren().addAll(label,Exit,Min,TIcon,table, actionStatus);
         Scene scene = new Scene(vbox, 600,450); // w x h 
         Listwindow.setScene(scene);
         Listwindow.show();
@@ -106,7 +125,14 @@ public class LoadUnitTable extends Application {
             public void handle(MouseEvent t){
                 System.exit(0);
             }
-        });       
+        });    
+        
+        Min.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent me){
+                Listwindow.setIconified(true);
+            }     
+        });
        
         Listwindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
             @Override

@@ -56,44 +56,44 @@ public class LoadPendingTable extends Application {
         Label label = new Label("Event Pending");
         
         //FontStyle
-        label.setTextFill(Color.LIGHTSTEELBLUE);
+        label.setTextFill(Color.LIGHTGRAY);
         label.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
-        label.setTranslateX(55);
-        label.setTranslateY(-10);
+        label.setTranslateX(52);
+        label.setTranslateY(-18);
         
         //CP Image
         Image image = new Image("/Images/NCP.PNG");
         ImageView TIcon = new ImageView();
         TIcon.setImage(image);
-        TIcon.setFitWidth(45);
+        TIcon.setFitWidth(40);
         TIcon.setPreserveRatio(true);
         TIcon.setSmooth(true);
         TIcon.setCache(true);
-        TIcon.setTranslateX(2);
-        TIcon.setTranslateY(9);
+        TIcon.setTranslateX(5);
+        TIcon.setTranslateY(7);
         
         //Exit Image
-        ImageView Exit = new ImageView("/Images/ExitButton.PNG");
+        ImageView Exit = new ImageView("/Images/ExitButton2.PNG");
         Exit.getStyleClass().add("ImageView");
-        Exit.setFitHeight(20);
-        Exit.setFitWidth(20);
-        Exit.setTranslateX(570);
-        Exit.setTranslateY(20);
+        Exit.setFitHeight(16);
+        Exit.setFitWidth(16);
+        Exit.setTranslateX(578);
+        Exit.setTranslateY(10);
         
         //Minimize Image
-        ImageView Min = new ImageView("/Images/minimizeButton.PNG");
+        ImageView Min = new ImageView("/Images/minimizeButton1.PNG");
         Min.getStyleClass().add("ImageView");
-        Min.setFitHeight(20);
-        Min.setFitWidth(22);
-        Min.setTranslateX(545);
-        Min.setTranslateY(16);
+        Min.setFitHeight(16);
+        Min.setFitWidth(16);
+        Min.setTranslateX(560);
+        Min.setTranslateY(10);
         
         actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);  
    
         VBox vbox = new VBox(-16);   
         vbox.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-        vbox.setPadding(new Insets(-10, 0, -10, 0));
+        vbox.setPadding(new Insets(-6, 0, -10, 0));
 
         vbox.getChildren().addAll(Exit,Min, TIcon, actionStatus,label,table );
         Scene scene = new Scene(vbox, 600,300); // w x h
