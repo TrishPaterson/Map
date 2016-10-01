@@ -25,9 +25,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage)throws ParserConfigurationException, SAXException, IOException{       
         map.start(primaryStage);
-        pendingTable.start(primaryStage);
         eventWindow.start(primaryStage);
-        unitTable.start(primaryStage);        
+        unitTable.start(primaryStage);
+        pendingTable.start(primaryStage);        
     }
 }
   

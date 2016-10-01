@@ -21,7 +21,7 @@ public class LoadMap extends Application {
         webMapEngine.load(getClass().getResource("mapHtmlFile.html").toString());
         Mapwindow = new Stage();
         Mapwindow.setTitle("Web Map");
-        Mapwindow.setScene(new Scene(browser,1300,1100, Color.web("#666970")));
+        Mapwindow.setScene(new Scene(browser,700,800, Color.web("#666970")));
         Mapwindow.getIcons().add(new Image("/Images/NCP.PNG"));
         Mapwindow.show();
         
