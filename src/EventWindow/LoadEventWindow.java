@@ -23,6 +23,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -54,10 +55,12 @@ public class LoadEventWindow extends Application {
         Label label = new Label("Event");
         label.setTextFill(Color.LIGHTGRAY);
         label.setFont(Font.font("Calibri", FontWeight.BOLD, 16));
-        label.setTranslateX(-20);
+        label.setTranslateX(-10);
         label.setTranslateY(-340);
 
         GridPane grid = new GridPane();
+           grid.getColumnConstraints().add(new ColumnConstraints(120)); // column 0 is 100 wide
+     grid.getColumnConstraints().add(new ColumnConstraints(350)); // column 1 is 200 wide
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -68,7 +71,7 @@ public class LoadEventWindow extends Application {
         grid.add(TypeE, 0, 1);
         TextField userTextField = new TextField();
         userTextField.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.add(userTextField, 2, 1);
+        grid.add(userTextField, 1, 1);
 
         Label loc = new Label("Location:");
         loc.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
@@ -76,7 +79,7 @@ public class LoadEventWindow extends Application {
         grid.add(loc, 0, 2);
         TextField locBox = new TextField();
         locBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.add(locBox, 2, 2);
+        grid.add(locBox, 1, 2);
 
         Label NameInfo = new Label("Name of Information:");
         NameInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
@@ -84,7 +87,7 @@ public class LoadEventWindow extends Application {
         grid.add(NameInfo, 0, 3);
         TextField NameInfoBox = new TextField();
         NameInfoBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.add(NameInfoBox, 2, 3);
+        grid.add(NameInfoBox, 1, 3);
 
         Label Headline = new Label("HeadLine");
         Headline.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
@@ -92,7 +95,8 @@ public class LoadEventWindow extends Application {
         grid.add(Headline, 0, 4);
         TextField HeadlineBox = new TextField();
         HeadlineBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        HeadlineBox.setTranslateX(145);
+        HeadlineBox.setTranslateX(0);
+        HeadlineBox.setPrefWidth(50);
         grid.add(HeadlineBox, 1, 4);
 
         Label Remarkz = new Label("Remarks");
@@ -107,14 +111,14 @@ public class LoadEventWindow extends Application {
         TIcon.setPreserveRatio(true);
         TIcon.setSmooth(true);
         TIcon.setCache(true);
-        TIcon.setTranslateX(-85);
+        TIcon.setTranslateX(-60);
         TIcon.setTranslateY(-308);
 
         ImageView Exit = new ImageView("/Images/ExitButton2.PNG");
         Exit.getStyleClass().add("ImageView");
         Exit.setFitHeight(18);
         Exit.setFitWidth(18);
-        Exit.setTranslateX(488);
+        Exit.setTranslateX(510);
         Exit.setTranslateY(-276);
         
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {        
@@ -128,7 +132,7 @@ public class LoadEventWindow extends Application {
         Min.getStyleClass().add("ImageView");
         Min.setFitHeight(18);
         Min.setFitWidth(18);
-        Min.setTranslateX(469);
+        Min.setTranslateX(490);
         Min.setTranslateY(-294);
 
         Min.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -147,24 +151,24 @@ public class LoadEventWindow extends Application {
         //listing input
         ListingInput = new TextField();
         ListingInput.setPromptText("Add Remarks");
-        ListingInput.setMinWidth(150);
+        ListingInput.setMinWidth(350);
 
-        //Button to add Remarks
+        /*Button to add Remarks
         Button addButton = new Button("Add");
-        addButton.setPrefWidth(100);
+        addButton.setPrefWidth(100);*/
 
-        addButton.setOnAction(e -> addButtonClicked());
+        ListingInput.setOnAction(e -> addButtonClicked());
 
-        Button deleteR = new Button("Delete");
+        /*Button deleteR = new Button("Delete");
         deleteR.setPrefWidth(100);
         deleteR.setOnAction(e -> deleteButtonClicked());
-
+        */
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(-200, 100, 100, 10));
         hbox.setSpacing(10);
-        hbox.setTranslateX(-10);
-        hbox.setTranslateY(120);
-        hbox.getChildren().addAll(ListingInput, addButton, deleteR);
+        hbox.setTranslateX(120);
+        hbox.setTranslateY(-110);
+        hbox.getChildren().addAll(ListingInput);
 
         table.getColumns().setAll(RemarksColumn);
         table.setPrefWidth(10);
@@ -178,7 +182,7 @@ public class LoadEventWindow extends Application {
         Image image = new Image("/Images/EventBackG.jpg");
         VBox vbox = new VBox(0);
         vbox.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
-        vbox.setPadding(new Insets(100, 120, 20, 90));
+        vbox.setPadding(new Insets(100, 50, -10, 70));
         vbox.getChildren().addAll(grid, Exit, Min, TIcon, actionStatus, label, table, hbox);
         Scene scene = new Scene(vbox, 600, 550); // w x h
 
