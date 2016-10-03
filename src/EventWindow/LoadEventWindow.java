@@ -46,7 +46,7 @@ public class LoadEventWindow extends Application {
     private Stage eventWindow;
 
     @Override
-    public void start(Stage primaryStage) {    
+    public void start(Stage primaryStage) {
         eventWindow = new Stage();
         eventWindow.initStyle(StageStyle.UNDECORATED);
         eventWindow.getIcons().add(new Image("/Images/NCP.PNG"));
@@ -59,8 +59,8 @@ public class LoadEventWindow extends Application {
         label.setTranslateY(-340);
 
         GridPane grid = new GridPane();
-           grid.getColumnConstraints().add(new ColumnConstraints(120)); // column 0 is 100 wide
-     grid.getColumnConstraints().add(new ColumnConstraints(350)); // column 1 is 200 wide
+        grid.getColumnConstraints().add(new ColumnConstraints(120)); // column 0 is 100 wide
+        grid.getColumnConstraints().add(new ColumnConstraints(350)); // column 1 is 200 wide
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -120,10 +120,10 @@ public class LoadEventWindow extends Application {
         Exit.setFitWidth(18);
         Exit.setTranslateX(510);
         Exit.setTranslateY(-276);
-        
-        Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {        
-        @Override
-        public void handle(MouseEvent t) {
+
+        Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
                 System.exit(0);
             }
         });
@@ -141,13 +141,15 @@ public class LoadEventWindow extends Application {
                 eventWindow.setIconified(true);
             }
         });
-        
+
         table = new TableView<>();
         table.setItems(getRemarkList());
 
         TableColumn RemarksColumn = new TableColumn("");
         RemarksColumn.setCellValueFactory(new PropertyValueFactory("Listing"));
-
+        RemarksColumn.prefWidthProperty().bind(table.widthProperty().multiply(1.0));
+        
+        
         //listing input
         ListingInput = new TextField();
         ListingInput.setPromptText("Add Remarks");
@@ -156,13 +158,12 @@ public class LoadEventWindow extends Application {
         /*Button to add Remarks
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);*/
-
         ListingInput.setOnAction(e -> addButtonClicked());
 
         /*Button deleteR = new Button("Delete");
         deleteR.setPrefWidth(100);
         deleteR.setOnAction(e -> deleteButtonClicked());
-        */
+         */
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(-200, 100, 100, 10));
         hbox.setSpacing(10);
@@ -181,19 +182,19 @@ public class LoadEventWindow extends Application {
 
         Image image = new Image("/Images/EventBackG.jpg");
         VBox vbox = new VBox(0);
-        vbox.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,BackgroundSize.DEFAULT)));
+        vbox.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         vbox.setPadding(new Insets(100, 50, -10, 70));
         vbox.getChildren().addAll(grid, Exit, Min, TIcon, actionStatus, label, table, hbox);
         Scene scene = new Scene(vbox, 600, 550); // w x h
 
         eventWindow.setScene(scene);
         eventWindow.show();
-        
+
         //Positioning the window on the screen
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) /100); 
-        eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / 100); 
-        
+        eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) / 100);
+        eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / 100);
+
         eventWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -201,7 +202,7 @@ public class LoadEventWindow extends Application {
                 yOffset = eventWindow.getY() - event.getScreenY();
             }
         });
-        
+
         eventWindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -212,7 +213,7 @@ public class LoadEventWindow extends Application {
     }
 
     //add button clicked
-    public void addButtonClicked(){
+    public void addButtonClicked() {
         System.out.println(ListingInput.getText());
         RemarkList remarkList = new RemarkList();
         remarkList.setListing(ListingInput.getText());
