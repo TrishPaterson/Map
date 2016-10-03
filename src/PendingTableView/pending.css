@@ -4,12 +4,10 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
 /* 
-    Created on : Oct 4, 2016, 11:12:30 AM
+    Created on : Oct 4, 2016, 11:22:04 AM
     Author     : Sakina Pan
 */
 
-
- 
 .table-row-cell:hover{
     -fx-background-color: blanchedalmond;
 }

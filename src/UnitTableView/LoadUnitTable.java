@@ -70,7 +70,7 @@ public class LoadUnitTable extends Application {
         unitWindow.initStyle(StageStyle.UNDECORATED);
         unitWindow.getIcons().add(new Image("/Images/NCP.PNG"));
         unitWindow.setTitle("Unit Table");
-       table.getStylesheets().add("UnitTableView/UnitTable.css");
+        table.getStylesheets().add("UnitTableView/Unittable.css");
         
         Label label = new Label("Unit Table");
         

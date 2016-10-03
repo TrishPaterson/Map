@@ -50,7 +50,7 @@ public class LoadPendingTable extends Application {
         pendingWindow = new Stage();
         pendingWindow.initStyle(StageStyle.UNDECORATED);
         pendingWindow.getIcons().add(new Image("/Images/NCP.PNG"));
-        
+        table.getStylesheets().add("PendingTableView/pending.css");
         //Window Title
         Label label = new Label("Event Pending");
         
@@ -141,14 +141,18 @@ public class LoadPendingTable extends Application {
         table = new TableView<>();                
         TableColumn prioityCol = new TableColumn("Prioity");
         prioityCol.setCellValueFactory(new PropertyValueFactory("priority"));
+        //prioityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.0));
         TableColumn timeCol = new TableColumn("Time");
         timeCol.setCellValueFactory(new PropertyValueFactory("time"));
+        //prioityCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         TableColumn eventNumberCol = new TableColumn("Event Number");
         eventNumberCol.setCellValueFactory(new PropertyValueFactory("evtNumber"));
         TableColumn TypeCol = new TableColumn("Type");
         TypeCol.setCellValueFactory(new PropertyValueFactory("type"));
+        TypeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
         TableColumn locationCol = new TableColumn("Location");
         locationCol.setCellValueFactory(new PropertyValueFactory("location"));
+        locationCol.prefWidthProperty().bind(table.widthProperty().multiply(0.4));
         
         table.setItems(getEvtList());
         table.getColumns().setAll(prioityCol,timeCol,eventNumberCol,TypeCol,locationCol);    
