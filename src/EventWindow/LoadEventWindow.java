@@ -143,6 +143,7 @@ public class LoadEventWindow extends Application {
         });
 
         table = new TableView<>();
+      
         table.setItems(getRemarkList());
 
         TableColumn RemarksColumn = new TableColumn("");
