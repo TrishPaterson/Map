@@ -33,6 +33,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import MapHTML.LoadMap;
+import NotificationWindow.LoadNotification;
 import PendingTableView.LoadPendingTable;
 import java.util.Random;
 import javafx.geometry.Rectangle2D;
@@ -213,7 +214,7 @@ public class LoadUnitTable extends Application {
     }
     
     public void dispatchCordon(){
-        Random rn = new Random();
+        
         unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
             if(!lpt.getIsEventOn()){//if unit is not assigned to an event
@@ -223,14 +224,17 @@ public class LoadUnitTable extends Application {
                 id = checkId(unitSelected.get(x).getId());
                 mapEngine.setMarkerId(id);  
                 unitSelected.get(x).setStatus("onRot");
+                unitSelected.get(x).setCurrLocation("Arkham Asylum");
                 CalculateDistance cd = new CalculateDistance();
+                Random rn = new Random();
                 cd.calculateDistance(unitSelected.get(x).getId(), rn.nextInt(10000) + 7000);//delay when the cordon arrives.
+                table.refresh();
             }
             else//if dispatcher tries to disptach unit twice 
                 recordIn.writeLog(2, unitSelected.get(x).getId());
         }              
         mapEngine.createMarker();
-        table.getSelectionModel().clearSelection();    
+        table.getSelectionModel().clearSelection();  
     }    
       
     public int checkId(String id){

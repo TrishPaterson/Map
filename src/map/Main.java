@@ -21,7 +21,7 @@ public class Main extends Application {
     private LoadLogWindow logWindow = new LoadLogWindow();
 
     public static void main(String[] args) {
-        System.out.println("Almost Done CordonProjectTeam, You can do it@!");
+        System.out.println("Ahoy CordonProjectTeam we be almost finished, by Davy Jones' locker! Don't forget t' do testin' or ye will walk th' plank!");
         launch(args);
     }
     
