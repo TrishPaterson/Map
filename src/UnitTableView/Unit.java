@@ -32,7 +32,7 @@ public class Unit {
     private String currLocation;
     private String currEvent;
     private String time;
-    private final Type type;
+    private Type type;
     private Status status;
     
     Unit(String uniqId, String callSign, String currLocation, String currEvent, String time, String type, String stat) {
@@ -40,9 +40,9 @@ public class Unit {
         this.callSign = callSign;
         this.currLocation = currLocation;
         this.currEvent = currEvent;
-        this.time = time; //not final TBD 'Type'
-        this.type = setType(type);
-        this.status = setStatus(stat);
+        this.time = time; 
+        setType(type);
+        setStatus(stat);
     }
     
 //setters
@@ -50,27 +50,37 @@ public class Unit {
         this.time = time; //not final TBD Type
     }
          
-    public Status setStatus(String status){ 
+    public void setStatus(String status){ 
         switch(status){
-            case "avail": return this.status.avail; 
-            case "unAvail": return this.status.unAvail; 
-            case "onRot": return this.status.onRot; 
-            case "onSen": return this.status.onSen; 
+            case "avail": this.status = Status.avail; break;
+            case "unAvail": this.status = Status.unAvail; break;
+            case "onRot": this.status = Status.onRot; break;
+            case "onSen": this.status = Status.onSen; break;
             default: break;
         }
-        return null;
     }   
+
+    public void setCallSign(String callSign) {
+        this.callSign = callSign;
+    }
+
+    public void setCurrLocation(String currLocation) {
+        this.currLocation = currLocation;
+    }
+
+    public void setCurrEvent(String currEvent) {
+        this.currEvent = currEvent;
+    }
     
-    public Type setType(String type){   
+    public void setType(String type){   
         switch(type){
-            case "I": return this.type.I;
-            case "S": return this.type.S;
-            case "Q": return this.type.Q;
-            case "T": return this.type.T;
-            case "D": return this.type.D;
+            case "I": this.type = Type.I; break;
+            case "S": this.type = Type.S; break;
+            case "Q": this.type = Type.Q; break;
+            case "T": this.type = Type.T; break;
+            case "D": this.type = Type.D; break;
             default: break;
         }
-        return null;
     }   
     
 //getters    

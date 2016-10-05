@@ -9,6 +9,8 @@ import MapHTML.LoadMap;
 import UnitTableView.LoadUnitTable;
 import PendingTableView.LoadPendingTable;
 import EventWindow.LoadEventWindow;
+import LogWindow.LoadLogWindow;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 
 public class Main extends Application { 
@@ -16,15 +18,17 @@ public class Main extends Application {
     private LoadUnitTable unitTable = new LoadUnitTable();
     private LoadPendingTable pendingTable = new LoadPendingTable();
     private LoadEventWindow eventWindow = new LoadEventWindow();
+    private LoadLogWindow logWindow = new LoadLogWindow();
 
     public static void main(String[] args) {
-        System.out.println("Almost Done CordonProjectTeam, You can do it!");
+        System.out.println("Almost Done CordonProjectTeam, You can do it@!");
         launch(args);
     }
     
     @Override
     public void start(Stage primaryStage)throws ParserConfigurationException, SAXException, IOException{       
         map.start(primaryStage);
+        logWindow.start(primaryStage);
         eventWindow.start(primaryStage);
         unitTable.start(primaryStage);
         pendingTable.start(primaryStage);        

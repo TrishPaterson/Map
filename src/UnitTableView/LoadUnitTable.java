@@ -1,10 +1,10 @@
 package UnitTableView;
 
+import LogWindow.RecordInput;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -33,6 +33,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import MapHTML.LoadMap;
+import PendingTableView.LoadPendingTable;
+import java.util.Random;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
@@ -59,13 +61,15 @@ public class LoadUnitTable extends Application {
     private static double yOffset = 0;   
    
     private LoadMap mapEngine = new LoadMap();
+    private LoadPendingTable lpt = new LoadPendingTable();
+    private RecordInput recordIn = new RecordInput();
  
     @Override
     public void start(Stage primaryStage)throws ParserConfigurationException, SAXException, IOException{
         //Load UnitTable   
         createTable();
         createContextMenu();
-        
+ 
         unitWindow = primaryStage;
         unitWindow.initStyle(StageStyle.UNDECORATED);
         unitWindow.getIcons().add(new Image("/Images/NCP.PNG"));
@@ -123,33 +127,21 @@ public class LoadUnitTable extends Application {
         unitWindow.setY((primScreenBounds.getHeight() - unitWindow.getHeight()) / 1.9);      
         
         //Exit Button
-        Exit.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent t){
-                System.exit(0);
-            }
+        Exit.setOnMouseClicked((MouseEvent t) -> {
+            System.exit(0);
         });    
         
-        Min.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent me){
-                unitWindow.setIconified(true);
-            }     
+        Min.setOnMouseClicked((MouseEvent me) -> {
+            unitWindow.setIconified(true);     
         });
        
-        unitWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent event){
-                xOffset = unitWindow.getX() - event.getScreenX();
-                yOffset = unitWindow.getY() - event.getScreenY();
-            }
+        unitWindow.getScene().setOnMousePressed((MouseEvent event) -> {
+            xOffset = unitWindow.getX() - event.getScreenX();
+            yOffset = unitWindow.getY() - event.getScreenY();
         });
-        unitWindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
-            @Override 
-            public void handle(MouseEvent event) { 
-                unitWindow.setX(event.getScreenX() + xOffset);
-                unitWindow.setY(event.getScreenY() + yOffset);
-            }            
+        unitWindow.getScene().setOnMouseDragged((MouseEvent event) -> {
+            unitWindow.setX(event.getScreenX() + xOffset);
+            unitWindow.setY(event.getScreenY() + yOffset);            
         });     
     }
     
@@ -163,39 +155,84 @@ public class LoadUnitTable extends Application {
         ContextMenu contextMenu = new ContextMenu();
         
         //menu items
-        MenuItem item1 = new MenuItem("ChangeLocation");
-        MenuItem item2 = new MenuItem("Dispatch");
+        MenuItem item1 = new MenuItem("Disp Enroute");
+        MenuItem item2 = new MenuItem("Disp On Scene");
+        MenuItem item3 = new MenuItem("Disp Assign");
+        MenuItem item4 = new MenuItem("Change Location");
+        MenuItem item5 = new MenuItem("K1");
+        MenuItem item6 = new MenuItem("K2");
+        MenuItem item7 = new MenuItem("K3");
         
         //Add item to context menu
-        contextMenu.getItems().addAll(item1, item2);
+        contextMenu.getItems().addAll(item1,item2,item3,item4,item5,item6,item7);
         
         //set context menu to table
         table.setContextMenu(contextMenu);
         
-        //changeLocationFunction
-        item1.setOnAction(e -> changeLocation());
-        
         //dispatchLocation function
-        item2.setOnAction(e -> dispatchCordon());            
+        item1.setOnAction(e -> dispatchCordon());   
+        
+        //OnScene Function       
+        item2.setOnAction(e -> OnScene());
+        
+        //changeLocationFunction     
+        item4.setOnAction(e -> changeLocation());          
     }
-
-    public void changeLocation(){
-        unitSelected.sorted();
-        id = checkId(unitSelected.get(0).getId());  
-        mapEngine.changeLocation(id); 
+    
+    public void OnScene(){
+        CalculateDistance cd = new CalculateDistance();
+        for(int x = 0; x < unitSelected.size(); x++){
+            if(unitSelected.get(x).getStatus().equals("Onroute") && cd.isOnScene(unitSelected.get(0).getId())){//if cordon status is on route and has arrived on scene
+                unitSelected.get(x).setStatus("onSen");              
+            }
+            else if("Onscene".equals(unitSelected.get(x).getStatus()) && lpt.getIsEventOn()){// if dispatcher changes the status of cordon twice
+                recordIn.writeLog(4, unitSelected.get(x).getId());
+            }else if(!lpt.getIsEventOn()){// if dispatcher changes cordon status to on scene without assigning it to an event
+                recordIn.writeLog(3, unitSelected.get(x).getId());
+            }else if(!unitSelected.get(x).getStatus().equals("Onroute")){// if dispatcher changes cordon status to on scene without assigning it to an event
+                recordIn.writeLog(3, unitSelected.get(x).getId());
+            }else if(!cd.isOnScene(unitSelected.get(0).getId()) && unitSelected.get(x).getStatus().equals("Onroute")){ //if disptacher tries to change status of cordon when it has not arrived on scene
+                recordIn.writeLog(5, unitSelected.get(x).getId());
+            }
+        }
+        table.getSelectionModel().clearSelection();
+    }
+    
+    public void changeLocation(){    
+        if("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
+            unitSelected.sorted();
+            id = checkId(unitSelected.get(0).getId());  
+            mapEngine.changeLocation(id); 
+            table.getSelectionModel().clearSelection();
+        }else if(!"Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ //if unit is not onscene but is assigned to an event
+            recordIn.writeLog(6, unitSelected.get(0).getId());
+        }else if(!lpt.getIsEventOn()){ //if unit is not assigned to any event
+            recordIn.writeLog(7, unitSelected.get(0).getId());
+        }
         table.getSelectionModel().clearSelection();
     }
     
     public void dispatchCordon(){
+        Random rn = new Random();
         unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
-            id = checkId(unitSelected.get(x).getId());
-            mapEngine.setMarkerId(id);  
-        }    
+            if(!lpt.getIsEventOn()){//if unit is not assigned to an event
+                recordIn.writeLog(1, unitSelected.get(x).getId());
+            }
+            else if(!unitSelected.get(x).getStatus().equals("Onroute")){//check if unit is not already dispatched
+                id = checkId(unitSelected.get(x).getId());
+                mapEngine.setMarkerId(id);  
+                unitSelected.get(x).setStatus("onRot");
+                CalculateDistance cd = new CalculateDistance();
+                cd.calculateDistance(unitSelected.get(x).getId(), rn.nextInt(10000) + 7000);//delay when the cordon arrives.
+            }
+            else//if dispatcher tries to disptach unit twice 
+                recordIn.writeLog(2, unitSelected.get(x).getId());
+        }              
         mapEngine.createMarker();
-        table.getSelectionModel().clearSelection();
+        table.getSelectionModel().clearSelection();    
     }    
-    
+      
     public int checkId(String id){
         switch(id){
            case "UNI1": return 1;
@@ -206,7 +243,7 @@ public class LoadUnitTable extends Application {
            default: return -1;
         }      
     }
-    
+  
     public void createTable()throws ParserConfigurationException, SAXException, IOException{
         //ID column
         TableColumn<Unit, String> uniqIdCol = new TableColumn<>("ID");

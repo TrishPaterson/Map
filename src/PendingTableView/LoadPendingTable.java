@@ -35,7 +35,7 @@ public class LoadPendingTable extends Application {
     private static String location;
     private static Event evtList = null;
     
-    private static boolean disable = false;
+    private static boolean isEventOn = false;
     private TableView table;
     private Text actionStatus;
     private static double xOffset = 0;
@@ -105,35 +105,23 @@ public class LoadPendingTable extends Application {
         pendingWindow.setX((primScreenBounds.getWidth() - pendingWindow.getWidth()) /100); 
         pendingWindow.setY((primScreenBounds.getHeight() - pendingWindow.getHeight()) / 1); 
         
-        pendingWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent event){
-                xOffset = pendingWindow.getX() - event.getScreenX();
-                yOffset = pendingWindow.getY() - event.getScreenY();
-            }
+        pendingWindow.getScene().setOnMousePressed((MouseEvent event) -> {
+            xOffset = pendingWindow.getX() - event.getScreenX();
+            yOffset = pendingWindow.getY() - event.getScreenY();
         });
-        pendingWindow.getScene().setOnMouseDragged(new EventHandler<MouseEvent>() { 
-            @Override 
-            public void handle(MouseEvent event) { 
-                pendingWindow.setX(event.getScreenX() + xOffset);
-                pendingWindow.setY(event.getScreenY() + yOffset);
-            } 
+        pendingWindow.getScene().setOnMouseDragged((MouseEvent event) -> {
+            pendingWindow.setX(event.getScreenX() + xOffset);
+            pendingWindow.setY(event.getScreenY() + yOffset); 
         }); 
         
         //Minimize Button
-        Min.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent me){
-                pendingWindow.setIconified(true);
-            }     
+        Min.setOnMouseClicked((MouseEvent me) -> {
+            pendingWindow.setIconified(true);     
         });
         
         //Exit Button
-        Exit.setOnMouseClicked(new EventHandler<MouseEvent>(){
-           @Override
-           public void handle(MouseEvent t){
-               System.exit(0);
-           }       
+        Exit.setOnMouseClicked((MouseEvent t) -> {
+            System.exit(0);       
         });         
     }
     
@@ -166,7 +154,7 @@ public class LoadPendingTable extends Application {
             ObservableList<Event> evtSelected,allEvents;
             allEvents = table.getItems();
             evtSelected = table.getSelectionModel().getSelectedItems(); 
-            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !disable ) {
+            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !isEventOn ) {
           
                 //Temporary while the geolocation is not implemented.
                 mapEngine.createExpanding(-41.1130274, 174.8924949, 1);               
@@ -174,13 +162,17 @@ public class LoadPendingTable extends Application {
                 mapEngine.setEvent(evtSelected.get(0).getLocation());
                 evtSelected.forEach(allEvents::remove);
                 table.getSelectionModel().clearSelection();
-                disable = true;
+                isEventOn = true;
             }          
         });
     }  
     
     public void enAbleRow(){
-        disable = false;
+        isEventOn = false;
+    }
+    
+    public boolean getIsEventOn(){
+        return isEventOn;
     }
     
     public ObservableList<Event> getEvtList(){       

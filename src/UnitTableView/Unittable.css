@@ -1,15 +1,4 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Oct 4, 2016, 11:12:30 AM
-    Author     : Sakina Pan
-*/
 
-
- 
 .table-row-cell:hover{
     -fx-background-color: blanchedalmond;
 }
@@ -17,3 +6,5 @@ and open the template in the editor.
 .table-row-cell:selected{
     -fx-background-color: lightgrey;
 }
+
+

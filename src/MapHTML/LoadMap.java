@@ -40,7 +40,7 @@ public class LoadMap extends Application {
     }
     
     public void changeLocation(int id){
-        System.out.println(webMapEngine.executeScript("changeLocation(" + id + ")"));
+        webMapEngine.executeScript("changeLocation(" + id + ")");
     }
     
     public void createExpanding(double lat, double lng, int rad){

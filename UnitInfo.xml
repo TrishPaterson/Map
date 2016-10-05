@@ -16,7 +16,7 @@
         <currEvent>eventUndef</currEvent>
         <time>timeUndef</time>
         <type>S</type>
-        <status>unAvail</status>   
+        <status>avail</status>   
     </unit>
     
     <unit id = "UNQ1">
@@ -25,7 +25,7 @@
         <currEvent>eventUndef</currEvent>
         <time>timeUndef</time>
         <type>Q</type>
-        <status>onSen</status>   
+        <status>avail</status>   
     
 	</unit>  
 	    <unit id = "UNT1">
@@ -34,7 +34,7 @@
         <currEvent>eventUndef</currEvent>
         <time>timeUndef</time>
         <type>T</type>
-        <status>onSen</status>   
+        <status>avail</status>   
     </unit>
 	
 	<unit id = "UND1">
@@ -43,7 +43,7 @@
         <currEvent>eventUndef</currEvent>
         <time>timeUndef</time>
         <type>D</type>
-        <status>onSen</status>   
+        <status>avail</status>   
     </unit>
 	
     
