@@ -38,7 +38,7 @@ import javafx.util.Duration;
 
 public class LoadNotification extends Application {
  private Text actionStatus;
-    public Stage eventWindow;
+    public Stage notificationWindow;
     private String NotificationMsg;
     public LoadNotification(String msg){
         this.NotificationMsg = msg;
@@ -46,10 +46,10 @@ public class LoadNotification extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        eventWindow = new Stage();
-        eventWindow.initStyle(StageStyle.UNDECORATED);
-        eventWindow.getIcons().add(new Image("/Images/NCP.PNG"));
-        eventWindow.setTitle("Unit Table");
+        notificationWindow = new Stage();
+        notificationWindow.initStyle(StageStyle.UNDECORATED);
+        notificationWindow.getIcons().add(new Image("/Images/NCP.PNG"));
+        notificationWindow.setTitle("Unit Table");
 
         Label msg = new Label(NotificationMsg);
         msg.setTextFill(Color.LIGHTGRAY);
@@ -83,11 +83,11 @@ public class LoadNotification extends Application {
         vbox.getChildren().addAll(TIcon, actionStatus, msg, title);
         Scene scene = new Scene(vbox, 400, 150); //W H
 
-        eventWindow.setScene(scene);  
-        eventWindow.show();
+        notificationWindow.setScene(scene);  
+        notificationWindow.show();
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) / 1);
-        eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / -5);  
+        notificationWindow.setX((primScreenBounds.getWidth() - notificationWindow.getWidth()) / 1);
+        notificationWindow.setY((primScreenBounds.getHeight() - notificationWindow.getHeight()) / -5);  
         
         runNotification();       
         closeFadeOut();
@@ -103,9 +103,9 @@ public class LoadNotification extends Application {
                         public void run(){                           
                             Timeline timeline = new Timeline();
                              KeyFrame key = new KeyFrame(Duration.millis(2000),
-                                            new KeyValue (eventWindow.getScene().getRoot().opacityProperty(), 0)); 
+                                            new KeyValue (notificationWindow.getScene().getRoot().opacityProperty(), 0)); 
                             timeline.getKeyFrames().add(key);   
-                            timeline.setOnFinished((ae) -> eventWindow.close()); 
+                            timeline.setOnFinished((ae) -> notificationWindow.close()); 
                             timeline.play();                                                
                         }    
                     });  
@@ -130,8 +130,8 @@ public class LoadNotification extends Application {
                             
                             public void run(){                           
                                 Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-                                eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) / 1);
-                                eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / (pos += -5));                                                
+                                notificationWindow.setX((primScreenBounds.getWidth() - notificationWindow.getWidth()) / 1);
+                                notificationWindow.setY((primScreenBounds.getHeight() - notificationWindow.getHeight()) / (pos += -5));                                                
                             }    
                         });  
                     }                  

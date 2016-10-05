@@ -16,12 +16,13 @@ import javafx.stage.Stage;
 
 public class CalculateDistance{
     private Stage stage = new Stage();
+    private static int prevDist;
     private static List<String> listOnSceneCordon = new ArrayList<>(); 
-    public void calculateDistance(String name, int dist){
+    public void calculateDistance(String name, int delay){
         Thread t1 = new Thread(new Runnable(){
             public void run(){
                 try{
-                    Thread.sleep(dist);
+                    Thread.sleep(delay);
                     listOnSceneCordon.add(name);
                 } catch (InterruptedException ex) {} 
                 
@@ -31,7 +32,7 @@ public class CalculateDistance{
                         @Override
                             public void run(){  
                                 LoadNotification ln = new LoadNotification(name + " has arrived on scene.");
-                                ln.start(ln.eventWindow); 
+                                ln.start(ln.notificationWindow); 
                             }
                         });                    
                     }
@@ -39,7 +40,11 @@ public class CalculateDistance{
                 Thread backgroundThread = new Thread(task);
                 backgroundThread.setDaemon(true);
                 backgroundThread.start();
-                
+                try {
+                    backgroundThread.join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(CalculateDistance.class.getName()).log(Level.SEVERE, null, ex);
+                }                
                 try {
                     new JavaSoundAudioClip(new FileInputStream(new File("notify.wav"))).play();
                 } catch (IOException ex) {
