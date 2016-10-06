@@ -1,5 +1,6 @@
 package EventWindow;
 
+import PendingTableView.Event;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -38,8 +39,13 @@ import javafx.stage.StageStyle;
 
 public class LoadEventWindow extends Application {
 
-    private TableView table;
+    private static TableView table;
     public TextField ListingInput;
+    private static TextField EventTypeBox;
+    private static TextField LocBox;
+    private static TextField NameInfoBox;
+    private static TextField HeadlineBox;
+    private static ObservableList<RemarkList> remarks;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
@@ -69,23 +75,23 @@ public class LoadEventWindow extends Application {
         TypeE.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
         TypeE.setTextFill(Color.DARKGRAY);
         grid.add(TypeE, 0, 1);
-        TextField userTextField = new TextField();
-        userTextField.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.add(userTextField, 1, 1);
+        EventTypeBox = new TextField();
+        EventTypeBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+        grid.add(EventTypeBox, 1, 1);
 
         Label loc = new Label("Location:");
         loc.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
         loc.setTextFill(Color.DARKGRAY);
         grid.add(loc, 0, 2);
-        TextField locBox = new TextField();
-        locBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
-        grid.add(locBox, 1, 2);
+        LocBox = new TextField();
+        LocBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
+        grid.add(LocBox, 1, 2);
 
         Label NameInfo = new Label("Name of Information:");
         NameInfo.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
         NameInfo.setTextFill(Color.DARKGRAY);
         grid.add(NameInfo, 0, 3);
-        TextField NameInfoBox = new TextField();
+        NameInfoBox = new TextField();
         NameInfoBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
         grid.add(NameInfoBox, 1, 3);
 
@@ -93,7 +99,7 @@ public class LoadEventWindow extends Application {
         Headline.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
         Headline.setTextFill(Color.DARKGRAY);
         grid.add(Headline, 0, 4);
-        TextField HeadlineBox = new TextField();
+        HeadlineBox = new TextField();
         HeadlineBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, CornerRadii.EMPTY, Insets.EMPTY)));
         HeadlineBox.setTranslateX(0);
         HeadlineBox.setPrefWidth(50);
@@ -144,7 +150,7 @@ public class LoadEventWindow extends Application {
 
         table = new TableView<>();
       
-        table.setItems(getRemarkList());
+        //table.setItems(getRemarkList());
 
         TableColumn RemarksColumn = new TableColumn("");
         RemarksColumn.setCellValueFactory(new PropertyValueFactory("Listing"));
@@ -229,10 +235,35 @@ public class LoadEventWindow extends Application {
         remarkListSelected.forEach(allRemarkLists::remove);
     }
 
-    public ObservableList<RemarkList> getRemarkList() {
-        ObservableList<RemarkList> remarks = FXCollections.observableArrayList();
-        remarks.add(new RemarkList("- Police initially said foul play was not suspected"));
-        remarks.add(new RemarkList("- It’s not a murder case….it’s could be a suicide"));
-        return remarks;
+    public static void setRemarksList( String remark ) {
+        remarks = FXCollections.observableArrayList();
+        remarks.add(new RemarkList( remark ));
+    }
+    
+    public static void populateFields( Event evt ) {
+        
+        String priority = evt.getPriority();    //not used
+        String time = evt.getTime();            //not used
+        String evtNumber = evt.getEvtNumber();  //not used
+        String type = evt.getType();
+        String location = evt.getLocation();
+        String informantName = evt.getInformantName();
+        String headline = evt.getHeadline();
+        String remark = evt.getRemarks();
+        
+        EventTypeBox.setText(type);
+        LocBox.setText(location);
+        NameInfoBox.setText(informantName);
+        HeadlineBox.setText(headline);
+        setRemarksList(remark);
+        table.setItems(remarks);
+        /*
+        String output;
+        output = ("Event number: " + evtNumber
+                        + "\nEvent time: " + time
+                        + "\nEvent priority: " + priority
+                        + "\nEvent type: " + type
+                        + "\nEvent location: " + location);*/
+        //return output;
     }
 }

@@ -1,10 +1,10 @@
 package PendingTableView;
 
+import EventWindow.LoadEventWindow;
 import MapHTML.LoadMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -28,12 +28,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LoadPendingTable extends Application {
-    private static String priority;
-    private static String time;
-    private static String evtNumber;
-    private static String type;
-    private static String location;
-    private static Event evtList = null;
+    private static Event evt = null;
     
     private static boolean isEventOn = false;
     private TableView table;
@@ -155,7 +150,9 @@ public class LoadPendingTable extends Application {
             allEvents = table.getItems();
             evtSelected = table.getSelectionModel().getSelectedItems(); 
             if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !isEventOn ) {
-          
+                
+                LoadEventWindow.populateFields(evtSelected.get(0));
+                //System.out.println( LoadEventWindow.populateFields(evtSelected.get(0)));
                 //Temporary while the geolocation is not implemented.
                 mapEngine.createExpanding(-41.1130274, 174.8924949, 1);               
                 mapEngine.createEvent(evtSelected.get(0).getLocation());              
@@ -163,6 +160,8 @@ public class LoadPendingTable extends Application {
                 evtSelected.forEach(allEvents::remove);
                 table.getSelectionModel().clearSelection();
                 isEventOn = true;
+                
+                //System.out.println( ""+populateFields(evtSelected.get(0)));
             }          
         });
     }  
@@ -180,10 +179,14 @@ public class LoadPendingTable extends Application {
         
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
-        evtList = new Event("High", "12:00", "B1204", "Assault", "Gotham");
-        listOfEvents.add(evtList);
-        evtList = new Event("Extremely High", "12:00", "B1204", "Prison BreakOut", "Arkham Asylum");
-        listOfEvents.add(evtList);
+        evt = new Event("High", "12:00", "B1204", "Assault", "Gotham",
+                            "Joe Bloggs", "Bane is on a rampage", 
+                            "- Police initially said foul play was not suspected");
+        listOfEvents.add(evt);
+        evt = new Event("Extremely High", "12:00", "B1204", "Prison BreakOut",
+                            "Arkham Asylum", "Mr Snitch", "Joker is on the loose",
+                            "- It’s not a murder case….it’s could be a suicide");
+        listOfEvents.add(evt);
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
         //Code below reads database instead of hard code
@@ -225,26 +228,5 @@ public class LoadPendingTable extends Application {
         
         //-------------------------------------------------------------------
         return listOfEvents;  
-    }
-    //this method will eventually go in the LoadEventTable.java
-    public String populateFields( Event el ) {
-        //this method just prints things in the mean time.
-        //String headline;
-        //String informantName;
-        //String remarks;
-        //String remarksField;
-        priority = evtList.getPriority();
-        time = evtList.getTime();
-        evtNumber = evtList.getEvtNumber();
-        type = evtList.getType();
-        location = evtList.getLocation();
-        
-        String output;
-        output = ("Event number: " + evtNumber
-                        + "\nEvent time: " + time
-                        + "\nEvent priority: " + priority
-                        + "\nEvent type: " + type
-                        + "\nEvent location: " + location);
-        return output;
     }
 }

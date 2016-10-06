@@ -6,6 +6,9 @@ public class Event {
     private String evtNumber;
     private String type;
     private String location;
+    private String informantName;
+    private String headline;
+    private String remarks;
     
     Event(){
          this.priority = "undef";
@@ -13,14 +16,20 @@ public class Event {
          this.evtNumber = "undef";
          this.type = "undef";
          this.location = "undef";
+         this.informantName = "undef";
+         this.headline = "undef";
+         this.remarks = "";
     }
     
-    Event(String priority, String time, String evtNumber, String type, String location ){
+    Event(String priority, String time, String evtNumber, String type, String location, String informantName, String headline, String remarks ){
          this.priority = priority;
          this.time = time;
          this.evtNumber = evtNumber;
          this.type = type;
          this.location = location;
+         this.informantName = informantName;
+         this.headline = headline;
+         this.remarks = remarks;
     }
     
     public String getPriority() {
@@ -62,4 +71,28 @@ public class Event {
     public void setLocation(String location) {
         this.location = location;
     }   
-}
+    
+    public String getInformantName() {
+        return informantName;
+    }
+    
+    public void setInformantName(String informantName) {
+        this.informantName = informantName;
+    }
+    
+    public String getHeadline() {
+        return headline;
+    }
+    
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
+    
+    public String getRemarks() {
+        return remarks;
+    }
+    
+    public void setRemarks(String remarks) {
+        this.remarks += remarks;
+    }
+}   
