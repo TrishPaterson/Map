@@ -54,4 +54,7 @@ public class LoadMap extends Application {
     public void setEvent(String eventName){
         webMapEngine.executeScript("setEvent(" + "'"+eventName +"'"+ ")");        
     }
+    public void startTracking(double lat, double lng){
+        webMapEngine.executeScript("startTracking(" + lat + ',' + lng + ")");
+    }
 }

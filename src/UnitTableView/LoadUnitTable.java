@@ -184,7 +184,10 @@ public class LoadUnitTable extends Application {
         CalculateDistance cd = new CalculateDistance();
         for(int x = 0; x < unitSelected.size(); x++){
             if(unitSelected.get(x).getStatus().equals("Onroute") && cd.isOnScene(unitSelected.get(0).getId())){//if cordon status is on route and has arrived on scene
-                unitSelected.get(x).setStatus("onSen");              
+                unitSelected.get(x).setStatus("onSen");
+                if(unitSelected.get(x).getType().equals("D")) {
+                    mapEngine.startTracking( -41.1130274, 174.8924949 );
+                }
             }
             else if("Onscene".equals(unitSelected.get(x).getStatus()) && lpt.getIsEventOn()){// if dispatcher changes the status of cordon twice
                 recordIn.writeLog(4, unitSelected.get(x).getId());
