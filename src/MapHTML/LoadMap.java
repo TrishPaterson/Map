@@ -55,6 +55,22 @@ public class LoadMap extends Application {
         webMapEngine.executeScript("setEvent(" + "'"+eventName +"'"+ ")");        
     }
     public void startTracking(double lat, double lng){
-        webMapEngine.executeScript("startTracking(" + lat + ',' + lng + ")");
+        webMapEngine.executeScript("startTracking(" + lat + ',' + lng + ")");      
+    }
+    
+    public String getEvent(){
+        return (String)webMapEngine.executeScript("getEvent()");        
+    }
+    
+    public String getCordonCurrLocation(int id){
+        return (String)webMapEngine.executeScript("getCordonCurrLocation(" + id + ")");
+    }   
+    
+    public boolean getDogHandlerStatus(){
+        return (boolean)webMapEngine.executeScript("getDogHandlerStatus()");
+    }
+    
+    public void refreshMap(){
+        webMapEngine.executeScript("refreshMap()");
     }
 }

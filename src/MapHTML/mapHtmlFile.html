@@ -22,6 +22,7 @@
             var map;
             var allMarkers;    //holds markers in an array  
             var currentEvent;
+            var isRefresh = false;
             
             //changelocation global variables
             var changingMarker = false; //this is boolean true or false
@@ -45,6 +46,13 @@
             var dogHandLat;
             var dogHandLng;
             var startTrack = false;
+            var isCaught = false;
+            
+            var latlng ="FUCKING HELL WORK DAMN IT!!";
+            var eventObj ={
+                name: null,
+                markers: []
+            };           
 //------------------------------------------------------------------------------
 //InitializeMap  
 //------------------------------------------------------------------------------
@@ -76,7 +84,7 @@
                 expRadius = null;        
                 createExp = false;
             }
-        });
+        },50);
                  
         function checkEvent( rad ) {           
             if ( eventZone ) {
@@ -294,10 +302,10 @@
 //------------------------------------------------------------------------------
 //Create Event Object
 //------------------------------------------------------------------------------       
-        var eventObj ={
+        /*var eventObj ={
             name: null,
             markers: []
-        };
+        };*/
         
         setInterval (function(){
             if(createEvtObj == true){   
@@ -347,7 +355,7 @@
                     if(allMarkers.get(idArr[i]) == null)
                     {
                         var marker = new google.maps.Marker({
-                            position: null,
+                            position: null,//dont delete so it wont break; javascript doesn't like nulls
                             icon: 'policeCar.ico',
                             id: idArr[i]
                         });
@@ -361,7 +369,7 @@
             }  
             isCreating = false;
             idArr = [];
-        }); 
+        },50); 
 //------------------------------------------------------------------------------
 //Dog Handler
 //------------------------------------------------------------------------------
@@ -399,7 +407,7 @@
                     map:map
             });
             //if you use marker, something wrong with marker refreshing
-            dogMarker=new google.maps.Marker({});//map:map,icon:"dog.ico"
+            dogMarker=new google.maps.Marker({map:map});//map:map,icon:"dog.ico"
    
             var dogHandlerRunning = setInterval(function ()
             {
@@ -415,6 +423,7 @@
                 if( expansionDirection == 0 ) {
                     //stop the doghandler
                     clearInterval( dogHandlerRunning );
+                    isCaught = true;
                 }
                 //moving north or south, more likely to happen
                 if( randNum + weight >= 0.5 ) {
@@ -485,6 +494,7 @@
             if(startTrack) {
                 setTimeout( simulateDogHandler(), 0 );
                 startTrack = false;
+
             }
         }, 100);
 //------------------------------------------------------------------------------
@@ -501,6 +511,12 @@
         function getRandom() {
             return Math.random();
         }
+        
+        setInterval( function() {
+            if(isRefresh == true) {       
+                location.reload(true);
+            }
+        }, 100);            
 //------------------------------------------------------------------------------
     }//end of init map
 //------------------------------------------------------------------------------
@@ -541,10 +557,16 @@
         createEvtObj = true;
     }
 //------------------------------------------------------------------------------
-//setEvent is used to  
+//setEvent sets the current event 
 //------------------------------------------------------------------------------        
     function setEvent(eventName){
         currentEvent = eventName;
+    }
+//------------------------------------------------------------------------------
+//getEvent returns the current event 
+//------------------------------------------------------------------------------        
+    function getEvent(){
+        return currentEvent;
     }
 //------------------------------------------------------------------------------
 //startTracking is used to start the dog handler
@@ -553,6 +575,32 @@
         dogHandLat = lat;
         dogHandLng = lng;
         startTrack = true;
+    }
+//------------------------------------------------------------------------------
+//getCordonLocation returns the current location of cordon 
+//------------------------------------------------------------------------------
+    function getCordonCurrLocation(id){    
+        for(var i = 0; i < eventObj.markers.length; i++){
+            //fix in the future if the current marker is null return the lat and lng for current event.
+            if(eventObj.markers[i].position == null){ //needs to check if the location of marker is not null so it wont return a null.
+                return -41.1130274 + " " + 174.8924949; // temporary
+            }
+            else if(eventObj.markers[i].id == id){ //.getPostion.lat() doesn't like nulls
+                return latlng = eventObj.markers[i].getPosition().lat() + " " + eventObj.markers[i].getPosition().lng();                  
+            }          
+        }
+    }
+//------------------------------------------------------------------------------
+//getDogHandlerStatus checks if the offender is caught.
+//------------------------------------------------------------------------------    
+    function getDogHandlerStatus(){
+        return isCaught;
+    }
+//------------------------------------------------------------------------------
+//refreshMap refreshes the map.
+//------------------------------------------------------------------------------
+    function refreshMap(){
+        isRefresh = true;
     }
 //------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);

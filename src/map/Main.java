@@ -11,7 +11,6 @@ import PendingTableView.LoadPendingTable;
 import EventWindow.LoadEventWindow;
 import LogWindow.LoadLogWindow;
 import static javafx.application.Application.launch;
-import static javafx.application.Application.launch;
 
 public class Main extends Application { 
     private LoadMap map = new LoadMap();
@@ -21,7 +20,7 @@ public class Main extends Application {
     private LoadLogWindow logWindow = new LoadLogWindow();
 
     public static void main(String[] args) {
-        System.out.println("Ahoy CordonProjectTeam we be almost finished, by Davy Jones' locker! Don't forget t' do testin' or ye will walk th' plank!");
+        System.out.println("The night is darkest just before the dawn. And I promise you, the dawn is coming. Don't forget t' do testin' or ye will walk th' plank!");
         launch(args);
     }
     

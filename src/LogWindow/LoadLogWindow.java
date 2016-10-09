@@ -30,14 +30,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LoadLogWindow extends Application {
-
-    private TableView table;
+    private ObservableList<MessageLog> log = FXCollections.observableArrayList();;
+    private static TableView table;
     public TextField ListingInput;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage logWindow;
-    private TableColumn timeColumn;
+    private TableColumn<MessageLog, String> timeColumn;
+    private TableColumn<MessageLog, String> msgCol;
     @Override
     public void start(Stage primaryStage) {
         logWindow = new Stage();
@@ -65,7 +66,7 @@ public class LoadLogWindow extends Application {
         Min.getStyleClass().add("ImageView");
         Min.setFitHeight(18);
         Min.setFitWidth(18);
-        Min.setTranslateX(360);
+        Min.setTranslateX(600);
         Min.setTranslateY(-94);
 
         Min.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -74,14 +75,17 @@ public class LoadLogWindow extends Application {
                 logWindow.setIconified(true);
             }
         });
-
+        
         table = new TableView<>();
+        timeColumn = new TableColumn<>("Time");  
+        timeColumn.setCellValueFactory(new PropertyValueFactory("time"));
+        //timeColumn.prefWidthProperty().bind(table.widthProperty().multiply(1.0));
+        msgCol = new TableColumn<>("MsgLog");  
+        msgCol.setCellValueFactory(new PropertyValueFactory("msgLog"));
+        msgCol.prefWidthProperty().bind(table.widthProperty().multiply(1.0));
+        
 
-        timeColumn = new TableColumn("User Time Tracker");  
-        timeColumn.setCellValueFactory(new PropertyValueFactory("getUserTime"));
-        timeColumn.prefWidthProperty().bind(table.widthProperty().multiply(1.0));
-
-        table.getColumns().setAll(timeColumn);
+        table.getColumns().addAll(timeColumn,msgCol);
         table.setPrefWidth(10);
         table.setPrefHeight(500);
         table.setTranslateX(0);
@@ -90,12 +94,12 @@ public class LoadLogWindow extends Application {
         actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
 
-        Image image = new Image("/Images/logBackG.jpg");
+        Image image = new Image("/Images/EventBackG.jpg");
         VBox vbox = new VBox(0);
         vbox.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         vbox.setPadding(new Insets(100, 20, -70, 20));
         vbox.getChildren().addAll(Min, TIcon, actionStatus, label, table);
-        Scene scene = new Scene(vbox, 400, 400); 
+        Scene scene = new Scene(vbox, 650,600); 
 
         logWindow.setScene(scene);
         logWindow.show();
@@ -131,10 +135,10 @@ public class LoadLogWindow extends Application {
         //ListingInput.clear();
     }*/
 
-    public void addLog(String msg){
-        ObservableList<getTime> remarks = FXCollections.observableArrayList();
-        remarks.add(new getTime(msg));
-        table.getItems().add(remarks);  
+    public void addLog(String msg, String time){
+        log.add(new MessageLog(msg,time));
+        table.setItems(log);
+        //table.getItems().add(log);  
     }
     
     /*public ObservableList<RemarkList> getRemarkList() {

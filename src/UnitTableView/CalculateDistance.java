@@ -11,11 +11,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import NotificationWindow.LoadNotification;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 
 
 public class CalculateDistance{
-    private Stage stage = new Stage();
+    private RecordInput log = new RecordInput();
     private static int prevDist;
     private static List<String> listOnSceneCordon = new ArrayList<>(); 
     public void calculateDistance(String name, int delay){
@@ -30,7 +29,8 @@ public class CalculateDistance{
                      public void run(){
                         Platform.runLater(new Runnable(){
                         @Override
-                            public void run(){  
+                            public void run(){ 
+                                log.writeLog(11, name);
                                 LoadNotification ln = new LoadNotification(name + " has arrived on scene.");
                                 ln.start(ln.notificationWindow); 
                             }

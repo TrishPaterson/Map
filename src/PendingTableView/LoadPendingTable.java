@@ -1,6 +1,7 @@
 package PendingTableView;
 
 import EventWindow.LoadEventWindow;
+import LogWindow.RecordInput;
 import MapHTML.LoadMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -36,7 +37,7 @@ public class LoadPendingTable extends Application {
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage pendingWindow;
-    
+    private RecordInput log = new RecordInput();
     private LoadMap mapEngine = new LoadMap();  
     @Override
     public void start(Stage primaryStage) {
@@ -157,9 +158,11 @@ public class LoadPendingTable extends Application {
                 mapEngine.createExpanding(-41.1130274, 174.8924949, 1);               
                 mapEngine.createEvent(evtSelected.get(0).getLocation());              
                 mapEngine.setEvent(evtSelected.get(0).getLocation());
-                evtSelected.forEach(allEvents::remove);
+                log.writeLog(8, evtSelected.get(0).getLocation());
+                
+                evtSelected.forEach(allEvents::remove);//remove selected item
+                isEventOn = true; //disable pendingevent while this event is finish
                 table.getSelectionModel().clearSelection();
-                isEventOn = true;
                 
                 //System.out.println( ""+populateFields(evtSelected.get(0)));
             }          
