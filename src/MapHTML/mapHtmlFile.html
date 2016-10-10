@@ -22,8 +22,7 @@
             var map;
             var allMarkers;    //holds markers in an array  
             var currentEvent;
-            var isRefresh = false;
-            
+                 
             //changelocation global variables
             var changingMarker = false; //this is boolean true or false
             var markerToChange; //the marker object we want to change
@@ -46,9 +45,9 @@
             var dogHandLat;
             var dogHandLng;
             var startTrack = false;
-            var isCaught = false;
+            var isCaught = false; //checks if dog handler has been caught
             
-            var latlng ="FUCKING HELL WORK DAMN IT!!";
+            var latlng ="unDef";
             var eventObj ={
                 name: null,
                 markers: []
@@ -57,10 +56,10 @@
 //InitializeMap  
 //------------------------------------------------------------------------------
     function initMap() { //Initialize Map
-        var eventLocation = new google.maps.LatLng(-41.1130274, 174.8924949); // Location of event. When scenario is created LatLng will be put in here.
+        var defLocation = new google.maps.LatLng(-41.2865, 174.7762); // Location of event. When scenario is created LatLng will be put in here.
         map = new google.maps.Map(document.getElementById('map'), {
-            center: eventLocation,
-            zoom: 18,
+            center: defLocation,
+            zoom: 8,
         });
 //------------------------------------------------------------------------------
 //ExpandingZone     
@@ -355,7 +354,7 @@
                     if(allMarkers.get(idArr[i]) == null)
                     {
                         var marker = new google.maps.Marker({
-                            position: null,//dont delete so it wont break; javascript doesn't like nulls
+                            position: null,
                             icon: 'policeCar.ico',
                             id: idArr[i]
                         });
@@ -510,13 +509,7 @@
         }
         function getRandom() {
             return Math.random();
-        }
-        
-        setInterval( function() {
-            if(isRefresh == true) {       
-                location.reload(true);
-            }
-        }, 100);            
+        }            
 //------------------------------------------------------------------------------
     }//end of init map
 //------------------------------------------------------------------------------
@@ -555,6 +548,9 @@
         evtName = eventName;
         //currentEvent = evtName;  
         createEvtObj = true;
+        var eventLoc = new google.maps.LatLng(expLat,expLong);
+        map.center= eventLoc;
+        map.setZoom(18);
     }
 //------------------------------------------------------------------------------
 //setEvent sets the current event 
@@ -600,7 +596,7 @@
 //refreshMap refreshes the map.
 //------------------------------------------------------------------------------
     function refreshMap(){
-        isRefresh = true;
+        location.reload(true);
     }
 //------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);

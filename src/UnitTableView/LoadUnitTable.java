@@ -52,7 +52,7 @@ import javafx.stage.Screen;
 public class LoadUnitTable extends Application {
     private int id;
     private static Unit x = null;
-    private static String uniqID;
+    private static String unitID;
     private static String callSign;
     private static String defLocation;
     private static String currEvent;
@@ -74,7 +74,7 @@ public class LoadUnitTable extends Application {
     private RecordInput log = new RecordInput();
     
     @Override
-    public void start(Stage primaryStage)throws ParserConfigurationException, SAXException, IOException{
+    public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{
         //Load UnitTable   
         createTable();
         createContextMenu();
@@ -380,7 +380,7 @@ public class LoadUnitTable extends Application {
         }      
     }
   
-    public void createTable()throws ParserConfigurationException, SAXException, IOException{
+    public void createTable(){//throws ParserConfigurationException, SAXException, IOException{
         //ID column
         TableColumn<Unit, String> uniqIdCol = new TableColumn<>("ID");
         uniqIdCol.setMinWidth(100);
@@ -405,8 +405,21 @@ public class LoadUnitTable extends Application {
         updateTableColour();
     }
     
-    public ObservableList<Unit> getUnits()throws ParserConfigurationException, SAXException, IOException{       
+    public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
+        //Temporary
+        x = new Unit("UNI1", "signUndef", "locUndef", "eventUndef", "timeUndef", "I", "avail");
+        unit.add(x);
+        x = new Unit("UNS1", "signUndef", "locUndef", "eventUndef", "timeUndef", "S", "avail");
+        unit.add(x);
+        x = new Unit("UNQ1", "signUndef", "locUndef", "eventUndef", "timeUndef", "Q", "avail");
+        unit.add(x);
+        x = new Unit("UNT1", "signUndef", "locUndef", "eventUndef", "timeUndef", "T", "avail");
+        unit.add(x);
+        x = new Unit("UND1", "signUndef", "locUndef", "eventUndef", "timeUndef", "D", "avail");
+        unit.add(x);
+        //XML CODE
+        /*ObservableList<Unit> unit = FXCollections.observableArrayList();    
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         Document doc = builder.parse("UnitInfo.xml");
@@ -428,7 +441,7 @@ public class LoadUnitTable extends Application {
                 x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }
-        }
+        }*/
         //--------------------------------------------------------------------
         //--------------------------------------------------------------------
         //Code below reads database instead of XML file
