@@ -10,6 +10,7 @@ import UnitTableView.LoadUnitTable;
 import PendingTableView.LoadPendingTable;
 import EventWindow.LoadEventWindow;
 import LogWindow.LoadLogWindow;
+import MainMenu.LoadMainMenu;
 import static javafx.application.Application.launch;
 
 public class Main extends Application { 
@@ -18,6 +19,7 @@ public class Main extends Application {
     private LoadPendingTable pendingTable = new LoadPendingTable();
     private LoadEventWindow eventWindow = new LoadEventWindow();
     private LoadLogWindow logWindow = new LoadLogWindow();
+    private LoadMainMenu startMenu = new LoadMainMenu();
 
     public static void main(String[] args) {
         System.out.println("The night is darkest just before the dawn. And I promise you, the dawn is coming. Don't forget t' do testin' or ye will walk th' plank!");
@@ -26,11 +28,13 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{       
-        map.start(primaryStage);
-        logWindow.start(primaryStage);
-        eventWindow.start(primaryStage);
-        unitTable.start(primaryStage);
-        pendingTable.start(primaryStage);        
+       // map.start(primaryStage);
+        //logWindow.start(primaryStage);
+        //eventWindow.start(primaryStage);
+       // unitTable.start(primaryStage);
+       // pendingTable.start(primaryStage);      
+        startMenu.start(primaryStage);
+       
     }
 }
   
