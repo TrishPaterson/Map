@@ -249,7 +249,7 @@ public class LoadMainMenu extends Application {
                 logWindow.start(MainWindow);
                 map.start(MainWindow);
                 eventWindow.start(MainWindow);
-                //unitTable.start(MainWindow);
+                unitTable.start(MainWindow);
                 pendingTable.start(MainWindow);
               
 

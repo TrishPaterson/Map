@@ -79,7 +79,7 @@ public class LoadUnitTable extends Application {
         createTable();
         createContextMenu();
  
-        unitWindow = primaryStage;
+        unitWindow = new Stage();
         unitWindow.initStyle(StageStyle.UNDECORATED);
         unitWindow.getIcons().add(new Image("/Images/NCP.PNG"));
         unitWindow.setTitle("Unit Table");
