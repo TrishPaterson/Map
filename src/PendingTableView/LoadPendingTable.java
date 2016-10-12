@@ -191,11 +191,11 @@ public class LoadPendingTable extends Application {
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
         evt = new Event("2", "11:00 am", "B1204", "Burglary", "Navigation Dr",
-                            "Bruce Kent", "New Batman Game is coming out next year.",
+                            "Bruce Kent", "",
                             "Unknown DOT, Informant has no Obs, Discript black shirt carrying blue bag.");
         listOfEvents.add(evt);
         evt = new Event("1", "12:00 pm", "B1337", "Shop lifting",
-                            "Spinnaker Dr", "Kathleen Keyes", "Justice league movie is coming out next year!!",
+                            "Spinnaker Dr", "Kathleen Keyes", "",
                             "Male has now left, Unknown DOT, Male");
         listOfEvents.add(evt);
         //-------------------------------------------------------------------
