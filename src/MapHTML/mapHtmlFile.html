@@ -77,10 +77,7 @@
                     center: {lat: expLat, lng: expLong},
                     radius: expRadius
                 });
-                cityCircle.push(c);
-                expLat = null;
-                expLong = null;
-                expRadius = null;        
+                cityCircle.push(c);      
                 createExp = false;
             }
         },50);
@@ -88,7 +85,7 @@
         function checkEvent( rad ) {           
             if ( eventZone ) {
                 var vertices = eventZone.getPath();
-                var center = new google.maps.LatLng( -41.1130274, 174.8924949 );
+                var center = new google.maps.LatLng(expLat, expLong);
                 for( var i = 0; i < vertices.length; i++ ) {
                     var d = vertices.getAt( i );
                     var middle;
@@ -118,7 +115,6 @@
                             //checks if containment zone is valid
                             if(eventZone.fillColor == '#7f7fff'){
                                 return true;
-                                google.maps.event.trigger(map,'resize');
                             }
                         }
                     }
@@ -538,6 +534,8 @@
     function createExpanding(lat,long, rad){
         expLat = lat;
         expLong = long;
+        dogHandLat = lat;
+        dogHandLng = long;
         expRadius = rad;  
         createExp = true; 
     }
@@ -568,8 +566,8 @@
 //startTracking is used to start the dog handler
 //------------------------------------------------------------------------------
     function startTracking(lat,lng) {
-        dogHandLat = lat;
-        dogHandLng = lng;
+        //dogHandLat = lat;
+        //dogHandLng = lng;
         startTrack = true;
     }
 //------------------------------------------------------------------------------

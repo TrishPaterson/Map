@@ -126,14 +126,14 @@ public class LoadUnitTable extends Application {
         vbox.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
         vbox.setPadding(new Insets(12, 0, 15, 0));
         vbox.getChildren().addAll(label,Exit,Min,TIcon,table, actionStatus);
-        Scene scene = new Scene(vbox, 600,450); // w x h 
+        Scene scene = new Scene(vbox, 600,300); // w x h 
         unitWindow.setScene(scene);
         unitWindow.show();
         
         //Positioning the window on the screen
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         unitWindow.setX((primScreenBounds.getWidth() - unitWindow.getWidth()) /100); 
-        unitWindow.setY((primScreenBounds.getHeight() - unitWindow.getHeight()) / 1.9);      
+        unitWindow.setY((primScreenBounds.getHeight() - unitWindow.getHeight()) / 1.35);      
         
         //Exit Button
         Exit.setOnMouseClicked((MouseEvent t) -> {
@@ -408,15 +408,15 @@ public class LoadUnitTable extends Application {
     public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
         //Temporary
-        x = new Unit("UNI1", "signUndef", "locUndef", "eventUndef", "timeUndef", "I", "avail");
+        x = new Unit("UNI1", "signUndef", "Porirua Police Station", "eventUndef", "11:05 am", "I", "avail");
         unit.add(x);
-        x = new Unit("UNS1", "signUndef", "locUndef", "eventUndef", "timeUndef", "S", "avail");
+        x = new Unit("UNS1", "signUndef", "Porirua Police Station", "eventUndef", "10:58 am", "S", "avail");
         unit.add(x);
-        x = new Unit("UNQ1", "signUndef", "locUndef", "eventUndef", "timeUndef", "Q", "avail");
+        x = new Unit("UNQ1", "signUndef", "Porirua Police Station", "eventUndef", "11:00 am", "Q", "avail");
         unit.add(x);
-        x = new Unit("UNT1", "signUndef", "locUndef", "eventUndef", "timeUndef", "T", "avail");
+        x = new Unit("UNT1", "signUndef", "Porirua Police Station", "eventUndef", "10:30 am", "T", "avail");
         unit.add(x);
-        x = new Unit("UND1", "signUndef", "locUndef", "eventUndef", "timeUndef", "D", "avail");
+        x = new Unit("UND1", "signUndef", "Porirua Police Station", "eventUndef", "11:13 am", "D", "avail");
         unit.add(x);
         //XML CODE
         /*ObservableList<Unit> unit = FXCollections.observableArrayList();    

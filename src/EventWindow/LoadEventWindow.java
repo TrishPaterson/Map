@@ -126,7 +126,6 @@ public class LoadEventWindow extends Application {
         Exit.setFitWidth(18);
         Exit.setTranslateX(510);
         Exit.setTranslateY(-276);
-
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
@@ -140,7 +139,6 @@ public class LoadEventWindow extends Application {
         Min.setFitWidth(18);
         Min.setTranslateX(490);
         Min.setTranslateY(-294);
-
         Min.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent me) {
@@ -149,24 +147,20 @@ public class LoadEventWindow extends Application {
         });
 
         table = new TableView<>();
-      
         //table.setItems(getRemarkList());
-
         TableColumn RemarksColumn = new TableColumn("");
         RemarksColumn.setCellValueFactory(new PropertyValueFactory("Listing"));
         RemarksColumn.prefWidthProperty().bind(table.widthProperty().multiply(1.0));
-        
-        
-        //listing input
+       //listing input
         ListingInput = new TextField();
         ListingInput.setPromptText("Add Remarks");
         ListingInput.setMinWidth(350);
-
+         ListingInput.setTranslateX(100);
+        ListingInput.setTranslateY(-30);
         /*Button to add Remarks
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);*/
         ListingInput.setOnAction(e -> addButtonClicked());
-
         /*Button deleteR = new Button("Delete");
         deleteR.setPrefWidth(100);
         deleteR.setOnAction(e -> deleteButtonClicked());
@@ -174,7 +168,7 @@ public class LoadEventWindow extends Application {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(-200, 100, 100, 10));
         hbox.setSpacing(10);
-        hbox.setTranslateX(120);
+        hbox.setTranslateX(20);
         hbox.setTranslateY(-110);
         hbox.getChildren().addAll(ListingInput);
 
@@ -183,17 +177,16 @@ public class LoadEventWindow extends Application {
         table.setPrefHeight(500);
         table.setTranslateX(0);
         table.setTranslateY(-100);
-
         actionStatus = new Text();
         actionStatus.setFill(Color.FIREBRICK);
 
         Image image = new Image("/Images/EventBackG.jpg");
         VBox vbox = new VBox(0);
         vbox.setBackground(new Background(new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
-        vbox.setPadding(new Insets(100, 50, -10, 70));
+        vbox.setPadding(new Insets(80, 50, -50, 70));
         vbox.getChildren().addAll(grid, Exit, Min, TIcon, actionStatus, label, table, hbox);
         Scene scene = new Scene(vbox, 600, 550); // w x h
-
+        
         eventWindow.setScene(scene);
         eventWindow.show();
 
@@ -201,7 +194,6 @@ public class LoadEventWindow extends Application {
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         eventWindow.setX((primScreenBounds.getWidth() - eventWindow.getWidth()) / 100);
         eventWindow.setY((primScreenBounds.getHeight() - eventWindow.getHeight()) / 100);
-
         eventWindow.getScene().setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -239,9 +231,8 @@ public class LoadEventWindow extends Application {
         remarks = FXCollections.observableArrayList();
         remarks.add(new RemarkList( remark ));
     }
-    
+
     public static void populateFields( Event evt ) {
-        
         String priority = evt.getPriority();    //not used
         String time = evt.getTime();            //not used
         String evtNumber = evt.getEvtNumber();  //not used
@@ -249,8 +240,8 @@ public class LoadEventWindow extends Application {
         String location = evt.getLocation();
         String informantName = evt.getInformantName();
         String headline = evt.getHeadline();
-        String remark = evt.getRemarks();
-        
+        String remark = evt.getRemarks();     
+
         EventTypeBox.setText(type);
         LocBox.setText(location);
         NameInfoBox.setText(informantName);

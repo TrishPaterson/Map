@@ -91,7 +91,7 @@ public class LoadPendingTable extends Application {
         vbox.setPadding(new Insets(-6, 0, -10, 0));
 
         vbox.getChildren().addAll(Exit,Min, TIcon, actionStatus,label,table );
-        Scene scene = new Scene(vbox, 600,300); // w x h
+        Scene scene = new Scene(vbox, 600,200); // w x h
          
         pendingWindow.setScene(scene);
         pendingWindow.show();
@@ -150,12 +150,20 @@ public class LoadPendingTable extends Application {
             ObservableList<Event> evtSelected,allEvents;
             allEvents = table.getItems();
             evtSelected = table.getSelectionModel().getSelectedItems(); 
+            int nextEvent = 1;
             if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !isEventOn ) {
                 
                 LoadEventWindow.populateFields(evtSelected.get(0));
                 //System.out.println( LoadEventWindow.populateFields(evtSelected.get(0)));
-                //Temporary while the geolocation is not implemented.
-                mapEngine.createExpanding(-41.1130274, 174.8924949, 1);               
+                
+                //Temporary while the geolocation is not implemented-------------------
+                if(evtSelected.get(0).getLocation().equals("Navigation Dr")){
+                    mapEngine.createExpanding(-41.113652, 174.906547, 1);
+                    nextEvent = 2;
+                }else {
+                    mapEngine.createExpanding(-41.109542, 174.889214, 1); 
+                }          
+                //----------------------------------------------------------------------
                 mapEngine.createEvent(evtSelected.get(0).getLocation());              
                 mapEngine.setEvent(evtSelected.get(0).getLocation());
                 log.writeLog(8, evtSelected.get(0).getLocation());
@@ -182,13 +190,13 @@ public class LoadPendingTable extends Application {
         
         //-------------------------------------------------------------------
         //code below is a hardcoded event, comment out if using database
-        evt = new Event("High", "12:00", "B1204", "Assault", "Gotham",
-                            "Joe Bloggs", "Bane is on a rampage", 
-                            "- Police initially said foul play was not suspected");
+        evt = new Event("2", "11:00 am", "B1204", "Burglary", "Navigation Dr",
+                            "Bruce Kent", "New Batman Game is coming out next year.",
+                            "Unknown DOT, Informant has no Obs, Discript black shirt carrying blue bag.");
         listOfEvents.add(evt);
-        evt = new Event("Extremely High", "12:00", "B1204", "Prison BreakOut",
-                            "Arkham Asylum", "Mr Snitch", "Joker is on the loose",
-                            "- It’s not a murder case….it’s could be a suicide");
+        evt = new Event("1", "12:00 pm", "B1337", "Shop lifting",
+                            "Spinnaker Dr", "Kathleen Keyes", "Justice league movie is coming out next year!!",
+                            "Male has now left, Unknown DOT, Male");
         listOfEvents.add(evt);
         //-------------------------------------------------------------------
         //-------------------------------------------------------------------
