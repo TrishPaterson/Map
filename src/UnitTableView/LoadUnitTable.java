@@ -1,6 +1,6 @@
 package UnitTableView;
 
-import LogWindow.RecordInput;
+import LogWindow.RecordLog;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -71,7 +71,7 @@ public class LoadUnitTable extends Application {
     private int numCordonDisp = 0;
     private LoadMap mapEngine = new LoadMap();
     private LoadPendingTable lpt = new LoadPendingTable();
-    private RecordInput log = new RecordInput();
+    private RecordLog log = new RecordLog();
     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{
@@ -194,16 +194,16 @@ public class LoadUnitTable extends Application {
     public void k9(){  
         for(int i = 0; i < unitSelected.size(); i++){     
             if(!lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onscene")){// if disptacher tries to close event when the cordon has not been assigned
-                log.writeLog(14, unitSelected.get(i).getId()); 
+                log.writeLog(14, unitSelected.get(i).getUnitName()); 
             }else if(!mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onscene")){//if dispatcher tries to close event while the offender has not been caught
-                log.writeLog(15, unitSelected.get(i).getId()); 
+                log.writeLog(15, unitSelected.get(i).getUnitName()); 
             }else if(lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onscene")){// if disptacher tries to close event an on route cordon when the offender has not yet been caught
-                log.writeLog(15, unitSelected.get(i).getId());
+                log.writeLog(15, unitSelected.get(i).getUnitName());
             }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onscene")){ //check if dog handler has caught the offender and cordon  is on scene
                 numCordonDisp -= 1;
                 System.out.println(numCordonDisp);
                 unitSelected.get(i).setStatus("avail");
-                log.writeLog(13, unitSelected.get(i).getId());
+                log.writeLog(13, unitSelected.get(i).getUnitName());
                 if(numCordonDisp == 0){ // check if all cordons has been unassigned to the event.
                     mapEngine.refreshMap();
                     lpt.enAbleRow();
@@ -217,9 +217,9 @@ public class LoadUnitTable extends Application {
     public void OnScene(){
         CalculateDistance cd = new CalculateDistance();
         for(int x = 0; x < unitSelected.size(); x++){
-            if(unitSelected.get(x).getStatus().equals("Onroute") && cd.isOnScene(unitSelected.get(0).getId())){//if cordon status is on route and has arrived on scene
+            if(unitSelected.get(x).getStatus().equals("Onroute") && cd.isOnScene(unitSelected.get(0).getUnitName())){//if cordon status is on route and has arrived on scene
                 unitSelected.get(x).setStatus("onSen");   
-                log.writeLog(10, unitSelected.get(x).getId());
+                log.writeLog(10, unitSelected.get(x).getUnitName());
                 unitSelected.get(x).setCurrLocation(mapEngine.getEvent());
                 table.refresh();
                 if(unitSelected.get(x).getType().equals("D")) {
@@ -231,13 +231,13 @@ public class LoadUnitTable extends Application {
                 updateTableColour();
             }
             else if("Onscene".equals(unitSelected.get(x).getStatus()) && lpt.getIsEventOn()){// if dispatcher changes the status of cordon twice
-                log.writeLog(4, unitSelected.get(x).getId());
+                log.writeLog(4, unitSelected.get(x).getUnitName());
             }else if(!lpt.getIsEventOn()){// if dispatcher changes cordon status to on scene without assigning it to an event
-                log.writeLog(3, unitSelected.get(x).getId());
+                log.writeLog(3, unitSelected.get(x).getUnitName());
             }else if(!unitSelected.get(x).getStatus().equals("Onroute")){// if dispatcher changes cordon status to on scene without assigning it to an event
-                log.writeLog(3, unitSelected.get(x).getId());
-            }else if(!cd.isOnScene(unitSelected.get(0).getId()) && unitSelected.get(x).getStatus().equals("Onroute")){ //if disptacher tries to change status of cordon when it has not arrived on scene
-                log.writeLog(5, unitSelected.get(x).getId());
+                log.writeLog(3, unitSelected.get(x).getUnitName());
+            }else if(!cd.isOnScene(unitSelected.get(0).getUnitName()) && unitSelected.get(x).getStatus().equals("Onroute")){ //if disptacher tries to change status of cordon when it has not arrived on scene
+                log.writeLog(5, unitSelected.get(x).getUnitName());
             }
         }
         table.getSelectionModel().clearSelection();
@@ -246,13 +246,13 @@ public class LoadUnitTable extends Application {
     public void changeLocation(){    
         if("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
             unitSelected.sorted();
-            id = checkId(unitSelected.get(0).getId());  
+            id = unitSelected.get(0).getUnitId();  
             mapEngine.changeLocation(id); 
-            getMarkerLocation(id, unitSelected.get(0).getId());
+            getMarkerLocation(id, unitSelected.get(0).getUnitName());
         }else if(!"Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ //if unit is not onscene but is assigned to an event
-            log.writeLog(6, unitSelected.get(0).getId());
+            log.writeLog(6, unitSelected.get(0).getUnitName());
         }else if(!lpt.getIsEventOn()){ //if unit is not assigned to any event
-            log.writeLog(7, unitSelected.get(0).getId());
+            log.writeLog(7, unitSelected.get(0).getUnitName());
         }
         table.getSelectionModel().clearSelection();
     }
@@ -261,23 +261,23 @@ public class LoadUnitTable extends Application {
        unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
             if(!lpt.getIsEventOn()){//if unit is not assigned to an event
-                log.writeLog(1, unitSelected.get(x).getId());           
+                log.writeLog(1, unitSelected.get(x).getUnitName());           
             }else if(!unitSelected.get(x).getStatus().equals("Onroute") && unitSelected.get(x).getStatus().equals("Available")){//check if unit is not already dispatched and is available    
-                id = checkId(unitSelected.get(x).getId());
+                id = unitSelected.get(x).getUnitId();
                 if(!unitSelected.get(x).getType().equals("D")){ //if type is not dog handler then create marker
                     mapEngine.setMarkerId(id);  
                 }
                 unitSelected.get(x).setStatus("onRot"); //change status to on route                       
                 numCordonDisp += 1; //monitor how many corodn has been dispatch
  
-                log.writeLog(9, unitSelected.get(x).getId());              
+                log.writeLog(9, unitSelected.get(x).getUnitName());              
                 CalculateDistance cd = new CalculateDistance();
                 //temporary-----------------------------------------------------
                 Random rn = new Random();
-                cd.calculateDistance(unitSelected.get(x).getId(), rn.nextInt(10000) + 5000);//delay when the cordon arrives. 
+                cd.calculateDistance(unitSelected.get(x).getUnitName(), rn.nextInt(10000) + 5000);//delay when the cordon arrives. 
                 //--------------------------------------------------------------
             }else{//if dispatcher tries to disptach unit twice 
-                log.writeLog(2, unitSelected.get(x).getId());
+                log.writeLog(2, unitSelected.get(x).getUnitName());
             }           
         }     
         updateTableColour();
@@ -368,23 +368,12 @@ public class LoadUnitTable extends Application {
         backgroundThread.setDaemon(true);
         backgroundThread.start();      
     }  
-    
-    public int checkId(String id){
-        switch(id){
-           case "UNI1": return 1;
-           case "UNS1": return 2; 
-           case "UNQ1": return 3; 
-           case "UNT1": return 4; 
-           case "UND1": return 5; 
-           default: return -1;
-        }      
-    }
-  
+
     public void createTable(){//throws ParserConfigurationException, SAXException, IOException{
         //ID column
         TableColumn<Unit, String> uniqIdCol = new TableColumn<>("ID");
         uniqIdCol.setMinWidth(100);
-        uniqIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        uniqIdCol.setCellValueFactory(new PropertyValueFactory<>("unitName"));
         //Location column
         TableColumn<Unit, String> currLocationCol = new TableColumn<>("Location");
         currLocationCol.setMinWidth(300);
@@ -408,15 +397,15 @@ public class LoadUnitTable extends Application {
     public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
         //Temporary
-        x = new Unit("UNI1", "signUndef", "Porirua Police Station", "eventUndef", "11:05 am", "I", "avail");
+        x = new Unit(1,"UNI1", "signUndef", "Porirua Police Station", "eventUndef", "11:05 am", "I", "avail");
         unit.add(x);
-        x = new Unit("UNS1", "signUndef", "Porirua Police Station", "eventUndef", "10:58 am", "S", "avail");
+        x = new Unit(2,"UNS1", "signUndef", "Porirua Police Station", "eventUndef", "10:58 am", "S", "avail");
         unit.add(x);
-        x = new Unit("UNQ1", "signUndef", "Porirua Police Station", "eventUndef", "11:00 am", "Q", "avail");
+        x = new Unit(3,"UNQ1", "signUndef", "Porirua Police Station", "eventUndef", "11:00 am", "Q", "avail");
         unit.add(x);
-        x = new Unit("UNT1", "signUndef", "Porirua Police Station", "eventUndef", "10:30 am", "T", "avail");
+        x = new Unit(4,"UNT1", "signUndef", "Porirua Police Station", "eventUndef", "10:30 am", "T", "avail");
         unit.add(x);
-        x = new Unit("UND1", "signUndef", "Porirua Police Station", "eventUndef", "11:13 am", "D", "avail");
+        x = new Unit(5,"UND1", "signUndef", "Porirua Police Station", "eventUndef", "11:13 am", "D", "avail");
         unit.add(x);
         //XML CODE
         /*ObservableList<Unit> unit = FXCollections.observableArrayList();    

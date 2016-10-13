@@ -1,20 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package LogWindow;
 
-/**
- *
- * @author Sakina Pan
- */
-public class MessageLog {
-    
+public class Message {   
     private String msgLog;
     private String time;
     
-    public MessageLog(){        
+    public Message(){        
         this.msgLog = "";
     }
 
@@ -26,8 +16,7 @@ public class MessageLog {
         this.time = time;
     }
     
-    public MessageLog(String msgLog, String time){
-        
+    public Message(String msgLog, String time){      
         this.msgLog = msgLog;
         this.time = time;
     }

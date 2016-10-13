@@ -1,5 +1,6 @@
 package LogWindow;
 
+import NotificationWindow.LoadNotification;
 import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,11 +10,12 @@ import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class RecordInput{
+public class RecordLog{
 
     private static LoadLogWindow log = new LoadLogWindow();
     private static String currentEvent;
     public void writeLog(int logNum, String name){
+        LoadNotification ln = new LoadNotification(name + " has arrived on scene.");
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");  
         switch(logNum){
@@ -40,14 +42,18 @@ public class RecordInput{
             
             //Onscene 
             case 10: log.addLog("Dispatcher changed status of " +name+ " to on scene.",sdf.format(cal.getTime()));break;
-            case 11: log.addLog(name + " has arrived on scene.",sdf.format(cal.getTime())); break;
+            case 11: log.addLog(name + " has arrived on scene.",sdf.format(cal.getTime()));
+                     ln = new LoadNotification(name + " has arrived on scene."); playNotificationSound(); 
+                     ln.start(ln.notificationWindow);break;
                        
             //DogHandler
             case 12: log.addLog("Dog handler has caught the offender.",sdf.format(cal.getTime()));break;
             
             //K9
             case 13: log.addLog(name + " has been set to available.",sdf.format(cal.getTime())); break;    
-            case 16: log.addLog("Dispatcher has successfully closed the event: " + currentEvent ,sdf.format(cal.getTime())); break;
+            case 16: log.addLog("Dispatcher has successfully closed the event: " + currentEvent ,sdf.format(cal.getTime())); 
+                     ln = new LoadNotification(currentEvent + " event is done."); playNotificationSound(); 
+                     ln.start(ln.notificationWindow);break;
 
             default: log.addLog("undefined",sdf.format(cal.getTime()));break;
         }
@@ -60,11 +66,19 @@ public class RecordInput{
         log.addLog("Dispatcher changed the location of " +name+ " to " + location,sdf.format(cal.getTime()));     
     }
     
-    public void playErrorSound(){
+    private void playErrorSound(){
         try {
             new JavaSoundAudioClip(new FileInputStream(new File("chord.wav"))).play();
         } catch (IOException ex) {
-            Logger.getLogger(RecordInput.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RecordLog.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void playNotificationSound(){
+         try {
+            new JavaSoundAudioClip(new FileInputStream(new File("notify.wav"))).play();
+        } catch (IOException ex) {
+            Logger.getLogger(RecordLog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

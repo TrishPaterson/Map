@@ -1,7 +1,7 @@
 package PendingTableView;
 
 import EventWindow.LoadEventWindow;
-import LogWindow.RecordInput;
+import LogWindow.RecordLog;
 import MapHTML.LoadMap;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -37,7 +37,7 @@ public class LoadPendingTable extends Application {
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage pendingWindow;
-    private RecordInput log = new RecordInput();
+    private RecordLog log = new RecordLog();
     private LoadMap mapEngine = new LoadMap();  
     @Override
     public void start(Stage primaryStage) {

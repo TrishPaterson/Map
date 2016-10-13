@@ -26,8 +26,9 @@ public class Unit {
             return status;
         }
     }
-
-    private final String id;
+    
+    private final int unitId;
+    private final String unitName;
     private String callSign;
     private String currLocation;
     private String currEvent;
@@ -35,8 +36,9 @@ public class Unit {
     private Type type;
     private Status status;
     
-    Unit(String uniqId, String callSign, String currLocation, String currEvent, String time, String type, String stat) {
-        this.id = uniqId;
+    Unit(int unitId, String unitName, String callSign, String currLocation, String currEvent, String time, String type, String stat) {
+        this.unitId = unitId;
+        this.unitName = unitName;
         this.callSign = callSign;
         this.currLocation = currLocation;
         this.currEvent = currEvent;
@@ -83,9 +85,13 @@ public class Unit {
         }
     }   
     
-//getters    
-    public String getId(){
-        return id;
+//getters  
+    public int getUnitId() {
+        return unitId;
+    }
+
+    public String getUnitName() {
+        return unitName;
     }
     
     public String getCallSign() {
@@ -110,5 +116,5 @@ public class Unit {
     
     public String getStatus(){
         return status.getStatus();
-    }
+    } 
 }

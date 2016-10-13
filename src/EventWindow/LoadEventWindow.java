@@ -45,7 +45,7 @@ public class LoadEventWindow extends Application {
     private static TextField LocBox;
     private static TextField NameInfoBox;
     private static TextField HeadlineBox;
-    private static ObservableList<RemarkList> remarks;
+    private static ObservableList<Remarks> remarks;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
@@ -118,14 +118,14 @@ public class LoadEventWindow extends Application {
         TIcon.setSmooth(true);
         TIcon.setCache(true);
         TIcon.setTranslateX(-60);
-        TIcon.setTranslateY(-308);
+        TIcon.setTranslateY(-280);
 
         ImageView Exit = new ImageView("/Images/ExitButton2.PNG");
         Exit.getStyleClass().add("ImageView");
         Exit.setFitHeight(18);
         Exit.setFitWidth(18);
-        Exit.setTranslateX(510);
-        Exit.setTranslateY(-276);
+        Exit.setTranslateX(505);
+        Exit.setTranslateY(-250);
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
@@ -137,8 +137,8 @@ public class LoadEventWindow extends Application {
         Min.getStyleClass().add("ImageView");
         Min.setFitHeight(18);
         Min.setFitWidth(18);
-        Min.setTranslateX(490);
-        Min.setTranslateY(-294);
+        Min.setTranslateX(485);
+        Min.setTranslateY(-268);
         Min.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent me) {
@@ -155,8 +155,8 @@ public class LoadEventWindow extends Application {
         ListingInput = new TextField();
         ListingInput.setPromptText("Add Remarks");
         ListingInput.setMinWidth(350);
-         ListingInput.setTranslateX(100);
-        ListingInput.setTranslateY(-30);
+        ListingInput.setTranslateX(100);
+        ListingInput.setTranslateY(-55);
         /*Button to add Remarks
         Button addButton = new Button("Add");
         addButton.setPrefWidth(100);*/
@@ -214,22 +214,22 @@ public class LoadEventWindow extends Application {
     //add button clicked
     public void addButtonClicked() {
         System.out.println(ListingInput.getText());
-        RemarkList remarkList = new RemarkList();
+        Remarks remarkList = new Remarks();
         remarkList.setListing(ListingInput.getText());
         table.getItems().add(remarkList);
         ListingInput.clear();
     }
 
-    public void deleteButtonClicked() {
-        ObservableList<RemarkList> remarkListSelected, allRemarkLists;
+    /*public void deleteButtonClicked() {
+        ObservableList<Remarks> remarkListSelected, allRemarkLists;
         allRemarkLists = table.getItems();
         remarkListSelected = table.getSelectionModel().getSelectedItems();
         remarkListSelected.forEach(allRemarkLists::remove);
-    }
+    }*/
 
     public static void setRemarksList( String remark ) {
         remarks = FXCollections.observableArrayList();
-        remarks.add(new RemarkList( remark ));
+        remarks.add(new Remarks( remark ));
     }
 
     public static void populateFields( Event evt ) {

@@ -1,18 +1,14 @@
 package EventWindow;
 
-public class RemarkList {
-    
+public class Remarks {    
     private String Listing;
-
-    public RemarkList(){
-        
+    
+    public Remarks(){ 
         this.Listing = "";
     }
-    
-    public RemarkList(String Listing){
-        
-        this.Listing = Listing;
-        
+   
+    public Remarks(String Listing){       
+        this.Listing = Listing;        
     }
 
     public void setListing(String Listing) {

@@ -1,6 +1,6 @@
 
 package UnitTableView;
-import LogWindow.RecordInput;
+import LogWindow.RecordLog;
 import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import javafx.application.Platform;
 
 
 public class CalculateDistance{
-    private RecordInput log = new RecordInput();
+    private RecordLog log = new RecordLog();
     private static int prevDist;
     private static List<String> listOnSceneCordon = new ArrayList<>(); 
     public void calculateDistance(String name, int delay){
@@ -31,8 +31,6 @@ public class CalculateDistance{
                         @Override
                             public void run(){ 
                                 log.writeLog(11, name);
-                                LoadNotification ln = new LoadNotification(name + " has arrived on scene.");
-                                ln.start(ln.notificationWindow); 
                             }
                         });                    
                     }
@@ -45,11 +43,6 @@ public class CalculateDistance{
                 } catch (InterruptedException ex) {
                     Logger.getLogger(CalculateDistance.class.getName()).log(Level.SEVERE, null, ex);
                 }                
-                try {
-                    new JavaSoundAudioClip(new FileInputStream(new File("notify.wav"))).play();
-                } catch (IOException ex) {
-                    Logger.getLogger(RecordInput.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });      
         t1.start(); 
@@ -59,10 +52,6 @@ public class CalculateDistance{
         return listOnSceneCordon.size();
     }
 
-    public static List<String> getList() {
-        return listOnSceneCordon;
-    }
-    
     public boolean isOnScene(String name) {
         boolean isArrived = false;
         for (String temp : listOnSceneCordon) {

@@ -30,15 +30,15 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class LoadLogWindow extends Application {
-    private ObservableList<MessageLog> log = FXCollections.observableArrayList();;
+    private ObservableList<Message> log = FXCollections.observableArrayList();;
     private static TableView table;
     public TextField ListingInput;
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
     private Stage logWindow;
-    private TableColumn<MessageLog, String> timeColumn;
-    private TableColumn<MessageLog, String> msgCol;
+    private TableColumn<Message, String> timeColumn;
+    private TableColumn<Message, String> msgCol;
     @Override
     public void start(Stage primaryStage) {
         logWindow = new Stage();
@@ -136,7 +136,7 @@ public class LoadLogWindow extends Application {
     }*/
 
     public void addLog(String msg, String time){
-        log.add(new MessageLog(msg,time));
+        log.add(new Message(msg,time));
         table.setItems(log);
         //table.getItems().add(log);  
     }
