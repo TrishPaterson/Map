@@ -22,7 +22,6 @@ public class Main extends Application {
     private LoadMainMenu startMenu = new LoadMainMenu();
 
     public static void main(String[] args) {
-        System.out.println("The night is darkest just before the dawn. And I promise you, the dawn is coming. Don't forget t' do testin' or ye will walk th' plank!");
         launch(args);
     }
     

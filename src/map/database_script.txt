@@ -1,7 +1,7 @@
 #-----------------------------------------------------------------
 #Database Script
 #NOTE!!! SOME PARTS OF SCRIPT ARE OUTDATED. 16/10/2016
-#												
+#Reading from database will not be part of the release on 17/10/16												
 #-----------------------------------------------------------------
 
 CREATE SCHEMA `cordon_training_tool` ;
