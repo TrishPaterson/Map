@@ -189,6 +189,14 @@
 //o and a are the points that form the most recent line in the
 //hull. b is the next point being checked, whether it should be 
 //considered as point to form the hull, or discarded.
+//
+//The cross function and createConvexHull function was developed by [Andrew,1979]
+//and is called Andrew's Monotone Chain Algorithm
+//The code can be found at this link -
+//https://en.wikibooks.org/wiki/Algorithm_Implementation/Geometry/Convex_hull/Monotone_chain
+//
+//Modifications are commented in the code,
+//and some variable names and method name have been slightly changed for easier reading.
 //------------------------------------------------------------------------------
 //Cross
 //------------------------------------------------------------------------------
@@ -236,6 +244,8 @@
             }
             upper.pop();
             lower.pop();
+            //The following code below are additions to Convex Hull Algorithm 
+            //to make it workable in our application.
             var hull = lower.concat(upper);
 //Put the x and y coordinates back in the form of LatLng object
 //so a polygon can be created.

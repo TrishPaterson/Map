@@ -3,6 +3,9 @@ package map;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+//The overall model of this DataBaseConn class was based on the accepted answer
+//from a stackoverflow question, which can be found here
+//http://stackoverflow.com/questions/20666658/how-can-i-use-one-database-connection-object-in-whole-application
 public class DataBaseConn {
     
     private static final String URL = "jdbc:mysql://localhost:3306/cordon_training_tool";
