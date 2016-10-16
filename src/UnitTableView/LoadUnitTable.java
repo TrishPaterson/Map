@@ -52,7 +52,8 @@ import javafx.stage.Screen;
 public class LoadUnitTable extends Application {
     private int id;
     private static Unit x = null;
-    private static String unitID;
+    private static int unitID;
+    private static String unitName;
     private static String callSign;
     private static String defLocation;
     private static String currEvent;
@@ -396,22 +397,22 @@ public class LoadUnitTable extends Application {
     
     public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
-        //Temporary
-        x = new Unit(1,"UNI1", "signUndef", "Porirua Police Station", "eventUndef", "11:05 am", "I", "avail");
-        unit.add(x);
-        x = new Unit(2,"UNS1", "signUndef", "Porirua Police Station", "eventUndef", "10:58 am", "S", "avail");
-        unit.add(x);
-        x = new Unit(3,"UNQ1", "signUndef", "Porirua Police Station", "eventUndef", "11:00 am", "Q", "avail");
-        unit.add(x);
-        x = new Unit(4,"UNT1", "signUndef", "Porirua Police Station", "eventUndef", "10:30 am", "T", "avail");
-        unit.add(x);
-        x = new Unit(5,"UND1", "signUndef", "Porirua Police Station", "eventUndef", "11:13 am", "D", "avail");
-        unit.add(x);
         //XML CODE
-        /*ObservableList<Unit> unit = FXCollections.observableArrayList();    
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse("UnitInfo.xml");
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Document doc = null;
+        try {
+            doc = builder.parse("UnitInfo.xml");
+        } catch (SAXException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
         NodeList nList = doc.getElementsByTagName("unit");
         
         //-------------------------------------------------------------------
@@ -420,17 +421,18 @@ public class LoadUnitTable extends Application {
             Node node = nList.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) node;
-                uniqID = eElement.getAttribute("id");
+                unitID = Integer.parseInt(eElement.getAttribute("id"));
+                unitName = eElement.getElementsByTagName("unitName").item(0).getTextContent();
                 callSign = eElement.getElementsByTagName("callSign").item(0).getTextContent();
                 defLocation = eElement.getElementsByTagName("defLocation").item(0).getTextContent();
                 currEvent = eElement.getElementsByTagName("currEvent").item(0).getTextContent();
                 time = eElement.getElementsByTagName("time").item(0).getTextContent();
                 type = eElement.getElementsByTagName("type").item(0).getTextContent();
                 status = eElement.getElementsByTagName("status").item(0).getTextContent();
-                x = new Unit(uniqID, callSign, defLocation, currEvent, time, type, status);
+                x = new Unit(unitID,unitName, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }
-        }*/
+        }
         //--------------------------------------------------------------------
         //--------------------------------------------------------------------
         //Code below reads database instead of XML file

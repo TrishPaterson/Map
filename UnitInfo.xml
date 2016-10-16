@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Cordon>
     
-    <unit id = "UNI1">
+    <unit id = "1">
+	<unitName>UNI1</unitName>
         <callSign>signUndef</callSign>
-        <defLocation>locUndef</defLocation>
+        <defLocation>Porirua Police Station</defLocation>
         <currEvent>eventUndef</currEvent>
-        <time>timeUndef</time>
+        <time>11:05 am</time>
         <type>I</type>
         <status>avail</status>   
     </unit>
     
-    <unit id = "UNS1">
+    <unit id = "2">
+	<unitName>UNS1</unitName>
         <callSign>signUndef</callSign>
-        <defLocation>locUndef</defLocation>
+        <defLocation>Porirua Police Station</defLocation>
         <currEvent>eventUndef</currEvent>
-        <time>timeUndef</time>
+        <time>10:58 am</time>
         <type>S</type>
         <status>avail</status>   
     </unit>
     
-    <unit id = "UNQ1">
+    <unit id = "3">
+	<unitName>UNQ1</unitName>
         <callSign>signUndef</callSign>
-        <defLocation>locUndef</defLocation>
+        <defLocation>Porirua Police Station</defLocation>
         <currEvent>eventUndef</currEvent>
-        <time>timeUndef</time>
+        <time>11:00 am</time>
         <type>Q</type>
         <status>avail</status>   
     
-	</unit>  
-	    <unit id = "UNT1">
+     </unit>  
+
+     <unit id = "4">
+	<unitName>UNT1</unitName>
         <callSign>signUndef</callSign>
-        <defLocation>locUndef</defLocation>
+        <defLocation>Porirua Police Station</defLocation>
         <currEvent>eventUndef</currEvent>
-        <time>timeUndef</time>
+        <time>10:30 am</time>
         <type>T</type>
         <status>avail</status>   
-    </unit>
+     </unit>
 	
-	<unit id = "UND1">
+     <unit id = "5">
+	<unitName>UND1</unitName>
         <callSign>signUndef</callSign>
-        <defLocation>locUndef</defLocation>
+        <defLocation>Porirua Police Station</defLocation>
         <currEvent>eventUndef</currEvent>
-        <time>timeUndef</time>
+        <time>11:13 am</time>
         <type>D</type>
         <status>avail</status>   
-    </unit>
+      </unit>
 	
     
 </Cordon>

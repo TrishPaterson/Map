@@ -3,6 +3,11 @@ package PendingTableView;
 import EventWindow.LoadEventWindow;
 import LogWindow.RecordLog;
 import MapHTML.LoadMap;
+import UnitTableView.LoadUnitTable;
+import UnitTableView.Unit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,10 +32,26 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class LoadPendingTable extends Application {
-    private static Event evt = null;
+    private String priority;
+    private String time;
+    private String evtNumber;
+    private String type;
+    private String location;
+    private String informantName;
+    private String headline;
+    private String remarks;
     
+    private static Event evt = null;
     private static boolean isEventOn = false;
     private TableView table;
     private Text actionStatus;
@@ -187,18 +208,41 @@ public class LoadPendingTable extends Application {
     
     public ObservableList<Event> getEvtList(){       
         ObservableList<Event> listOfEvents = FXCollections.observableArrayList();    
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        try {
+            builder = factory.newDocumentBuilder();
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Document doc = null;
+        try {
+            doc = builder.parse("EventInfo.xml");
+        } catch (SAXException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        NodeList nList = doc.getElementsByTagName("event");
         
         //-------------------------------------------------------------------
-        //code below is a hardcoded event, comment out if using database
-        evt = new Event("2", "11:00 am", "B1204", "Burglary", "Navigation Dr",
-                            "Bruce Kent", "",
-                            "Unknown DOT, Informant has no Obs, Discript black shirt carrying blue bag.");
-        listOfEvents.add(evt);
-        evt = new Event("1", "12:00 pm", "B1337", "Shop lifting",
-                            "Spinnaker Dr", "Kathleen Keyes", "",
-                            "Male has now left, Unknown DOT, Male");
-        listOfEvents.add(evt);
-        //-------------------------------------------------------------------
+        //code below uses xml, comment out if using database     
+        for (int i = 0; i < nList.getLength(); i++) {
+            Node node = nList.item(i);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) node;
+                priority = eElement.getElementsByTagName("priority").item(0).getTextContent();
+                time = eElement.getElementsByTagName("time").item(0).getTextContent();
+                evtNumber = eElement.getElementsByTagName("evtNumber").item(0).getTextContent();
+                type = eElement.getElementsByTagName("type").item(0).getTextContent();
+                location = eElement.getElementsByTagName("location").item(0).getTextContent();
+                informantName = eElement.getElementsByTagName("informantName").item(0).getTextContent();
+                headline = eElement.getElementsByTagName("headline").item(0).getTextContent();
+                remarks = eElement.getElementsByTagName("remarks").item(0).getTextContent();
+                evt = new Event(priority, time, evtNumber, type, location, informantName, headline, remarks);
+                listOfEvents.add(evt);
+            }
+        }      
         //-------------------------------------------------------------------
         //Code below reads database instead of hard code
         /*
