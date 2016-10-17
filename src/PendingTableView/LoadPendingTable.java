@@ -6,6 +6,7 @@ import MapHTML.LoadMap;
 import UnitTableView.LoadUnitTable;
 import UnitTableView.Unit;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -215,9 +216,11 @@ public class LoadPendingTable extends Application {
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classLoader.getResourceAsStream("XMLFiles/EventInfo.xml");
         Document doc = null;
         try {
-            doc = builder.parse("src/XMLFiles/EventInfo.xml");
+            doc = builder.parse(is);
         } catch (SAXException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

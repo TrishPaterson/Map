@@ -38,6 +38,7 @@ import PendingTableView.LoadPendingTable;
 import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -405,9 +406,11 @@ public class LoadUnitTable extends Application {
         } catch (ParserConfigurationException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         }
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classLoader.getResourceAsStream("XMLFiles/UnitInfo.xml");
         Document doc = null;
         try {
-            doc = builder.parse("src/XMLFiles/UnitInfo.xml");
+            doc = builder.parse(is);
         } catch (SAXException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

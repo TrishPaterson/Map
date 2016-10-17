@@ -5,10 +5,15 @@ import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class RecordLog{
 
@@ -71,7 +76,7 @@ public class RecordLog{
             new JavaSoundAudioClip(new FileInputStream(new File("src/WAVFiles/chord.wav"))).play();
         } catch (IOException ex) {
             Logger.getLogger(RecordLog.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }      
     }
     
     private void playNotificationSound(){
