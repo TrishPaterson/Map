@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListEvent>   
+    <event>
+        <priority>2</priority>
+        <time>11:00 am</time>
+        <evtNumber>B1204</evtNumber>
+        <type>Burglary</type>
+        <location>Navigation Dr</location>
+        <informantName>Bruce Kent</informantName>  
+	<headline>None</headline>
+	<remarks>Unknown DOT, Informant has no Obs, Discript black shirt carrying blue bag.</remarks>	 
+    </event>
+
+    <event>
+        <priority>1</priority>
+        <time>12:00 pm</time>
+        <evtNumber>B1337</evtNumber>
+        <type>Shop lifting</type>
+        <location>Spinnaker Dr</location>
+        <informantName>Kathleen Keyes</informantName>  
+	<headline>None</headline>
+	<remarks>Male has now left, Unknown DOT, Male</remarks>	 
+    </event>   
+</ListEvent>

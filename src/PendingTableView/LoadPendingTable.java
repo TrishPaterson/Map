@@ -217,7 +217,7 @@ public class LoadPendingTable extends Application {
         }
         Document doc = null;
         try {
-            doc = builder.parse("EventInfo.xml");
+            doc = builder.parse("src/XMLFiles/EventInfo.xml");
         } catch (SAXException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

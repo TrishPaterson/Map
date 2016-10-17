@@ -68,7 +68,7 @@ public class RecordLog{
     
     private void playErrorSound(){
         try {
-            new JavaSoundAudioClip(new FileInputStream(new File("chord.wav"))).play();
+            new JavaSoundAudioClip(new FileInputStream(new File("src/WAVFiles/chord.wav"))).play();
         } catch (IOException ex) {
             Logger.getLogger(RecordLog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,7 +76,7 @@ public class RecordLog{
     
     private void playNotificationSound(){
          try {
-            new JavaSoundAudioClip(new FileInputStream(new File("notify.wav"))).play();
+            new JavaSoundAudioClip(new FileInputStream(new File("src/WAVFiles/notify.wav"))).play();
         } catch (IOException ex) {
             Logger.getLogger(RecordLog.class.getName()).log(Level.SEVERE, null, ex);
         }

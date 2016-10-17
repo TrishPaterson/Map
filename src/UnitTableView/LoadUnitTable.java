@@ -407,7 +407,7 @@ public class LoadUnitTable extends Application {
         }
         Document doc = null;
         try {
-            doc = builder.parse("UnitInfo.xml");
+            doc = builder.parse("src/XMLFiles/UnitInfo.xml");
         } catch (SAXException ex) {
             Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
