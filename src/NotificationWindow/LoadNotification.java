@@ -37,7 +37,7 @@ public class LoadNotification extends Application {
     @Override
     public void start(Stage primaryStage) {
         notificationWindow = new Stage();
-        notificationWindow.initStyle(StageStyle.UNDECORATED);
+        notificationWindow.initStyle(StageStyle.TRANSPARENT);
         notificationWindow.getIcons().add(new Image("/Images/NCP.PNG"));
         notificationWindow.setTitle("Unit Table");
 
@@ -72,13 +72,12 @@ public class LoadNotification extends Application {
         vbox.setPadding(new Insets(100, 20, -70, 20));
         vbox.getChildren().addAll(TIcon, actionStatus, msg, title);
         Scene scene = new Scene(vbox, 400, 150); //W H
-
+        scene.setFill(Color.TRANSPARENT);
         notificationWindow.setScene(scene);  
         notificationWindow.show();
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         notificationWindow.setX((primScreenBounds.getWidth() - notificationWindow.getWidth()) / 1);
         notificationWindow.setY((primScreenBounds.getHeight() - notificationWindow.getHeight()) / -5);  
-        
         runNotification();       
         closeFadeOut();
     }
@@ -92,11 +91,11 @@ public class LoadNotification extends Application {
                         @Override
                         public void run(){                           
                             Timeline timeline = new Timeline();
-                             KeyFrame key = new KeyFrame(Duration.millis(2000),
+                            KeyFrame key = new KeyFrame(Duration.millis(1000),
                                             new KeyValue (notificationWindow.getScene().getRoot().opacityProperty(), 0)); 
                             timeline.getKeyFrames().add(key);   
                             timeline.setOnFinished((ae) -> notificationWindow.close()); 
-                            timeline.play();                                                
+                            timeline.play();     
                         }    
                     });  
                 }catch(InterruptedException e){} 

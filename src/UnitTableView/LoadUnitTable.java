@@ -217,7 +217,7 @@ public class LoadUnitTable extends Application {
     }
     
     public void OnScene(){
-        CalculateDistance cd = new CalculateDistance();
+        TimeArrival cd = new TimeArrival();
         for(int x = 0; x < unitSelected.size(); x++){
             if(unitSelected.get(x).getStatus().equals("Onroute") && cd.isOnScene(unitSelected.get(0).getUnitName())){//if cordon status is on route and has arrived on scene
                 unitSelected.get(x).setStatus("onSen");   
@@ -260,7 +260,8 @@ public class LoadUnitTable extends Application {
     }
     
     public void dispatchCordon(){
-       unitSelected.sorted();
+        TimeArrival cd = new TimeArrival();
+        unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
             if(!lpt.getIsEventOn()){//if unit is not assigned to an event
                 log.writeLog(1, unitSelected.get(x).getUnitName());           
@@ -273,11 +274,7 @@ public class LoadUnitTable extends Application {
                 numCordonDisp += 1; //monitor how many corodn has been dispatch
  
                 log.writeLog(9, unitSelected.get(x).getUnitName());              
-                CalculateDistance cd = new CalculateDistance();
-                //temporary-----------------------------------------------------
-                Random rn = new Random();
-                cd.calculateDistance(unitSelected.get(x).getUnitName(), rn.nextInt(10000) + 5000);//delay when the cordon arrives. 
-                //--------------------------------------------------------------
+                cd.calculateDistance(unitSelected.get(x).getUnitName(), x); 
             }else{//if dispatcher tries to disptach unit twice 
                 log.writeLog(2, unitSelected.get(x).getUnitName());
             }           

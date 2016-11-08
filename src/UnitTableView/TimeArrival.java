@@ -1,27 +1,31 @@
 
 package UnitTableView;
 import LogWindow.RecordLog;
-import com.sun.media.sound.JavaSoundAudioClip;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import NotificationWindow.LoadNotification;
+import java.util.Random;
 import javafx.application.Platform;
 
 
-public class CalculateDistance{
+public class TimeArrival{
     private RecordLog log = new RecordLog();
     private static int prevDist;
     private static List<String> listOnSceneCordon = new ArrayList<>(); 
-    public void calculateDistance(String name, int delay){
+    private static Integer[] arr = {2000, 6000, 9000, 13000, 16800};
+    
+    TimeArrival(){
+        Collections.shuffle(Arrays.asList(arr));    
+    }
+    
+    public void calculateDistance(String name, int i){
         Thread t1 = new Thread(new Runnable(){
             public void run(){
                 try{
-                    Thread.sleep(delay);
+                    Thread.sleep(arr[i]);
                     listOnSceneCordon.add(name);
                 } catch (InterruptedException ex) {} 
                 
@@ -41,7 +45,7 @@ public class CalculateDistance{
                 try {
                     backgroundThread.join();
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(CalculateDistance.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(TimeArrival.class.getName()).log(Level.SEVERE, null, ex);
                 }                
             }
         });      
