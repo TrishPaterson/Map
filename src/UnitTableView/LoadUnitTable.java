@@ -46,6 +46,9 @@ import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableRow;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
@@ -74,6 +77,7 @@ public class LoadUnitTable extends Application {
     private LoadMap mapEngine = new LoadMap();
     private LoadPendingTable lpt = new LoadPendingTable();
     private RecordLog log = new RecordLog();
+    private static TimeArrival cd = new TimeArrival();
     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{
@@ -180,16 +184,20 @@ public class LoadUnitTable extends Application {
         //set context menu to table
         table.setContextMenu(contextMenu);
         
+      
         //dispatchLocation function
-        item1.setOnAction(e -> dispatchCordon());   
+        item1.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
+        item1.setOnAction(e -> dispatchCordon());  
         
         //OnScene Function       
+        item2.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
         item2.setOnAction(e -> OnScene());
         
         //changeLocationFunction     
         item4.setOnAction(e -> changeLocation());      
         
         //CloseEvent
+        item7.setAccelerator(new KeyCodeCombination(KeyCode.DIGIT9, KeyCombination.CONTROL_DOWN));
         item7.setOnAction(e -> k9()); 
     }
     
@@ -214,6 +222,7 @@ public class LoadUnitTable extends Application {
             }
         }
         updateTableColour();
+        table.getSelectionModel().clearSelection();
     }
     
     public void OnScene(){
@@ -260,7 +269,6 @@ public class LoadUnitTable extends Application {
     }
     
     public void dispatchCordon(){
-        TimeArrival cd = new TimeArrival();
         unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
             if(!lpt.getIsEventOn()){//if unit is not assigned to an event
@@ -274,7 +282,7 @@ public class LoadUnitTable extends Application {
                 numCordonDisp += 1; //monitor how many corodn has been dispatch
  
                 log.writeLog(9, unitSelected.get(x).getUnitName());              
-                cd.calculateDistance(unitSelected.get(x).getUnitName(), x); 
+                cd.calculateDistance(unitSelected.get(x).getUnitName(), unitSelected.get(x).getUnitId()-1); 
             }else{//if dispatcher tries to disptach unit twice 
                 log.writeLog(2, unitSelected.get(x).getUnitName());
             }           

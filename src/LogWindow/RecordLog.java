@@ -57,7 +57,7 @@ public class RecordLog{
             //K9
             case 13: log.addLog(name + " has been set to available.",sdf.format(cal.getTime())); break;    
             case 16: log.addLog("Dispatcher has successfully closed the event: " + currentEvent ,sdf.format(cal.getTime())); 
-                     ln = new LoadNotification(currentEvent + " event is done."); playNotificationSound(); 
+                     ln = new LoadNotification(currentEvent + " event is closed."); playNotificationSound(); 
                      ln.start(ln.notificationWindow);break;
 
             default: log.addLog("undefined",sdf.format(cal.getTime()));break;
