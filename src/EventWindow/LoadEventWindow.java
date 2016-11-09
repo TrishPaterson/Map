@@ -1,5 +1,6 @@
 package EventWindow;
 
+import AlertBox.AlertBox;
 import PendingTableView.Event;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -49,7 +50,7 @@ public class LoadEventWindow extends Application {
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
-    private Stage eventWindow;
+    private static Stage eventWindow;
 
     @Override
     public void start(Stage primaryStage) {
@@ -129,7 +130,8 @@ public class LoadEventWindow extends Application {
         Exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-                System.exit(0);
+                AlertBox alert = new AlertBox();
+                alert.start(primaryStage);
             }
         });
 
@@ -219,7 +221,10 @@ public class LoadEventWindow extends Application {
         table.getItems().add(remarkList);
         ListingInput.clear();
     }
-
+    
+    public Stage getStage(){
+        return eventWindow;
+    }
     /*public void deleteButtonClicked() {
         ObservableList<Remarks> remarkListSelected, allRemarkLists;
         allRemarkLists = table.getItems();

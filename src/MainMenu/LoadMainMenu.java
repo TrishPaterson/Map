@@ -93,7 +93,7 @@ public class LoadMainMenu extends Application {
                 scenario.setEffect(shadow);
             }
         });
-//Removing the shadow when the mouse cursor is off
+        //Removing the shadow when the mouse cursor is off
         scenario.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
             @Override
@@ -111,7 +111,7 @@ public class LoadMainMenu extends Application {
                 about.setEffect(shadow);
             }
         });
-//Removing the shadow when the mouse cursor is off
+        //Removing the shadow when the mouse cursor is off
         about.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
             @Override
@@ -126,7 +126,7 @@ public class LoadMainMenu extends Application {
                 ExitCP.setEffect(shadow);
             }
         });
-//Removing the shadow when the mouse cursor is off
+        //Removing the shadow when the mouse cursor is off
         ExitCP.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
             @Override
@@ -138,7 +138,7 @@ public class LoadMainMenu extends Application {
         ExitCP.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
-                MainWindow.close();
+                System.exit(0);
             }
         });
 
@@ -164,26 +164,26 @@ public class LoadMainMenu extends Application {
         labelWhitby.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         labelWhitby.setTextFill(Color.BLACK);
         labelWhitby.setPrefSize(260, 140);
-       labelWhitby.setTranslateX(-10);
+        labelWhitby.setTranslateX(-10);
         labelWhitby.setTranslateY(-180);
         
         // Information about the Whitby Scenario
         
-       Label WhitbyInfo = new Label("The whitby Scenario consist of two major events:\n" +
+        Label WhitbyInfo = new Label("The whitby Scenario consist of two major events:\n" +
                 "1.	House burglary and the offender is on the move\n" +
                 "2.	Shop lifting and the offender is on the move");
         WhitbyInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
-     WhitbyInfo.setTextFill(Color.BLACK);
-       WhitbyInfo.setPrefSize(500, 140);
-      WhitbyInfo.setTranslateX(-10);
+        WhitbyInfo.setTextFill(Color.BLACK);
+        WhitbyInfo.setPrefSize(500, 140);
+        WhitbyInfo.setTranslateX(-10);
         WhitbyInfo.setTranslateY(-250);
         
            // Event Petone label
         Label Petone = new Label("Petone");
         Petone.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         Petone.setTextFill(Color.LIGHTGRAY);
-       Petone.setPrefSize(260, 140);
-      Petone.setTranslateX(-10);
+        Petone.setPrefSize(260, 140);
+        Petone.setTranslateX(-10);
         Petone.setTranslateY(-210);
         
         // Information about the Pentone Scenario
@@ -192,28 +192,28 @@ public class LoadMainMenu extends Application {
                 "1.	Armed robbery and the offender is on the move\n" +
                 "2.	kidnapping and the offender is on the move");
         PetoneInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
-     PetoneInfo.setTextFill(Color.LIGHTGREY);
-       PetoneInfo.setPrefSize(500, 140);
-      PetoneInfo.setTranslateX(-10);
+        PetoneInfo.setTextFill(Color.LIGHTGREY);
+        PetoneInfo.setPrefSize(500, 140);
+        PetoneInfo.setTranslateX(-10);
         PetoneInfo.setTranslateY(-230);
         
             // Event Petone label
         Label Wellington = new Label("Wellingto");
         Wellington .setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         Wellington .setTextFill(Color.LIGHTGRAY);
-       Wellington .setPrefSize(260, 140);
-      Wellington .setTranslateX(-10);
+        Wellington .setPrefSize(260, 140);
+        Wellington .setTranslateX(-10);
         Wellington .setTranslateY(-210);
         
         // Information about the Pentone Scenario
         
-       Label WelInfo = new Label("The Petone Scenario consist of two major events:\n" +
+        Label WelInfo = new Label("The Petone Scenario consist of two major events:\n" +
                 "1.	Armed robbery and the offender is on the move\n" +
                 "2.	kidnapping and the offender is on the move");
-       WelInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
-     WelInfo.setTextFill(Color.LIGHTGREY);
-      WelInfo.setPrefSize(500, 140);
-      WelInfo.setTranslateX(-10);
+        WelInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
+        WelInfo.setTextFill(Color.LIGHTGREY);
+        WelInfo.setPrefSize(500, 140);
+        WelInfo.setTranslateX(-10);
         WelInfo.setTranslateY(-230);
         
 // Return to main menu Button
@@ -226,7 +226,7 @@ public class LoadMainMenu extends Application {
         Back2Main.setTranslateY(450);
         Back2Main.setOnAction(e -> MainWindow.setScene(scene1));
     
-//Select  Event Button
+        //Select  Event Button
         Button Scenario1 = new Button("SELECT");
         Scenario1.setFont(Font.font("segoe print", FontWeight.BOLD, 10));
         Scenario1.setTextFill(Color.BLACK);
@@ -244,26 +244,23 @@ public class LoadMainMenu extends Application {
                 LoadMap map = new LoadMap();
                 LoadLogWindow logWindow = new LoadLogWindow();
                 LoadUnitTable unitTable = new LoadUnitTable();
-                LoadPendingTable pendingTable = new LoadPendingTable();
-
+                LoadPendingTable pendingTable = new LoadPendingTable();              
                 logWindow.start(MainWindow);
                 map.start(MainWindow);
                 eventWindow.start(MainWindow);
                 unitTable.start(MainWindow);
                 pendingTable.start(MainWindow);
-              
-
                 MainWindow.close();
             }
         });
         //Select Button for Petone scenario
-          Button Scenario2 = new Button("SELECT");
+        Button Scenario2 = new Button("SELECT");
         Scenario2.setFont(Font.font("segoe print", FontWeight.BOLD, 10));
-      Scenario2.setTextFill(Color.BLACK);
+        Scenario2.setTextFill(Color.BLACK);
         Scenario2.setStyle("-fx-background-color: #A9A9A9");
-       Scenario2.setPrefSize(130, 30);
-       Scenario2.setTranslateX(-10);
-       Scenario2.setTranslateY(-200);
+        Scenario2.setPrefSize(130, 30);
+        Scenario2.setTranslateX(-10);
+        Scenario2.setTranslateY(-200);
         
         //TextArea scenrioTextArea = new TextArea("hdhddhdhdhdhdhdhdhdhdhhdhddhdhdhdhd");
         
@@ -330,7 +327,9 @@ public class LoadMainMenu extends Application {
                 MainWindow.setY(event.getScreenY() + yOffset);
             }
         });
-
     }
-
+    
+    public Stage getStage(){
+        return MainWindow;
+    }
 }

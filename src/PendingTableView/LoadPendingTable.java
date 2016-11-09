@@ -1,5 +1,6 @@
 package PendingTableView;
 
+import AlertBox.AlertBox;
 import EventWindow.LoadEventWindow;
 import LogWindow.RecordLog;
 import MapHTML.LoadMap;
@@ -58,7 +59,7 @@ public class LoadPendingTable extends Application {
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
-    private Stage pendingWindow;
+    private static Stage pendingWindow;
     private RecordLog log = new RecordLog();
     private LoadMap mapEngine = new LoadMap();  
     @Override
@@ -139,7 +140,8 @@ public class LoadPendingTable extends Application {
         
         //Exit Button
         Exit.setOnMouseClicked((MouseEvent t) -> {
-            System.exit(0);       
+            AlertBox alert = new AlertBox();
+            alert.start(primaryStage);       
         });         
     }
     
@@ -198,6 +200,9 @@ public class LoadPendingTable extends Application {
             }          
         });
     }  
+    public Stage getStage(){
+        return pendingWindow;
+    }
     
     public void enAbleRow(){
         isEventOn = false;

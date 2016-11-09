@@ -1,5 +1,6 @@
 package UnitTableView;
 
+import AlertBox.AlertBox;
 import LogWindow.RecordLog;
 import java.io.IOException;
 import javafx.application.Application;
@@ -39,7 +40,6 @@ import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -67,7 +67,7 @@ public class LoadUnitTable extends Application {
     
     private ObservableList<Unit> unitSelected; 
     private TableView<Unit> table;    
-    private Stage unitWindow;
+    private static Stage unitWindow;
    
     private Text actionStatus;
     private static double xOffset = 0;
@@ -143,7 +143,9 @@ public class LoadUnitTable extends Application {
         
         //Exit Button
         Exit.setOnMouseClicked((MouseEvent t) -> {
-            System.exit(0);
+            AlertBox alert = new AlertBox();
+            alert.start(primaryStage);
+            //System.exit(0);
         });    
         
         Min.setOnMouseClicked((MouseEvent me) -> {
@@ -218,6 +220,7 @@ public class LoadUnitTable extends Application {
                     mapEngine.refreshMap();
                     lpt.enAbleRow();
                     log.writeLog(16, "");
+                    cd.eraseList();
                 }
             }
         }
@@ -399,6 +402,10 @@ public class LoadUnitTable extends Application {
         table.setItems(getUnits());
         table.getColumns().addAll(uniqIdCol,currLocationCol,timeCol,typeCol); 
         updateTableColour();
+    }
+    
+    public Stage getStage(){
+        return unitWindow;
     }
     
     public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       

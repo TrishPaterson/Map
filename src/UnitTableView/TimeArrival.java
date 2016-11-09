@@ -14,7 +14,7 @@ import javafx.application.Platform;
 public class TimeArrival{
     private RecordLog log = new RecordLog();
     private static int prevDist;
-    private static List<String> listOnSceneCordon = new ArrayList<>(); 
+    private static List<String> listOnSceneCordon = new ArrayList<>();; 
     private static Integer[] arr = {2000, 6000, 9000, 13000, 16800};
     
     TimeArrival(){
@@ -54,6 +54,10 @@ public class TimeArrival{
     
     public int getSizeList(){
         return listOnSceneCordon.size();
+    }
+    
+    public void eraseList(){
+        listOnSceneCordon.clear();
     }
 
     public boolean isOnScene(String name) {

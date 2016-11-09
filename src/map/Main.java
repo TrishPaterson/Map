@@ -32,8 +32,7 @@ public class Main extends Application {
         //eventWindow.start(primaryStage);
        // unitTable.start(primaryStage);
        // pendingTable.start(primaryStage);      
-        startMenu.start(primaryStage);
-       
+        startMenu.start(primaryStage);    
     }
 }
   

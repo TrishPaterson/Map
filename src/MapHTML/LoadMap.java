@@ -11,13 +11,15 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class LoadMap extends Application {
-    private Stage Mapwindow;
-    private static WebView browser = new WebView();
-    private static WebEngine webMapEngine = browser.getEngine();
+    private static Stage Mapwindow;
+    private static WebView browser;
+    private static WebEngine webMapEngine;
     
     @Override
     public void start(Stage primaryStage) {
         //Load Map
+        browser = new WebView();
+        webMapEngine = browser.getEngine();
         webMapEngine.load(getClass().getResource("mapHtmlFile.html").toString());
         Mapwindow = new Stage();
         Mapwindow.setTitle("Web Map");
@@ -29,6 +31,10 @@ public class LoadMap extends Application {
         Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         Mapwindow.setX((primScreenBounds.getWidth() - Mapwindow.getWidth()) /1); 
         Mapwindow.setY((primScreenBounds.getHeight() - Mapwindow.getHeight()) / 1);
+    }
+    
+    public Stage getStage(){
+        return Mapwindow;
     }
     
     public void setMarkerId(int id){

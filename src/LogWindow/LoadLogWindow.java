@@ -36,7 +36,7 @@ public class LoadLogWindow extends Application {
     private Text actionStatus;
     private static double xOffset = 0;
     private static double yOffset = 0;
-    private Stage logWindow;
+    private static Stage logWindow;
     private TableColumn<Message, String> timeColumn;
     private TableColumn<Message, String> msgCol;
     @Override
@@ -125,7 +125,11 @@ public class LoadLogWindow extends Application {
             }
         });
     }
-
+    
+    public Stage getStage(){
+        return logWindow;
+    }
+    
     //mouse clicked from placed marker should get the string 
     /*public void addMouseClicked() {
         //System.out.println(ListingInput.getText());
