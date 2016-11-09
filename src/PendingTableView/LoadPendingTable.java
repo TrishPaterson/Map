@@ -194,8 +194,7 @@ public class LoadPendingTable extends Application {
                 
                 evtSelected.forEach(allEvents::remove);//remove selected item
                 isEventOn = true; //disable pendingevent while this event is finish
-                table.getSelectionModel().clearSelection();
-                
+                table.getSelectionModel().clearSelection();              
                 //System.out.println( ""+populateFields(evtSelected.get(0)));
             }          
         });

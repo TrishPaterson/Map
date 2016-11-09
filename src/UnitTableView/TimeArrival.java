@@ -14,14 +14,15 @@ import javafx.application.Platform;
 public class TimeArrival{
     private RecordLog log = new RecordLog();
     private static int prevDist;
-    private static List<String> listOnSceneCordon = new ArrayList<>();; 
+    private static List<String> listOnSceneCordon; 
     private static Integer[] arr = {2000, 6000, 9000, 13000, 16800};
     
-    TimeArrival(){
+    public TimeArrival(){    
         Collections.shuffle(Arrays.asList(arr));    
     }
     
     public void calculateDistance(String name, int i){
+        listOnSceneCordon = new ArrayList<>();
         Thread t1 = new Thread(new Runnable(){
             public void run(){
                 try{

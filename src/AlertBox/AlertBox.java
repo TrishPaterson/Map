@@ -11,6 +11,7 @@ import MainMenu.LoadMainMenu;
 import MapHTML.LoadMap;
 import PendingTableView.LoadPendingTable;
 import UnitTableView.LoadUnitTable;
+import UnitTableView.TimeArrival;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,13 +43,14 @@ import javafx.stage.StageStyle;
 import map.Main;
 
 public class AlertBox extends Application {
-    LoadUnitTable unitTable = new LoadUnitTable();
-    LoadEventWindow evtWindow = new LoadEventWindow();
-    LoadMap mapWindow = new LoadMap();
-    LoadPendingTable pendingTable = new LoadPendingTable();
-    LoadLogWindow logWindow = new LoadLogWindow();
-    Main main = new Main();
-    LoadMainMenu menu = new LoadMainMenu();
+    private LoadUnitTable unitTable = new LoadUnitTable();
+    private LoadEventWindow evtWindow = new LoadEventWindow();
+    private LoadMap mapWindow = new LoadMap();
+    private LoadPendingTable pendingTable = new LoadPendingTable();
+    private LoadLogWindow logWindow = new LoadLogWindow();
+    private Main main = new Main();
+    private LoadMainMenu menu = new LoadMainMenu();
+    private TimeArrival cd = new TimeArrival();
     
     private Stage alertWindow;
     private Text actionStatus;
@@ -102,7 +104,8 @@ public class AlertBox extends Application {
                 unitTable.getStage().close();
                 evtWindow.getStage().close();
                 mapWindow.refreshMap();
-                mapWindow.getStage().close();                
+                mapWindow.getStage().close(); 
+                pendingTable.enAbleRow();
                 pendingTable.getStage().close();
                 logWindow.getStage().close();
                 alertWindow.close();
