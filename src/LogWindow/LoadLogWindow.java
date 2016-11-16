@@ -130,6 +130,10 @@ public class LoadLogWindow extends Application {
         return logWindow;
     }
     
+    public void clearTable(){
+        table.getItems().clear();
+    }
+    
     //mouse clicked from placed marker should get the string 
     /*public void addMouseClicked() {
         //System.out.println(ListingInput.getText());

@@ -60,8 +60,8 @@ public class LoadMap extends Application {
     public void setEvent(String eventName){
         webMapEngine.executeScript("setEvent(" + "'"+eventName +"'"+ ")");        
     }
-    public void startTracking(double lat, double lng){
-        webMapEngine.executeScript("startTracking(" + lat + ',' + lng + ")");      
+    public void startTracking(){
+        webMapEngine.executeScript("startTracking()");      
     }
     
     public String getEvent(){
@@ -79,4 +79,16 @@ public class LoadMap extends Application {
     public void refreshMap(){
         webMapEngine.executeScript("refreshMap()");
     }
+    
+    public boolean getCountaintmentFieldStatus(){
+        return (boolean)webMapEngine.executeScript("getCountaintmentFieldStatus()");
+    }
+    
+    public void createContainmentField(){
+        webMapEngine.executeScript("createContainmentField()");
+    }
+    
+    public void removeContainmentField(){
+        webMapEngine.executeScript("removeContainmentField()");
+    }   
 }

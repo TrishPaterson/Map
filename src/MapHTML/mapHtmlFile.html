@@ -52,6 +52,11 @@
                 name: null,
                 markers: []
             };           
+            
+            //Cheking if countainment field is valid.
+            var isConValid = false;
+            var isCFTrue = false;
+            var isDCFTrue = false;
 //------------------------------------------------------------------------------
 //InitializeMap  
 //------------------------------------------------------------------------------
@@ -276,8 +281,11 @@
                 createXYPoints( markers );
                 createConvexHull();
                 for( var i = 0; i < pointsPath.length - 1; i++ ) {
-                    if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 200 )
+                    if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 200 ){
                         zoneColor = '#ffbf7f';
+                        isConValid = false;
+                    }else
+                        isConValid = true;
                 }
                 zone = null;
                 zone = new google.maps.Polygon({
@@ -292,18 +300,49 @@
             }
         }
 //------------------------------------------------------------------------------
-//SetContainment 
+//SetContainment //currently not used due to design changes.
 //------------------------------------------------------------------------------
-        function setContainment() {      
+        /*function setContainment() {      
             if( currentEvent == eventObj.name){
                 if( eventZone ) {
                     eventZone.setMap(null);
                     eventZone = null;
                 }
-                eventZone = createContainment( eventObj.markers, eventZone );
-                eventZone.setMap(map);
+                //eventZone = createContainment( eventObj.markers, eventZone );
+                //eventZone.setMap(map);
             }
-        } 
+        } */
+//------------------------------------------------------------------------------
+//CreateContainmentField
+//------------------------------------------------------------------------------ 
+        setInterval (function(){
+            if(isCFTrue == true){   
+                if( currentEvent == eventObj.name){
+                    if( eventZone ) {
+                        eventZone.setMap(null);
+                        eventZone = null;
+                    }
+                    eventZone = createContainment( eventObj.markers, eventZone );
+                    eventZone.setMap(map);
+                }
+                isCFTrue = false;
+            }
+        },50); 
+        
+//------------------------------------------------------------------------------
+//RemoveContainmentField
+//------------------------------------------------------------------------------ 
+        setInterval (function(){
+            if(isDCFTrue == true){   
+                if( currentEvent == eventObj.name){
+                    if( eventZone ) {
+                        eventZone.setMap(null);
+                        eventZone = null;
+                    }
+                }
+                isDCFTrue = false;
+            }
+        },50); 
 //------------------------------------------------------------------------------
 //Create Event Object
 //------------------------------------------------------------------------------       
@@ -349,7 +388,7 @@
                 map.setZoom(currZoom);
             } 
             changingMarker = false;
-            setContainment(); 
+            //setContainment(); 
         });
 //------------------------------------------------------------------------------
 // CreateMarkerInit (Creates Marker only isPlacing is true, see createMarker() )
@@ -427,8 +466,10 @@
                 //if exp zone has stopped
                 if( expansionDirection == 0 ) {
                     //stop the doghandler
-                    clearInterval( dogHandlerRunning );
-                    isCaught = true;
+                    setTimeout(function(){ 
+                        clearInterval( dogHandlerRunning ); 
+                        isCaught = true;
+                    }, 10000);   
                 }
                 //moving north or south, more likely to happen
                 if( randNum + weight >= 0.5 ) {
@@ -575,7 +616,7 @@
 //------------------------------------------------------------------------------
 //startTracking is used to start the dog handler
 //------------------------------------------------------------------------------
-    function startTracking(lat,lng) {
+    function startTracking() {
         //dogHandLat = lat;
         //dogHandLng = lng;
         startTrack = true;
@@ -583,15 +624,16 @@
 //------------------------------------------------------------------------------
 //getCordonLocation returns the current location of cordon 
 //------------------------------------------------------------------------------
-    function getCordonCurrLocation(id){    
+    function getCordonCurrLocation(unitId){    
         for(var i = 0; i < eventObj.markers.length; i++){
             //fix in the future if the current marker is null return the lat and lng for current event.
-            if(eventObj.markers[i].position == null){ //needs to check if the location of marker is not null so it wont return a null.
-                return -41.1130274 + " " + 174.8924949; // temporary
-            }
-            else if(eventObj.markers[i].id == id){ //.getPostion.lat() doesn't like nulls
-                return latlng = eventObj.markers[i].getPosition().lat() + " " + eventObj.markers[i].getPosition().lng();                  
-            }          
+            if(eventObj.markers[i].id == unitId){ //needs to check if the location of marker is not null so it wont return a null.
+                if(eventObj.markers[i].position == null)
+                    return -41.1130274 + " " + 174.8924949; // temporary
+                else if(eventObj.markers[i].id == unitId){ //.getPostion.lat() doesn't like nulls
+                    return latlng = eventObj.markers[i].getPosition().lat() + " " + eventObj.markers[i].getPosition().lng();                  
+                }       
+            }   
         }
     }
 //------------------------------------------------------------------------------
@@ -605,6 +647,24 @@
 //------------------------------------------------------------------------------
     function refreshMap(){
         location.reload(true);
+    }
+//------------------------------------------------------------------------------
+//getCountaintmentFieldStatus checks if containment field is valid.
+//------------------------------------------------------------------------------    
+    function getCountaintmentFieldStatus(){
+        return isConValid;
+    }
+//------------------------------------------------------------------------------
+//createContainmentField creates a containment field.
+//------------------------------------------------------------------------------    
+    function createContainmentField(){
+        isCFTrue = true;
+    }
+//------------------------------------------------------------------------------
+//removeContainmentField removes the containment field.
+//------------------------------------------------------------------------------    
+    function removeContainmentField(){
+        isDCFTrue = true;
     }
 //------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);

@@ -33,7 +33,7 @@ public class RecordLog{
             case 4: log.addLog("Warning! Disptacher tried to change the status of " + name+ " to On scene twice",sdf.format(cal.getTime()));playErrorSound();break;
             case 5: log.addLog("Warning! Dispatcher tried to change the status of " + name+ " to On scene when the cordon has not arrived.",sdf.format(cal.getTime()));playErrorSound();break;
             //Change Location
-            case 6: log.addLog("Warning! Dispatcher tried to change the location of " + name+ " without changing its current status.",sdf.format(cal.getTime()));playErrorSound();break;
+            case 6: log.addLog("Warning! Dispatcher tried to change the location of " + name+ " without dispatching cordon",sdf.format(cal.getTime()));playErrorSound();break;
             case 7: log.addLog("Warning! Dispatcher tried to change the location of " + name+ " without assigning cordon to an event.",sdf.format(cal.getTime()));playErrorSound();break;
             //K9
             case 14: log.addLog("Warning! Dispatcher tried to unassign " + name + "  without assigning cordon to an event",sdf.format(cal.getTime()));playErrorSound();break;
@@ -59,6 +59,9 @@ public class RecordLog{
             case 16: log.addLog("Dispatcher has successfully closed the event: " + currentEvent ,sdf.format(cal.getTime())); 
                      ln = new LoadNotification(currentEvent + " event is closed."); playNotificationSound(); 
                      ln.start(ln.notificationWindow);break;
+            
+            case 17: log.addLog("Dispatcher was able to create a valid containment field", sdf.format(cal.getTime()));break;
+            case 18: log.addLog("Dispatcher failed to create a valid containment field", sdf.format(cal.getTime())); break;
 
             default: log.addLog("undefined",sdf.format(cal.getTime()));break;
         }

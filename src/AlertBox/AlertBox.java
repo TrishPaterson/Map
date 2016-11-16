@@ -107,6 +107,7 @@ public class AlertBox extends Application {
                 mapWindow.getStage().close(); 
                 pendingTable.enAbleRow();
                 pendingTable.getStage().close();
+                logWindow.clearTable();
                 logWindow.getStage().close();
                 alertWindow.close();
                 main.start(menu.getStage());

@@ -192,8 +192,8 @@ public class LoadUnitTable extends Application {
         item1.setOnAction(e -> dispatchCordon());  
         
         //OnScene Function       
-        item2.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
-        item2.setOnAction(e -> OnScene());
+        //item2.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
+        //item2.setOnAction(e -> OnScene());
         
         //changeLocationFunction     
         item4.setOnAction(e -> changeLocation());      
@@ -205,22 +205,26 @@ public class LoadUnitTable extends Application {
     
     public void k9(){  
         for(int i = 0; i < unitSelected.size(); i++){     
-            if(!lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onscene")){// if disptacher tries to close event when the cordon has not been assigned
+            if(!lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onroute")){// if disptacher tries to close event when the cordon has not been assigned
                 log.writeLog(14, unitSelected.get(i).getUnitName()); 
-            }else if(!mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onscene")){//if dispatcher tries to close event while the offender has not been caught
+            }else if(!mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onroute")){//if dispatcher tries to close event while the offender has not been caught
                 log.writeLog(15, unitSelected.get(i).getUnitName()); 
-            }else if(lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onscene")){// if disptacher tries to close event an on route cordon when the offender has not yet been caught
+            }else if(lpt.getIsEventOn() && !unitSelected.get(i).getStatus().equals("Onroute")){// if disptacher tries to close event an on route cordon when the offender has not yet been caught
                 log.writeLog(15, unitSelected.get(i).getUnitName());
-            }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onscene")){ //check if dog handler has caught the offender and cordon  is on scene
+            }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(i).getStatus().equals("Onroute")){ //check if dog handler has caught the offender and cordon  is on scene
                 numCordonDisp -= 1;
                 System.out.println(numCordonDisp);
                 unitSelected.get(i).setStatus("avail");
-                log.writeLog(13, unitSelected.get(i).getUnitName());
+                log.writeLog(13, unitSelected.get(i).getUnitName());             
                 if(numCordonDisp == 0){ // check if all cordons has been unassigned to the event.
+                    if(mapEngine.getCountaintmentFieldStatus()){
+                        log.writeLog(17, "");
+                    }else{
+                        log.writeLog(18, "");
+                    }
                     mapEngine.refreshMap();
-                    lpt.enAbleRow();
                     log.writeLog(16, "");
-                    cd.eraseList();
+                    lpt.enAbleRow();     
                 }
             }
         }
@@ -228,6 +232,7 @@ public class LoadUnitTable extends Application {
         table.getSelectionModel().clearSelection();
     }
     
+    /*Removed due to design changes
     public void OnScene(){
         TimeArrival cd = new TimeArrival();
         for(int x = 0; x < unitSelected.size(); x++){
@@ -255,13 +260,13 @@ public class LoadUnitTable extends Application {
             }
         }
         table.getSelectionModel().clearSelection();
-    }
+    }*/
     
     public void changeLocation(){    
-        if("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
+        if( lpt.getIsEventOn() && "Onroute".equals(unitSelected.get(0).getStatus())){//("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
             unitSelected.sorted();
-            id = unitSelected.get(0).getUnitId();  
-            mapEngine.changeLocation(id); 
+            id = unitSelected.get(0).getUnitId();         
+            mapEngine.changeLocation(id);       
             getMarkerLocation(id, unitSelected.get(0).getUnitName());
         }else if(!"Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ //if unit is not onscene but is assigned to an event
             log.writeLog(6, unitSelected.get(0).getUnitName());
@@ -280,12 +285,17 @@ public class LoadUnitTable extends Application {
                 id = unitSelected.get(x).getUnitId();
                 if(!unitSelected.get(x).getType().equals("D")){ //if type is not dog handler then create marker
                     mapEngine.setMarkerId(id);  
+                }else if(unitSelected.get(x).getType().equals("D")) {
+                    //temporary-------------------------------------------------
+                    //mapEngine.startTracking();
+                    cd.delay(unitSelected.get(x).getUnitName(), id);
+                    checkOnDogHandler();
+                    //----------------------------------------------------------
                 }
                 unitSelected.get(x).setStatus("onRot"); //change status to on route                       
                 numCordonDisp += 1; //monitor how many corodn has been dispatch
- 
                 log.writeLog(9, unitSelected.get(x).getUnitName());              
-                cd.calculateDistance(unitSelected.get(x).getUnitName(), unitSelected.get(x).getUnitId()-1); 
+                //cd.calculateDistance(unitSelected.get(x).getUnitName(), unitSelected.get(x).getUnitId()-1); 
             }else{//if dispatcher tries to disptach unit twice 
                 log.writeLog(2, unitSelected.get(x).getUnitName());
             }           
@@ -306,7 +316,7 @@ public class LoadUnitTable extends Application {
                     setStyle("-fx-background-color: lightcoral;");
                 } else if (unit.getStatus().equals("Onroute")) {
                     setTextFill(Color.LIGHTGREEN);
-                    setStyle("-fx-background-color: goldenrod");
+                    setStyle("-fx-background-color: lightcoral");
                 } else if (unit.getStatus().equals("Available")) {
                     setTextFill(Color.LIGHTGREEN);
                     setStyle("");
@@ -316,6 +326,7 @@ public class LoadUnitTable extends Application {
             }
         });
     }   
+    
     private boolean isCaught;
     public void checkOnDogHandler(){
         isCaught = true;
@@ -323,7 +334,7 @@ public class LoadUnitTable extends Application {
             public void run(){                            
                 while(isCaught){  
                     try{
-                        Thread.sleep(1000);
+                        Thread.sleep(1000);                      
                         Platform.runLater(new Runnable(){
                         @Override
                             public void run(){  
@@ -358,19 +369,22 @@ public class LoadUnitTable extends Application {
         Runnable task = new Runnable(){
             public void run(){                            
                 while(isTrue){  
-                    try{
+                    try{              
                         Thread.sleep(500);
+                    }catch(InterruptedException e){} 
                         Platform.runLater(new Runnable(){
                         @Override
-                            public void run(){                             
-                                currLoc = mapEngine.getCordonCurrLocation(id);
-                                //System.out.println("The previous location of: " + name +  " is " +prevLoc);  
-                                if(!currLoc.equals(prevLoc)){
-                                    isTrue = false;  
+                            public void run(){   
+                                //System.out.println("The previous location of: " + name +  " is " +prevLoc + " and the current is " +currLoc);
+                                currLoc = mapEngine.getCordonCurrLocation(id);               
+                                if(!currLoc.equals(prevLoc) && isTrue){                           
+                                    isTrue = false;   
+                                    cd.removeOnSceneCordons();
+                                    mapEngine.removeContainmentField();
+                                    cd.delay(name, id);                       
                                 }                                 
                             }                  
-                        }); 
-                    }catch(InterruptedException e){} 
+                        });                   
                 }log.writeLog(11, name, currLoc);                    
             }
         };
