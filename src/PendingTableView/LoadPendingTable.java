@@ -181,8 +181,8 @@ public class LoadPendingTable extends Application {
                 //System.out.println( LoadEventWindow.populateFields(evtSelected.get(0)));
                 
                 //Temporary while the geolocation is not implemented-------------------
-                if(evtSelected.get(0).getLocation().equals("Huia Street, Petone")){
-                    mapEngine.createExpanding(-41.225354,174.8856115, 1);
+                if(evtSelected.get(0).getLocation().equals("Bolton Street, Petone")){
+                    mapEngine.createExpanding(-41.227346,174.8830833, 1); 
                     nextEvent = 2;
                 }else {
                     mapEngine.createExpanding(-41.3146835,174.7806215, 1); 

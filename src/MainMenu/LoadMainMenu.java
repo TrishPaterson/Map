@@ -160,42 +160,42 @@ public class LoadMainMenu extends Application {
         Label2Heading.setTranslateY(-130);
         
         // Event Whitby label
-        Label labelWhitby = new Label("Petone and Newtown");
-        labelWhitby.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
-        labelWhitby.setTextFill(Color.BLACK);
-        labelWhitby.setPrefSize(260, 140);
-        labelWhitby.setTranslateX(-10);
-        labelWhitby.setTranslateY(-180);
+        Label labelPetone = new Label("Petone and Newtown");
+        labelPetone.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
+        labelPetone.setTextFill(Color.BLACK);
+        labelPetone.setPrefSize(260, 140);
+        labelPetone.setTranslateX(-10);
+        labelPetone.setTranslateY(-180);
         
         // Information about the Whitby Scenario
         
-        Label WhitbyInfo = new Label("This scenario consist of two major events:\n" +
+        Label PetoneInfo = new Label("This scenario consist of two major events:\n" +
                 "1.	House burglary, offender is leaving the scene\n" +
                 "2.	Shop lifting, offender is leaving the scene");
-        WhitbyInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
-        WhitbyInfo.setTextFill(Color.BLACK);
-        WhitbyInfo.setPrefSize(500, 140);
-        WhitbyInfo.setTranslateX(-10);
-        WhitbyInfo.setTranslateY(-250);
+        PetoneInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
+        PetoneInfo.setTextFill(Color.BLACK);
+        PetoneInfo.setPrefSize(500, 140);
+        PetoneInfo.setTranslateX(-10);
+        PetoneInfo.setTranslateY(-250);
         
            // Event Petone label
-        Label Petone = new Label("Wellington");
-        Petone.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
-        Petone.setTextFill(Color.LIGHTGRAY);
-        Petone.setPrefSize(260, 140);
-        Petone.setTranslateX(-10);
-        Petone.setTranslateY(-210);
+        Label Welly = new Label("Wellington");
+        Welly.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
+        Welly.setTextFill(Color.LIGHTGRAY);
+        Welly.setPrefSize(260, 140);
+        Welly.setTranslateX(-10);
+        Welly.setTranslateY(-210);
         
         // Information about the Pentone Scenario
         
-       Label PetoneInfo = new Label("The Wellington Scenario consist of two major events:\n" +
+       Label WellysInfo = new Label("The Wellington Scenario consist of two major events:\n" +
                 "1.	Armed robbery, offender is leaving the scene\n" +
                 "2.	kidnapping, offender is leaving the scene");
-        PetoneInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
-        PetoneInfo.setTextFill(Color.LIGHTGREY);
-        PetoneInfo.setPrefSize(500, 140);
-        PetoneInfo.setTranslateX(-10);
-        PetoneInfo.setTranslateY(-230);
+        WellysInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
+        WellysInfo.setTextFill(Color.LIGHTGREY);
+        WellysInfo.setPrefSize(500, 140);
+        WellysInfo.setTranslateX(-10);
+        WellysInfo.setTranslateY(-230);
         
             // Event Petone label
         Label Wellington = new Label("Wellington");
@@ -207,14 +207,14 @@ public class LoadMainMenu extends Application {
         
         // Information about the Pentone Scenario
         
-        Label WelInfo = new Label("The Petone Scenario consist of two major events:\n" +
+       /* Label WelInfo = new Label("The Petone Scenario consist of two major events:\n" +
                 "1.	Armed robbery and the offender is on the move\n" +
                 "2.	kidnapping and the offender is on the move");
         WelInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
         WelInfo.setTextFill(Color.LIGHTGREY);
         WelInfo.setPrefSize(500, 140);
         WelInfo.setTranslateX(-10);
-        WelInfo.setTranslateY(-230);
+        WelInfo.setTranslateY(-230);*/
         
 // Return to main menu Button
         Button Back2Main = new Button("RETURN TO MENU");
@@ -277,13 +277,25 @@ public class LoadMainMenu extends Application {
         SIcon.setCache(true);
         SIcon.setTranslateX(-80);
         SIcon.setTranslateY(-290);
+        
+        Label AboutInfo = new Label("The Cordon Training Tool will allow a new\n" 
+                + "dispatcher to learn how to follow correct\n"
+                + "procedure when placing cordons, while under\n"
+                + "simulated pressure, providing the user\n "
+                + "with confidence in their own decision making.\n");
+        AboutInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
+        AboutInfo.setTextFill(Color.BLACK);
+        AboutInfo.setPrefSize(500, 140);
+        AboutInfo.setTranslateX(-10);
+        AboutInfo.setTranslateY(-200);
+        
 
         
         Image image1 = new Image("Images/ScenarioBackG.jpg");
         VBox vbox2 = new VBox(0);
         vbox2.setBackground(new Background(new BackgroundImage(image1, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         vbox2.setPadding(new Insets(100, 120, 20, 90));
-        vbox2.getChildren().addAll(Back2Main, Label2Heading, Scenario1,labelWhitby,SIcon,WhitbyInfo,Petone,PetoneInfo,Scenario2);
+        vbox2.getChildren().addAll(Back2Main, Label2Heading, Scenario1,labelPetone,SIcon,PetoneInfo,Welly,WellysInfo,Scenario2);//////Add label here
         scene2 = new Scene(vbox2, 600, 600);
         MainWindow.setScene(scene1);
 
@@ -301,13 +313,13 @@ public class LoadMainMenu extends Application {
         Label3Heading.setTextFill(Color.ORANGE);
         Label3Heading.setPrefSize(260, 140);
         Label3Heading.setTranslateX(160);
-        Label3Heading.setTranslateY(-180);
+        Label3Heading.setTranslateY(-160);
 
         Image image2 = new Image("/Images/ScenarioBackG.jpg");
         VBox vbox3 = new VBox(0);
         vbox3.setBackground(new Background(new BackgroundImage(image2, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         vbox3.setPadding(new Insets(100, 120, 20, 90));
-        vbox3.getChildren().addAll(about2Main, Label3Heading);
+        vbox3.getChildren().addAll(about2Main, Label3Heading, AboutInfo);
         scene3 = new Scene(vbox3, 600, 400);
         MainWindow.setScene(scene1);
 
