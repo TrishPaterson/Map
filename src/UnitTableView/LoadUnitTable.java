@@ -43,6 +43,8 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableRow;
@@ -78,7 +80,8 @@ public class LoadUnitTable extends Application {
     private LoadPendingTable lpt = new LoadPendingTable();
     private RecordLog log = new RecordLog();
     private static TimeArrival cd = new TimeArrival();
-    
+     private final BooleanProperty disable = new SimpleBooleanProperty(false);
+     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{
         //Load UnitTable   
@@ -180,6 +183,12 @@ public class LoadUnitTable extends Application {
         MenuItem item6 = new MenuItem("K6");
         MenuItem item7 = new MenuItem("K9");
         
+       //disable the menu item
+        item2.disableProperty().bind(disable.not());
+        item3.disableProperty().bind(disable.not());
+        item5.disableProperty().bind(disable.not());
+        item6.disableProperty().bind(disable.not());
+        
         //Add item to context menu
         contextMenu.getItems().addAll(item1,item2,item3,item4,item5,item6,item7);
         
@@ -267,6 +276,7 @@ public class LoadUnitTable extends Application {
             unitSelected.sorted();
             id = unitSelected.get(0).getUnitId();         
             mapEngine.changeLocation(id);       
+            //mapEngine.removeContainmentField();
             getMarkerLocation(id, unitSelected.get(0).getUnitName());
         }else if(!"Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ //if unit is not onscene but is assigned to an event
             log.writeLog(6, unitSelected.get(0).getUnitName());
@@ -370,17 +380,18 @@ public class LoadUnitTable extends Application {
             public void run(){                            
                 while(isTrue){  
                     try{              
-                        Thread.sleep(500);
+                        Thread.sleep(50);
                     }catch(InterruptedException e){} 
                         Platform.runLater(new Runnable(){
                         @Override
                             public void run(){   
                                 //System.out.println("The previous location of: " + name +  " is " +prevLoc + " and the current is " +currLoc);
                                 currLoc = mapEngine.getCordonCurrLocation(id);               
-                                if(!currLoc.equals(prevLoc) && isTrue){                           
+                                if(!currLoc.equals(prevLoc) && isTrue){   
+                                    System.out.println(name + " went here");
                                     isTrue = false;   
-                                    cd.removeOnSceneCordons();
                                     mapEngine.removeContainmentField();
+                                    cd.removeOnSceneCordons();                                 
                                     cd.delay(name, id);                       
                                 }                                 
                             }                  

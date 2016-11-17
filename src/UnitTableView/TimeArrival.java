@@ -15,7 +15,7 @@ public class TimeArrival{
     private RecordLog log = new RecordLog();
     private static int prevDist;
     private static List<String> listOnSceneCordon; 
-    private static Integer[] arr = {3000, 4000, 3700, 5000, 4500};
+    private static Integer[] arr = {3000, 4000, 6000, 5000, 4500};
     private static int onRotCordons = 0;
     private LoadMap mapEngine = new LoadMap();
     
@@ -28,9 +28,10 @@ public class TimeArrival{
         Thread t1 = new Thread(new Runnable(){
             public void run(){  
                 try{
-                    System.out.println(name + " " + arr[i-1]);
+                    //System.out.println(name + " " + arr[i-1]);
                     Thread.sleep(arr[i-1]);
                     onRotCordons -= 1;
+                    System.out.println("Second " + onRotCordons);
                     
                 } catch (InterruptedException ex) {}    
                 
@@ -43,9 +44,12 @@ public class TimeArrival{
                                 if(name.equals("UND1")){
                                     mapEngine.startTracking();
                                     onRotCordons++;
+                                    System.out.println("kinda third " + onRotCordons);
                                 }
                                 if(onRotCordons == 0)
                                     mapEngine.createContainmentField();
+                                if(onRotCordons != 0)//WTF
+                                    mapEngine.removeContainmentField();
                             }
                         });                    
                     }
@@ -68,6 +72,7 @@ public class TimeArrival{
     }
     
     public void removeOnSceneCordons(){
+        System.out.println("first " + onRotCordons);
         onRotCordons++;
     }
     
