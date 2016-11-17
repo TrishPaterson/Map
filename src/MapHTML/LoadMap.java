@@ -91,8 +91,4 @@ public class LoadMap extends Application {
     public void removeContainmentField(){
         webMapEngine.executeScript("removeContainmentField()");
     }   
-
-    public void createExpanding(double d, double d0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
