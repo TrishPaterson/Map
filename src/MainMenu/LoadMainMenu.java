@@ -160,7 +160,7 @@ public class LoadMainMenu extends Application {
         Label2Heading.setTranslateY(-130);
         
         // Event Whitby label
-        Label labelWhitby = new Label("Whitby");
+        Label labelWhitby = new Label("Petone and Newtown");
         labelWhitby.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         labelWhitby.setTextFill(Color.BLACK);
         labelWhitby.setPrefSize(260, 140);
@@ -169,9 +169,9 @@ public class LoadMainMenu extends Application {
         
         // Information about the Whitby Scenario
         
-        Label WhitbyInfo = new Label("The whitby Scenario consist of two major events:\n" +
-                "1.	House burglary and the offender is on the move\n" +
-                "2.	Shop lifting and the offender is on the move");
+        Label WhitbyInfo = new Label("This scenario consist of two major events:\n" +
+                "1.	House burglary, offender is leaving the scene\n" +
+                "2.	Shop lifting, offender is leaving the scene");
         WhitbyInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
         WhitbyInfo.setTextFill(Color.BLACK);
         WhitbyInfo.setPrefSize(500, 140);
@@ -179,7 +179,7 @@ public class LoadMainMenu extends Application {
         WhitbyInfo.setTranslateY(-250);
         
            // Event Petone label
-        Label Petone = new Label("Petone");
+        Label Petone = new Label("Wellington");
         Petone.setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         Petone.setTextFill(Color.LIGHTGRAY);
         Petone.setPrefSize(260, 140);
@@ -188,9 +188,9 @@ public class LoadMainMenu extends Application {
         
         // Information about the Pentone Scenario
         
-       Label PetoneInfo = new Label("The Petone Scenario consist of two major events:\n" +
-                "1.	Armed robbery and the offender is on the move\n" +
-                "2.	kidnapping and the offender is on the move");
+       Label PetoneInfo = new Label("The Wellington Scenario consist of two major events:\n" +
+                "1.	Armed robbery, offender is leaving the scene\n" +
+                "2.	kidnapping, offender is leaving the scene");
         PetoneInfo.setFont(Font.font("segoe print", FontWeight.BOLD, 14));
         PetoneInfo.setTextFill(Color.LIGHTGREY);
         PetoneInfo.setPrefSize(500, 140);
@@ -198,7 +198,7 @@ public class LoadMainMenu extends Application {
         PetoneInfo.setTranslateY(-230);
         
             // Event Petone label
-        Label Wellington = new Label("Wellingto");
+        Label Wellington = new Label("Wellington");
         Wellington .setFont(Font.font("segoe print", FontWeight.BOLD, 16));
         Wellington .setTextFill(Color.LIGHTGRAY);
         Wellington .setPrefSize(260, 140);

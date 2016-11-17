@@ -21,7 +21,7 @@ public class Event {
          this.remarks = "";
     }
     
-    Event(String priority, String time, String evtNumber, String type, String location, String informantName, String headline, String remarks ){
+    public Event(String priority, String time, String evtNumber, String type, String location, String informantName, String headline, String remarks ){
          this.priority = priority;
          this.time = time;
          this.evtNumber = evtNumber;
@@ -31,7 +31,15 @@ public class Event {
          this.headline = headline;
          this.remarks = remarks;
     }
-    
+
+    Event(String priority, String time, String evtNumber, String type, String location) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    Event(String string, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getPriority() {
         return priority;
     }
