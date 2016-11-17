@@ -28,11 +28,8 @@ public class TimeArrival{
         Thread t1 = new Thread(new Runnable(){
             public void run(){  
                 try{
-                    //System.out.println(name + " " + arr[i-1]);
                     Thread.sleep(arr[i-1]);
                     onRotCordons -= 1;
-                    System.out.println("Second " + onRotCordons);
-                    
                 } catch (InterruptedException ex) {}    
                 
                 Runnable task = new Runnable(){
@@ -44,7 +41,6 @@ public class TimeArrival{
                                 if(name.equals("UND1")){
                                     mapEngine.startTracking();
                                     onRotCordons++;
-                                    System.out.println("kinda third " + onRotCordons);
                                 }
                                 if(onRotCordons == 0)
                                     mapEngine.createContainmentField();
@@ -72,7 +68,6 @@ public class TimeArrival{
     }
     
     public void removeOnSceneCordons(){
-        System.out.println("first " + onRotCordons);
         onRotCordons++;
     }
     
