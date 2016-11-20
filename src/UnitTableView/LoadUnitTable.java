@@ -40,6 +40,8 @@ import com.sun.media.sound.JavaSoundAudioClip;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -76,12 +78,14 @@ public class LoadUnitTable extends Application {
     private static double yOffset = 0;   
    
     private int numCordonDisp = 0;
+    private String prevEvent = "";
     private LoadMap mapEngine = new LoadMap();
     private LoadPendingTable lpt = new LoadPendingTable();
     private RecordLog log = new RecordLog();
     private static TimeArrival cd = new TimeArrival();
-     private final BooleanProperty disable = new SimpleBooleanProperty(false);
-     
+    private final BooleanProperty disable = new SimpleBooleanProperty(false);
+    private Calendar cal = Calendar.getInstance();
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{
         //Load UnitTable   
@@ -173,7 +177,7 @@ public class LoadUnitTable extends Application {
      
         //ContextMenu
         ContextMenu contextMenu = new ContextMenu();
-        
+  
         //menu items
         MenuItem item1 = new MenuItem("Disp Enroute");
         MenuItem item2 = new MenuItem("Disp On Scene");
@@ -193,8 +197,7 @@ public class LoadUnitTable extends Application {
         contextMenu.getItems().addAll(item1,item2,item3,item4,item5,item6,item7);
         
         //set context menu to table
-        table.setContextMenu(contextMenu);
-        
+        table.setContextMenu(contextMenu);     
       
         //dispatchLocation function
         item1.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN));
@@ -212,8 +215,10 @@ public class LoadUnitTable extends Application {
         item7.setOnAction(e -> k9()); 
     }
     
-    public void k9(){    
-        if(!lpt.getIsEventOn() && !unitSelected.get(0).getStatus().equals("Onroute")){// if disptacher tries to close event when the cordon has not been assigned
+    public void k9(){   
+        if(unitSelected.isEmpty())
+            System.out.println("Error, User did not select any item");
+        else if(!lpt.getIsEventOn() && !unitSelected.get(0).getStatus().equals("Onroute")){// if disptacher tries to close event when the cordon has not been assigned
             log.writeLog(14, unitSelected.get(0).getUnitName()); 
         }else if(!mapEngine.getDogHandlerStatus() && unitSelected.get(0).getStatus().equals("Onroute")){//if dispatcher tries to close event while the offender has not been caught
             log.writeLog(15, unitSelected.get(0).getUnitName()); 
@@ -221,15 +226,11 @@ public class LoadUnitTable extends Application {
             log.writeLog(15, unitSelected.get(0).getUnitName());
         }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(0).getStatus().equals("Onroute")){ //check if dog handler has caught the offender and cordon  is on scene
             table.getItems().clear();
-            table.setItems(getUnits());
-            if(mapEngine.getCountaintmentFieldStatus()){
-                    log.writeLog(17, "");
-                }else{
-                    log.writeLog(18, "");
-            }
+            prevEvent = mapEngine.getEvent();
+            table.setItems(getUnits());           
             mapEngine.refreshMap();
             log.writeLog(16, "");
-            lpt.enAbleRow(); 
+            lpt.enAbleRow();     
             //remove due to design changes
             /*numCordonDisp -= 1;
             System.out.println(numCordonDisp);
@@ -281,12 +282,19 @@ public class LoadUnitTable extends Application {
     }*/
     
     public void changeLocation(){    
-        if( lpt.getIsEventOn() && "Onroute".equals(unitSelected.get(0).getStatus())){//("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
+        
+        if(unitSelected.isEmpty())
+            System.out.println("Error, User did not select any item");
+        else if( lpt.getIsEventOn() && "Onroute".equals(unitSelected.get(0).getStatus())){//("Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ // if unit is onscene and is assigned to an event then execute
             unitSelected.sorted();
             id = unitSelected.get(0).getUnitId();         
             mapEngine.changeLocation(id);       
             //mapEngine.removeContainmentField();
             getMarkerLocation(id, unitSelected.get(0).getUnitName());
+            unitSelected.get(0).setTime(sdf.format(cal.getTime()));
+            table.refresh();
         }else if(!"Onscene".equals(unitSelected.get(0).getStatus()) && lpt.getIsEventOn()){ //if unit is not onscene but is assigned to an event
             log.writeLog(6, unitSelected.get(0).getUnitName());
         }else if(!lpt.getIsEventOn()){ //if unit is not assigned to any event
@@ -296,9 +304,13 @@ public class LoadUnitTable extends Application {
     }
     
     public void dispatchCordon(){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
         unitSelected.sorted();
         for(int x = 0; x < unitSelected.size(); x++){
-            if(!lpt.getIsEventOn()){//if unit is not assigned to an event
+            if(unitSelected.isEmpty())
+                System.out.println("Error, User did not select any item");
+            else if(!lpt.getIsEventOn()){//if unit is not assigned to an event
                 log.writeLog(1, unitSelected.get(x).getUnitName());           
             }else if(!unitSelected.get(x).getStatus().equals("Onroute") && unitSelected.get(x).getStatus().equals("Available")){//check if unit is not already dispatched and is available    
                 id = unitSelected.get(x).getUnitId();
@@ -311,7 +323,10 @@ public class LoadUnitTable extends Application {
                     checkOnDogHandler();
                     //----------------------------------------------------------
                 }
-                unitSelected.get(x).setStatus("onRot"); //change status to on route                       
+                unitSelected.get(x).setStatus("onRot"); //change status to on route     
+                unitSelected.get(x).setCurrLocation(mapEngine.getEvent());
+                unitSelected.get(x).setTime(sdf.format(cal.getTime()));
+                table.refresh();
                 numCordonDisp += 1; //monitor how many corodn has been dispatch
                 log.writeLog(9, unitSelected.get(x).getUnitName());              
                 //cd.calculateDistance(unitSelected.get(x).getUnitName(), unitSelected.get(x).getUnitId()-1); 
@@ -359,6 +374,10 @@ public class LoadUnitTable extends Application {
                             public void run(){  
                                 //System.out.println(mapEngine.getDogHandlerStatus());
                                 if(mapEngine.getDogHandlerStatus() && isCaught){
+                                    if(mapEngine.getCountaintmentFieldStatus()){
+                                        log.writeLog(17, "");
+                                    }else{
+                                        log.writeLog(18, "");}                                 
                                     isCaught = false;
                                     LoadNotification ln = new LoadNotification("Dog handler has caught the offender."); 
                                     ln.start(ln.notificationWindow); 
@@ -366,7 +385,7 @@ public class LoadUnitTable extends Application {
                                         new JavaSoundAudioClip(new FileInputStream(new File("notify.wav"))).play();
                                     } catch (IOException ex) {
                                         Logger.getLogger(LoadUnitTable.class.getName()).log(Level.SEVERE, null, ex);
-                                    }
+                                    }                 
                                 }   
                             }                  
                         }); 
@@ -441,7 +460,9 @@ public class LoadUnitTable extends Application {
         return unitWindow;
     }
     
-    public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{       
+    public ObservableList<Unit> getUnits(){//throws ParserConfigurationException, SAXException, IOException{   
+        //Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss"); 
         ObservableList<Unit> unit = FXCollections.observableArrayList();    
         //XML CODE
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -472,11 +493,14 @@ public class LoadUnitTable extends Application {
                 unitID = Integer.parseInt(eElement.getAttribute("id"));
                 unitName = eElement.getElementsByTagName("unitName").item(0).getTextContent();
                 callSign = eElement.getElementsByTagName("callSign").item(0).getTextContent();
-                defLocation = eElement.getElementsByTagName("defLocation").item(0).getTextContent();
                 currEvent = eElement.getElementsByTagName("currEvent").item(0).getTextContent();
-                time = eElement.getElementsByTagName("time").item(0).getTextContent();
+                time = sdf.format(cal.getTime());//eElement.getElementsByTagName("time").item(0).getTextContent();
                 type = eElement.getElementsByTagName("type").item(0).getTextContent();
                 status = eElement.getElementsByTagName("status").item(0).getTextContent();
+                if(!prevEvent.equals(""))
+                    defLocation = prevEvent;
+                else
+                    defLocation = eElement.getElementsByTagName("defLocation").item(0).getTextContent();
                 x = new Unit(unitID,unitName, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }

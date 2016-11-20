@@ -400,7 +400,7 @@
                     {
                         var marker = new google.maps.Marker({
                             position: null,
-                            icon: 'policeCar.ico',
+                            icon: 'policeCar.png',
                             id: idArr[i]
                         });
                         allMarkers.set( idArr[i], marker );
@@ -649,7 +649,7 @@
                 if(eventObj.markers[i].position == null)
                     return -41.1130274 + " " + 174.8924949; // temporary
                 else if(eventObj.markers[i].id == unitId){ //.getPostion.lat() doesn't like nulls
-                    return latlng = eventObj.markers[i].getPosition().lat() + " " + eventObj.markers[i].getPosition().lng();                  
+                    return latlng = eventObj.markers[i].getPosition().lat() + "," + eventObj.markers[i].getPosition().lng();                  
                 }       
             }   
         }
