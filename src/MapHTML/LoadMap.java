@@ -90,5 +90,17 @@ public class LoadMap extends Application {
     
     public void removeContainmentField(){
         webMapEngine.executeScript("removeContainmentField()");
-    }   
+    }
+    
+    public void addMarkerToArray(float lat, float lng, int id){
+        webMapEngine.executeScript("addMarkerToArray(" + lat + "," + lng + "," + id +")");
+    }
+    
+    public void placeMarkers(float lat, float lng, double rad){
+        webMapEngine.executeScript("placeMarkers(" + lat + "," + lng + "," + rad + ")");
+    }
+    
+    public double getRadius(){
+        return(double)webMapEngine.executeScript("getRad()");
+    }
 }

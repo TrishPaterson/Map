@@ -1,11 +1,12 @@
 package PendingTableView;
 
 import AlertBox.AlertBox;
+import AlertBox.AlertBox2;
 import EventWindow.LoadEventWindow;
+import LogWindow.LoadLogWindow;
 import LogWindow.RecordLog;
 import MapHTML.LoadMap;
 import UnitTableView.LoadUnitTable;
-import UnitTableView.Unit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
@@ -175,27 +176,35 @@ public class LoadPendingTable extends Application {
             allEvents = table.getItems();
             evtSelected = table.getSelectionModel().getSelectedItems(); 
             int nextEvent = 1;
-            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !isEventOn ) {
+            if (event.getClickCount() == 2 && (! evtSelected.isEmpty()) && !isEventOn ){ 
                 
-                LoadEventWindow.populateFields(evtSelected.get(0));
-                //System.out.println( LoadEventWindow.populateFields(evtSelected.get(0)));
+                //Check is playback is on and if true refresh map
+                LoadLogWindow logWindow = new LoadLogWindow();
                 
-                //Temporary while the geolocation is not implemented-------------------
-                if(evtSelected.get(0).getLocation().equals("Bolton Street, Petone")){
-                    mapEngine.createExpanding(-41.227346,174.8830833, 1); 
-                    nextEvent = 2;
-                }else {
-                    mapEngine.createExpanding(-41.3146835,174.7806215, 1); 
-                }          
-                //----------------------------------------------------------------------
-                mapEngine.createEvent(evtSelected.get(0).getLocation());              
-                mapEngine.setEvent(evtSelected.get(0).getLocation());
-                log.writeLog(8, evtSelected.get(0).getLocation());
-                
-                evtSelected.forEach(allEvents::remove);//remove selected item
-                isEventOn = true; //disable pendingevent while this event is finish
-                table.getSelectionModel().clearSelection();              
-                //System.out.println( ""+populateFields(evtSelected.get(0)));
+                if(!logWindow.isPlayBackOn()){      
+                    LoadEventWindow.populateFields(evtSelected.get(0));
+                    //System.out.println( LoadEventWindow.populateFields(evtSelected.get(0)));
+
+                    //Temporary while the geolocation is not implemented-------------------
+                    if(evtSelected.get(0).getLocation().equals("Bolton Street, Petone")){
+                        mapEngine.createExpanding(-41.227346,174.8830833, 1); 
+                        nextEvent = 2;
+                    }else {
+                        mapEngine.createExpanding(-41.3146835,174.7806215, 1); 
+                    }          
+                    //----------------------------------------------------------------------
+                    mapEngine.createEvent(evtSelected.get(0).getLocation());              
+                    mapEngine.setEvent(evtSelected.get(0).getLocation());
+                    log.writeLog(8, evtSelected.get(0).getLocation());
+
+                    evtSelected.forEach(allEvents::remove);//remove selected item
+                    isEventOn = true; //disable pendingevent while this event is finish
+                    table.getSelectionModel().clearSelection();              
+                    //System.out.println( ""+populateFields(evtSelected.get(0)));
+                }else{
+                    AlertBox2 alert = new AlertBox2();
+                    alert.start(pendingWindow);
+                }         
             }          
         });
     }  

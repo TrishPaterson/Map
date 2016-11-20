@@ -1,6 +1,7 @@
 package UnitTableView;
 
 import AlertBox.AlertBox;
+import LogWindow.LoadLogWindow;
 import LogWindow.RecordLog;
 import java.io.IOException;
 import javafx.application.Application;
@@ -41,6 +42,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,7 +79,7 @@ public class LoadUnitTable extends Application {
     private static double xOffset = 0;
     private static double yOffset = 0;   
    
-    private int numCordonDisp = 0;
+    private ArrayList<Integer>idDispCordon = new ArrayList<>();
     private String prevEvent = "";
     private LoadMap mapEngine = new LoadMap();
     private LoadPendingTable lpt = new LoadPendingTable();
@@ -231,21 +233,6 @@ public class LoadUnitTable extends Application {
             mapEngine.refreshMap();
             log.writeLog(16, "");
             lpt.enAbleRow();     
-            //remove due to design changes
-            /*numCordonDisp -= 1;
-            System.out.println(numCordonDisp);
-            unitSelected.get(i).setStatus("avail");
-            log.writeLog(13, unitSelected.get(i).getUnitName());             
-            if(numCordonDisp == 0){ // check if all cordons has been unassigned to the event.
-                if(mapEngine.getCountaintmentFieldStatus()){
-                    log.writeLog(17, "");
-                }else{
-                    log.writeLog(18, "");
-                }
-                mapEngine.refreshMap();
-                log.writeLog(16, "");
-                lpt.enAbleRow();     
-            }*/
         }
         updateTableColour();
         table.getSelectionModel().clearSelection();
@@ -316,6 +303,7 @@ public class LoadUnitTable extends Application {
                 id = unitSelected.get(x).getUnitId();
                 if(!unitSelected.get(x).getType().equals("D")){ //if type is not dog handler then create marker
                     mapEngine.setMarkerId(id);  
+                    idDispCordon.add(unitSelected.get(x).getUnitId()); //monitor how many corodn has been dispatch
                 }else if(unitSelected.get(x).getType().equals("D")) {
                     //temporary-------------------------------------------------
                     //mapEngine.startTracking();
@@ -326,8 +314,7 @@ public class LoadUnitTable extends Application {
                 unitSelected.get(x).setStatus("onRot"); //change status to on route     
                 unitSelected.get(x).setCurrLocation(mapEngine.getEvent());
                 unitSelected.get(x).setTime(sdf.format(cal.getTime()));
-                table.refresh();
-                numCordonDisp += 1; //monitor how many corodn has been dispatch
+                table.refresh(); 
                 log.writeLog(9, unitSelected.get(x).getUnitName());              
                 //cd.calculateDistance(unitSelected.get(x).getUnitName(), unitSelected.get(x).getUnitId()-1); 
             }else{//if dispatcher tries to disptach unit twice 
@@ -337,6 +324,19 @@ public class LoadUnitTable extends Application {
         updateTableColour();
         mapEngine.createMarker();
         table.getSelectionModel().clearSelection();  
+    }
+    
+    public void recordAll(){ // records last known position of markers after the offender is caught
+        LoadLogWindow log = new LoadLogWindow();
+        
+        for(int i = 0; i < idDispCordon.size(); i++){
+            log.addMarkers(mapEngine.getCordonCurrLocation(idDispCordon.get(i)));
+        }
+        
+        log.addMarkerToEventArr(log.getArrayList());
+        log.addItemToComboBox(mapEngine.getEvent());
+        log.addMarkerId(idDispCordon);
+        log.addRadius(mapEngine.getRadius());
     }
     
     public void updateTableColour(){
@@ -374,6 +374,7 @@ public class LoadUnitTable extends Application {
                             public void run(){  
                                 //System.out.println(mapEngine.getDogHandlerStatus());
                                 if(mapEngine.getDogHandlerStatus() && isCaught){
+                                    recordAll();
                                     if(mapEngine.getCountaintmentFieldStatus()){
                                         log.writeLog(17, "");
                                     }else{

@@ -42,7 +42,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import map.Main;
 
-public class AlertBox extends Application {
+public class AlertBox2 extends Application {
     private LoadUnitTable unitTable = new LoadUnitTable();
     private LoadEventWindow evtWindow = new LoadEventWindow();
     private LoadMap mapWindow = new LoadMap();
@@ -64,17 +64,17 @@ public class AlertBox extends Application {
         alertWindow.initModality(Modality.APPLICATION_MODAL);
         alertWindow.setTitle("Cordon Training Tool");
         
-        Label label = new Label("Closing this window will terminate the scenario.");
+        Label label = new Label("ERROR! You must clear the map before starting the event.");
         label.setTextFill(Color.LIGHTGRAY);
         label.setFont(Font.font("Calibri", 16));
-        label.setTranslateX(80); //w
-        label.setTranslateY(10); //h
+        label.setTranslateX(60); //w
+        label.setTranslateY(20); //h
 
-        Label label2 = new Label("Are you sure you want to go back to Main Menu?");
+        Label label2 = new Label("The clear button is located on the User Log Window");
         label2.setTextFill(Color.LIGHTGRAY);
         label2.setFont(Font.font("Calibri", 16));
-        label2.setTranslateX(80); //w
-        label2.setTranslateY(30); //h
+        label2.setTranslateX(60); //w
+        label2.setTranslateY(40); //h
         
         //CP Image
         Image image = new Image("/Images/NCP.PNG");
@@ -85,44 +85,20 @@ public class AlertBox extends Application {
         TIcon.setSmooth(true);
         TIcon.setCache(true);
         TIcon.setTranslateX(5);
-        TIcon.setTranslateY(-35);
+        TIcon.setTranslateY(-28);
         
         //Exit Image
         ImageView Exit = new ImageView("/Images/ExitButton2.PNG");
         Exit.setFitHeight(18);
         Exit.setFitWidth(18);
-        Exit.setTranslateX(428);
-        Exit.setTranslateY(-33);
+        Exit.setTranslateX(425);
+        Exit.setTranslateY(-25);
         
         Button btn = new Button();
-        btn.setText("   Yes   ");
-        btn.setTranslateX(160); //w
+        btn.setText("   OK   ");
+        btn.setTranslateX(200); //w
         btn.setTranslateY(100); //h      
         btn.setOnAction(new EventHandler<ActionEvent>() {    
-            @Override
-            public void handle(ActionEvent event) {
-                unitTable.getStage().close();
-                evtWindow.getStage().close();
-                mapWindow.refreshMap();
-                mapWindow.getStage().close(); 
-                pendingTable.enAbleRow();
-                pendingTable.getStage().close();
-                logWindow.clearTable();
-                logWindow.deleteEvents();
-                logWindow.deleteRadius();
-                logWindow.deleteMarkerId();
-                logWindow.setPlayBackOff();
-                logWindow.getStage().close();
-                alertWindow.close();
-                main.start(menu.getStage());
-            }
-        });
-        
-        Button btn2 = new Button();
-        btn2.setText("  Cancel  ");
-        btn2.setTranslateX(230); //w
-        btn2.setTranslateY(89); //h      
-        btn2.setOnAction(new EventHandler<ActionEvent>() {    
             @Override
             public void handle(ActionEvent event) {
                 alertWindow.close();
@@ -138,7 +114,7 @@ public class AlertBox extends Application {
         VBox vbox = new VBox(-15);   
         vbox.setBackground(new Background(new BackgroundImage(background, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         vbox.setPadding(new Insets(12, 0, 15, 0));
-        vbox.getChildren().addAll(btn,btn2,label,label2,Exit,TIcon, actionStatus);
+        vbox.getChildren().addAll(btn, label,label2,Exit,TIcon, actionStatus);
         Scene scene = new Scene(vbox, 450,150); // w x h 
         alertWindow.setScene(scene);
         alertWindow.show();

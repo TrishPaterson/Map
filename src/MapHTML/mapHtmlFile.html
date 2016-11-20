@@ -32,6 +32,7 @@
             var idArr = [];                                                                                    //*******OLD*******
              
             //used for creating expanding zone
+            var cityCircle = []; 
             var createExp = false;
             var expLat;
             var expLong;
@@ -59,6 +60,15 @@
             //var isConValid = false;
             var isCFTrue = false;
             var isDCFTrue = false;
+            
+            //For replaying previous event
+            var placingMarkers = false;
+            var latArray = [];
+            var lngArray = [];
+            var idArray = [];
+            var nameArray = ['UNI1','UNS1','UNQ1','UNT1'];
+            var LatLng;
+            var prevRadius;
 //------------------------------------------------------------------------------
 //InitializeMap  
 //------------------------------------------------------------------------------
@@ -70,8 +80,7 @@
         });
 //------------------------------------------------------------------------------
 //ExpandingZone     
-//------------------------------------------------------------------------------
-        var cityCircle = [];               
+//------------------------------------------------------------------------------                  
         setInterval (function() {
             if(createExp === true){   
                 var c = new google.maps.Circle({
@@ -170,6 +179,7 @@
                 {
                     cityCircle[i].setRadius(radius + expansionDirection * 0.05);
                 }
+                //prevRadius = radius;
             }
         }, 50);//500
 //------------------------------------------------------------------------------
@@ -574,7 +584,43 @@
         }
         function getRandom() {
             return Math.random();
-        }            
+        } 
+//------------------------------------------------------------------------------
+//Used for replaying the previous event
+//------------------------------------------------------------------------------       
+        setInterval (function() {
+            if(placingMarkers == true){
+                for(var i = 0; i < latArray.length; i++)
+                {
+                    var pos = new google.maps.LatLng(latArray[i], lngArray[i])
+                    var marker = new google.maps.Marker({
+                        map:map,
+                        position: pos,
+                        icon: 'policeCar.png'
+                    });
+                    var unit = new google.maps.InfoWindow({
+                    content: nameArray[idArray[i]]});
+                    unit.open(map,marker);
+                }  
+                var circle = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#FF0000',
+                    fillOpacity: 0.35,
+                    center: LatLng,
+                    radius: prevRadius,
+                   
+                });    
+                //circle.setCenter(LatLng)
+                //map.center = LatLng;
+                circle.setMap(map);
+                map.setZoom(18);
+            }
+            placingMarkers = false;
+            latArray = [];
+            lngArray = [];
+        },50); 
 //------------------------------------------------------------------------------
     }//end of init map
 //------------------------------------------------------------------------------
@@ -667,6 +713,12 @@
         location.reload(true);
     }
 //------------------------------------------------------------------------------
+//getRadius returns the radius of expanding zone
+//------------------------------------------------------------------------------  
+    function getRad(){
+        return cityCircle[0].getRadius();  
+    }
+//------------------------------------------------------------------------------
 //getCountaintmentFieldStatus checks if containment field is valid.
 //------------------------------------------------------------------------------    
     function getCountaintmentFieldStatus(){
@@ -684,10 +736,24 @@
     }
 //------------------------------------------------------------------------------
 //removeContainmentField removes the containment field.
-//------------------------------------------------------------------------------    
+   
     function removeContainmentField(){
         isDCFTrue = true;
         //expansionDirection = 1;
+    }
+//------------------------------------------------------------------------------ 
+//For replaying the event
+//------------------------------------------------------------------------------ 
+    function placeMarkers(lat, lng, rad){
+        placingMarkers = true;
+        LatLng = new google.maps.LatLng(lat, lng);  
+        prevRadius = rad;
+    }
+    
+    function addMarkerToArray(lat, lng, id){
+        latArray.push(lat);
+        lngArray.push(lng);
+        idArray.push(id-1);
     }
 //------------------------------------------------------------------------------
         google.maps.event.addDomListener(window, 'load', initialize);

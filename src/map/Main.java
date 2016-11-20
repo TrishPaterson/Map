@@ -27,7 +27,7 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{ 
-        System.out.println("You see, madness, as you know, is like gravity. All it takes is a little push!");
+        System.out.println("Clementine: I'M still NOT BITTEN!!");
        // map.start(primaryStage);
         //logWindow.start(primaryStage);
         //eventWindow.start(primaryStage);
