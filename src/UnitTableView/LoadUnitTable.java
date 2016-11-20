@@ -80,7 +80,6 @@ public class LoadUnitTable extends Application {
     private static double yOffset = 0;   
    
     private ArrayList<Integer>idDispCordon = new ArrayList<>();
-    private String prevEvent = "";
     private LoadMap mapEngine = new LoadMap();
     private LoadPendingTable lpt = new LoadPendingTable();
     private RecordLog log = new RecordLog();
@@ -229,9 +228,7 @@ public class LoadUnitTable extends Application {
         }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(0).getStatus().equals("Onroute")){ //check if dog handler has caught the offender and cordon  is on scene       
             for(int i = 0; i < table.getItems().size(); i++){
                 table.getItems().get(i).setStatus("avail");
-            }
-            prevEvent = mapEngine.getEvent();
-            //table.setItems(getUnits());           
+            }           
             mapEngine.refreshMap();
             log.writeLog(16, "");
             lpt.enAbleRow();     
@@ -500,10 +497,7 @@ public class LoadUnitTable extends Application {
                 time = sdf.format(cal.getTime());//eElement.getElementsByTagName("time").item(0).getTextContent();
                 type = eElement.getElementsByTagName("type").item(0).getTextContent();
                 status = eElement.getElementsByTagName("status").item(0).getTextContent();
-                if(!prevEvent.equals(""))
-                    defLocation = prevEvent;
-                else
-                    defLocation = eElement.getElementsByTagName("defLocation").item(0).getTextContent();
+                defLocation = eElement.getElementsByTagName("defLocation").item(0).getTextContent();
                 x = new Unit(unitID,unitName, callSign, defLocation, currEvent, time, type, status);
                 unit.add(x);
             }
