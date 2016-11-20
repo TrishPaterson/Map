@@ -394,7 +394,7 @@
 // CreateMarkerInit (Creates Marker only isPlacing is true, see createMarker() )
 //------------------------------------------------------------------------------
         setInterval (function() {
-            if(isCreating == true){       
+            if(isCreating == true){ 
                 for(var i = 0; i < idArr.length; i++){
                     if(allMarkers.get(idArr[i]) == null)
                     {
@@ -404,8 +404,26 @@
                             id: idArr[i]
                         });
                         allMarkers.set( idArr[i], marker );
-                        var unit = new google.maps.InfoWindow({
-                        content: 'WHT ' + idArr[i]});
+                        if(idArr[i] == 1) 
+                        {
+                            var unit = new google.maps.InfoWindow({
+                            content: 'UNI1'});
+                        }
+                        else if(idArr[i] == 2)
+                        {
+                            unit = new google.maps.InfoWindow({
+                            content: 'UNS1'});   
+                        }
+                        else if(idArr[i] == 3)
+                        {
+                            unit = new google.maps.InfoWindow({
+                            content: 'UNQ1'});   
+                        }
+                        else
+                        {
+                            unit = new google.maps.InfoWindow({
+                            content: 'UNT1'});
+                        }
                         unit.open(map,marker);
                         pushToMarkersArray(idArr[i]);
                     }
