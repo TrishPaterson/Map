@@ -226,10 +226,12 @@ public class LoadUnitTable extends Application {
             log.writeLog(15, unitSelected.get(0).getUnitName()); 
         }else if(lpt.getIsEventOn() && !unitSelected.get(0).getStatus().equals("Onroute")){// if disptacher tries to close event an on route cordon when the offender has not yet been caught
             log.writeLog(15, unitSelected.get(0).getUnitName());
-        }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(0).getStatus().equals("Onroute")){ //check if dog handler has caught the offender and cordon  is on scene
-            table.getItems().clear();
+        }else if (mapEngine.getDogHandlerStatus() && unitSelected.get(0).getStatus().equals("Onroute")){ //check if dog handler has caught the offender and cordon  is on scene       
+            for(int i = 0; i < table.getItems().size(); i++){
+                table.getItems().get(i).setStatus("avail");
+            }
             prevEvent = mapEngine.getEvent();
-            table.setItems(getUnits());           
+            //table.setItems(getUnits());           
             mapEngine.refreshMap();
             log.writeLog(16, "");
             lpt.enAbleRow();     
