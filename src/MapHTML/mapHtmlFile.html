@@ -69,6 +69,10 @@
             var nameArray = ['UNI1','UNS1','UNQ1','UNT1'];
             var LatLng;
             var prevRadius;
+            
+            //geocoder
+            var geocoder;
+            var address;
 //------------------------------------------------------------------------------
 //InitializeMap  
 //------------------------------------------------------------------------------
@@ -78,6 +82,11 @@
             center: defLocation,
             zoom: 8,
         });
+        geocoder = new google.maps.Geocoder;
+//------------------------------------------------------------------------------
+//GeoCoder
+//------------------------------------------------------------------------------
+        
 //------------------------------------------------------------------------------
 //ExpandingZone     
 //------------------------------------------------------------------------------                  
@@ -393,6 +402,10 @@
                 var currZoom = map.getZoom();
                 markerToChange.setMap(null);
                 markerToChange.setPosition( event.latLng );
+                geocodeLatLngToAddress(event.latLng, function(add) {
+                   //address = String(add);
+                    markerToChange.address = add;
+                });
                 setMapOnAll(map);          
                 map.setZoom(0);              
                 map.setZoom(currZoom);
@@ -411,7 +424,8 @@
                         var marker = new google.maps.Marker({
                             position: null,
                             icon: 'policeCar.png',
-                            id: idArr[i]
+                            id: idArr[i],
+                            address: null
                         });
                         allMarkers.set( idArr[i], marker );
                         if(idArr[i] == 1) 
@@ -686,6 +700,35 @@
         startTrack = true;
     }
 //------------------------------------------------------------------------------
+//geocodeLatLngToAddress returns an address from a latlng coordinate
+//------------------------------------------------------------------------------
+    function geocodeLatLngToAddress(latlng, callback) {
+        //var ll = new google.maps.LatLng(-41.2865, 174.7762);
+        //var address;
+        geocoder.geocode({'latLng':latlng}, function(results, status) {
+            var address;
+            if(status === google.maps.GeocoderStatus.OK) {
+                if(results[0]) {
+                    address = results[0].formatted_address;
+                    //callback(address);
+                }
+                else {
+                    address = "No results found";
+                }
+            }
+            else {
+                address = 'nothing!!!';
+            }
+            callback(address);
+        });
+    }
+//------------------------------------------------------------------------------
+//
+//------------------------------------------------------------------------------
+    function returnAddress() {
+        return address;
+    }
+//------------------------------------------------------------------------------
 //getCordonLocation returns the current location of cordon 
 //------------------------------------------------------------------------------
     function getCordonCurrLocation(unitId){    
@@ -695,9 +738,17 @@
                 if(eventObj.markers[i].position == null)
                     return -41.1130274 + " " + 174.8924949; // temporary
                 else if(eventObj.markers[i].id == unitId){ //.getPostion.lat() doesn't like nulls
-                    return latlng = eventObj.markers[i].getPosition().lat() + "," + eventObj.markers[i].getPosition().lng();                  
+                    //return latlng = eventObj.markers[i].getPosition().lat() + "," + eventObj.markers[i].getPosition().lng(); 
+                    //-------------------------------------------------
+                    //var lat = eventObj.markers[i].getPosition().lat();
+                    //var lng = eventObj.markers[i].getPosition().lng();
+                    //var latlng = new google.maps.LatLng(lat, lng);
+                    var addloc = eventObj.markers[i].address;
+                    return addloc;
+                    //-------------------------------------------------
                 }       
-            }   
+            }
+            //return address;
         }
     }
 //------------------------------------------------------------------------------
