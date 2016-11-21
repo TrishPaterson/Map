@@ -278,12 +278,13 @@ public class LoadMainMenu extends Application {
         SIcon.setTranslateX(-80);
         SIcon.setTranslateY(-290);
         
-        Label AboutInfo = new Label("The Cordon Training Tool will allow a new\n" 
-                + "dispatcher to learn how to follow correct\n"
-                + "procedure when placing cordons, while under\n"
-                + "simulated pressure, providing the user\n "
-                + "with confidence in their own decision making.\n");
-        AboutInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 14));
+        Label AboutInfo = new Label("The Cordon Training Tool is an application developed for training\n"
+                + "purposes. It will allow a new dispatcher to learn how to follow\n" 
+                + "correct procedure when placing cordons, while under simulated\n"
+                + "pressure, providing the user with confidence in their own\n "
+                + "decision making. It will help the dispatcher to familiarise\n"
+                + "themselves with the system and understand it's basic functionality.");
+        AboutInfo.setFont(Font.font("segoe print", FontWeight.NORMAL, 11));
         AboutInfo.setTextFill(Color.BLACK);
         AboutInfo.setPrefSize(500, 140);
         AboutInfo.setTranslateX(-10);
