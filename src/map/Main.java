@@ -27,7 +27,7 @@ public class Main extends Application {
     
     @Override
     public void start(Stage primaryStage){//throws ParserConfigurationException, SAXException, IOException{ 
-        System.out.println("Clementine: I'M still NOT BITTEN!!");
+        System.out.println("TELLTALE WALKiNG DEAD Season 3 is coming on 21st of December :D");
        // map.start(primaryStage);
         //logWindow.start(primaryStage);
         //eventWindow.start(primaryStage);

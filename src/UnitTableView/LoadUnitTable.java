@@ -374,6 +374,7 @@ public class LoadUnitTable extends Application {
                                 //System.out.println(mapEngine.getDogHandlerStatus());
                                 if(mapEngine.getDogHandlerStatus() && isCaught){
                                     recordAll();
+                                    mapEngine.createContainmentField();
                                     if(mapEngine.getCountaintmentFieldStatus()){
                                         log.writeLog(17, "");
                                     }else{
@@ -394,40 +395,41 @@ public class LoadUnitTable extends Application {
             }
         };
         Thread backgroundThread = new Thread(task);
-        backgroundThread.setDaemon(true);
         backgroundThread.start();      
     }
     
     private String prevLoc = "none";
     private String currLoc;
-    private boolean isTrue = true;  
+    private boolean isTrue = true; 
+    private static String currMarker;
     public void getMarkerLocation(int id, String name){
+        currMarker = name;
         prevLoc = mapEngine.getCordonCurrLocation(id);
         isTrue = true;
         Runnable task = new Runnable(){
             public void run(){                            
-                while(isTrue){  
+                while(currMarker.equals(name) && isTrue){  
                     try{              
                         Thread.sleep(50);
                     }catch(InterruptedException e){} 
-                        Platform.runLater(new Runnable(){
-                        @Override
-                            public void run(){   
-                                //System.out.println("The previous location of: " + name +  " is " +prevLoc + " and the current is " +currLoc);
-                                currLoc = mapEngine.getCordonCurrLocation(id);               
-                                if(!currLoc.equals(prevLoc) && isTrue){   
-                                    isTrue = false;   
-                                    mapEngine.removeContainmentField();
-                                    cd.removeOnSceneCordons();                                 
-                                    cd.delay(name, id);                       
-                                }                                 
-                            }                  
-                        });                   
-                }log.writeLog(11, name, currLoc);                    
+                    Platform.runLater(new Runnable(){
+                    @Override
+                        public void run(){   
+                            //System.out.println("The previous location of: " + name +  " is " +prevLoc + " and the current is " +currLoc);
+                            currLoc = mapEngine.getCordonCurrLocation(id);               
+                            if(!currLoc.equals(prevLoc) && isTrue && currMarker.equals(name)){ //check markers location is changed and if marker is still the same  
+                                isTrue = false;   
+                                mapEngine.removeContainmentField();
+                                log.writeLog(11, name, currLoc);
+                                cd.removeOnSceneCordons();                                 
+                                cd.delay(name, id);                       
+                            }                                 
+                        }                  
+                    });                   
+                }                    
             }
         };
         Thread backgroundThread = new Thread(task);
-        backgroundThread.setDaemon(true);
         backgroundThread.start();      
     }  
 
