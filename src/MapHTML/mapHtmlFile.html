@@ -57,7 +57,7 @@
             };           
             
             //Cheking if countainment field is valid.
-            //var isConValid = false;
+            var isConValid = false;
             var isCFTrue = false;
             var isDCFTrue = false;
             
@@ -295,6 +295,9 @@
                 for( var i = 0; i < pointsPath.length - 1; i++ ) {
                     if( distBetween( pointsPath[i], pointsPath[ i + 1 ] ) > 300 ){
                         zoneColor = '#ffbf7f';
+                        isConValid = false;
+                    }else{
+                        isConValid = true;
                     }
                 }
                 zone = null;
@@ -396,6 +399,7 @@
                 setMapOnAll(map);          
                 map.setZoom(0);              
                 map.setZoom(currZoom);
+                isConValid = false;
             } 
             changingMarker = false;
             //setContainment(); 
@@ -626,7 +630,7 @@
 //------------------------------------------------------------------------------
 //changeLocation initiates the chaning location see ChangeLocationInit
 //------------------------------------------------------------------------------
-    function changeLocation( uid ) {
+    function changeLocation( uid ){
         changingMarker = true;
         markerToChange = allMarkers.get(uid);       
     }
@@ -722,11 +726,12 @@
 //getCountaintmentFieldStatus checks if containment field is valid.
 //------------------------------------------------------------------------------    
     function getCountaintmentFieldStatus(){
-        if(eventZone.fillColor == '#7f7fff'){
+        return isConValid;
+        /*if(eventZone.fillColor == '#7f7fff'){
             return true;
         }else if(eventZone.fillColor == '#ffbf7f'){
             return false;
-        }
+        }*/
     }
 //------------------------------------------------------------------------------
 //createContainmentField creates a containment field.

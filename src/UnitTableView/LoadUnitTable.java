@@ -374,7 +374,7 @@ public class LoadUnitTable extends Application {
                                 //System.out.println(mapEngine.getDogHandlerStatus());
                                 if(mapEngine.getDogHandlerStatus() && isCaught){
                                     recordAll();
-                                    mapEngine.createContainmentField();
+                                    //mapEngine.createContainmentField();
                                     if(mapEngine.getCountaintmentFieldStatus()){
                                         log.writeLog(17, "");
                                     }else{
